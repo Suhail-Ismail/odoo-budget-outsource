@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+  <data>
+<!--START ACTIONS-->
+    <!--Approval Action-->
+    <record model="ir.actions.act_window" id="action_approval">
+        <field name="name">Approval</field>
+        <field name="res_model">outsource.approval</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_filter_state': 1}</field>
+
+    </record>
+<!--END ACTIONS-->
+
+<!--START SEARCH-->
+    <record model="ir.ui.view" id="search_approval">
+        <field name="name">approval</field>
+        <field name="model">outsource.approval</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="ref"/>
+                <field name="service_description"/>
+                <field name="section"/>
+                <field name="job_id"/>
+                <field name="budget_type"/>
+                <field name="contractor"/>
+                <field name="state"/>
+                <filter
+                    name="filter_state"
+                    string="Need Action"
+                    domain="[('state', '=', 'waiting purchase order')]"/>
+                <group string="Group by">
+                    <filter
+                        name="group_section"
+                        string="By Section"
+                        context="{'group_by': 'section'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+<!--END SEARCH-->
+
+
+<!--START VIEWS-->
+    <!--Tree View-->
+    <record model="ir.ui.view" id="view_tree_approval">
+        <field name="name">Approval</field>
+        <field name="model">outsource.approval</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="contractor"/>
+                <field name="ref"/>
+                <field name="service_description"/>
+                <field name="job_id"/>
+                <field name="section"/>
+                <field name="budget_type"/>
+                <field name="section_head"/>
+                <field name="division_head"/>
+                <field name="approve_sign_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Approval Form View-->
+    <record model="ir.ui.view" id="view_form_approval">
+        <field name="name">Approval</field>
+        <field name="model">outsource.approval</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        string="Validate PO"
+                        name="create_po_line_details"
+                        type="object"
+                        states="received purchase order,waiting purchase order" />
+                        <!--groups="academy.group_manager,base.group_no_one"/>                    -->
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="ref" class="oe_edit_only"/>
+                        <h1>
+                            <field name="ref" class="oe_inline"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="service_description"/>
+                            <field name="section"/>
+                            <field name="job_id"/>
+                        </group>
+                        <group>
+                            <field name="budget_type"/>
+                            <field name="contractor"/>
+                            <field name="is_linked_to_po"/>
+                            <field name="po_temp" attrs="{'invisible': [('is_linked_to_po', '=', True)]}"/>
+                            <field name="po_id" attrs="{'invisible': [('is_linked_to_po', '=', False)]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="remarks"/>
+                    </group>
+                    <notebook>
+                        <page string="General">
+                            <field name="required_team_ids">
+                                <tree editable="bottom">
+                                    <field name="position"/>
+                                    <field name="level_1"/>
+                                    <field name="level_2"/>
+                                    <field name="level_3"/>
+                                    <field name="level_4"/>
+                                </tree>
+                            </field>
+                        <!--</page>-->
+                        <!--<page string="Sections Recommendations">-->
+                            <group>
+                                <group>
+                                    <field name="section_head"/>
+                                    <field name="request_sign_date"/>
+                                </group>
+                                <group>
+                                    <field name="division_head"/>
+                                    <field name="approve_sign_date"/>
+                                </group>
+                            </group>
+                        <!--</page>-->
+                        <!--<page string="TBPC Remarks">-->
+                            <group>
+                                <group>
+                                    <field name="budget_team_head"/>
+                                    <field name="budget_team_sign_date"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="budget_team_remarks"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <!--<div class = "oe_chatter">-->
+                    <!--<field name="message_followers_ids" widget="mail_followers"/>-->
+                    <!--<field name="message_ids" widget="mail_thread"/>-->
+                <!--</div>-->
+            </form>
+        </field>
+    </record>
+<!--END VIEWS-->
+
+  </data>
+</openerp>

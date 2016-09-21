@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+  <data>
+<!--START ACTIONS-->
+    <!--Purchase Order Action-->
+    <act_window
+        id="action_purchase_order"
+        name="Purchase Order"
+        res_model="outsource.purchase.order" />
+
+    <!--Purchase Order Line Action-->
+    <act_window
+        id="action_purchase_order_line"
+        name="Purchase Order Line"
+        res_model="outsource.purchase.order.line" />
+
+    <!--Purchase Order Line Details Action-->
+    <act_window
+        id="action_purchase_order_line_detail"
+        name="Purchase Order Line Detail"
+        res_model="outsource.purchase.order.line.detail" />
+
+<!--END ACTIONS-->
+
+<!--START PURCHASE ORDER VIEWS-->
+    <!--Purchase Order Tree View-->
+    <record model="ir.ui.view" id="view_tree_purchase_order">
+        <field name="name">Purchase Order</field>
+        <field name="model">outsource.purchase.order</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="po_num"/>
+                <field name="contractor"/>
+                <field name="type"/>
+                <field name="task_num"/>
+                <field name="status"/>
+                <field name="po_date"/>
+                <field name="po_value"/>
+                <field name="capex_commitment_value"/>
+                <field name="capex_expenditure_value"/>
+                <field name="opex_value"/>
+                <field name="revenue_value"/>
+                <field name="remarks"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Purchase Order Form View-->
+    <record model="ir.ui.view" id="view_form_purchase_order">
+        <field name="name">Purchase Order</field>
+        <field name="model">outsource.purchase.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action"
+                            icon="fa-star" name="..." context="...">
+                            <field string="Approvals" name="total_approval" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="po_num" class="oe_edit_only"/>
+                        <h1>
+                            <field name="po_num" class="oe_inline"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="contractor"/>
+                            <field name="type"/>
+                            <field name="task_num"/>
+                            <field name="renew_status"/>
+                            <field name="renew_po_no"/>
+                            <field name="status"/>
+                        </group>
+                        <group>
+                            <field name="po_date"/>
+                            <field name="po_value"/>
+                            <field name="capex_commitment_value"/>
+                            <field name="capex_expenditure_value"/>
+                            <field name="opex_value"/>
+                            <field name="revenue_value"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="remarks"/>
+                    </group>
+                    <notebook>
+                        <page string="PO Lines">
+                            <field name="po_line_ids">
+                                <tree>
+                                    <field name="line_num"/>
+                                    <field name="line_duration"/>
+                                    <field name="line_value"/>
+                                    <field name="line_revise_rate"/>
+                                    <field name="line_status"/>
+                                    <field name="line_actuals"/>
+                                    <field name="capex_percent"/>
+                                    <field name="opex_percent"/>
+                                    <field name="revenue_percent"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="line_num"/>
+                                            <field name="line_duration"/>
+                                            <field name="line_value"/>
+                                            <field name="line_revise_rate"/>
+                                        </group>
+                                        <group>
+                                            <field name="line_status"/>
+                                            <field name="line_actuals"/>
+                                            <field name="capex_percent"/>
+                                            <field name="opex_percent"/>
+                                            <field name="revenue_percent"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+<!--END PURCHASE ORDER VIEWS-->
+
+</data>
+</openerp>
