@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+  <data>
+<!--START ACTIONS-->
+    <!--Invoice Action-->
+    <record model="ir.actions.act_window" id="action_invoice">
+        <field name="name">Unit Rate</field>
+        <field name="res_model">outsource.invoice</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+<!--END ACTIONS-->
+
+<!--START SEARCH-->
+    <!--<record model="ir.ui.view" id="search_invoice">-->
+        <!--<field name="name">Unit Rate</field>-->
+        <!--<field name="model">outsource.invoice</field>-->
+        <!--<field name="arch" type="xml">-->
+            <!--<search>-->
+                <!--<field name="contractor"/>-->
+                <!--<field name="position"/>-->
+                <!--<field name="level"/>-->
+                <!--<field name="amount"/>-->
+                <!--<field name="percent"/>-->
+            <!--</search>-->
+        <!--</field>-->
+    <!--</record>-->
+<!--END SEARCH-->
+
+
+<!--START VIEWS-->
+    <!--Tree View-->
+    <record model="ir.ui.view" id="view_tree_invoice">
+        <field name="name">Unit Rate</field>
+        <field name="model">outsource.invoice</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="invoice_date"/>
+                <field name="invoice_hour"/>
+                <field name="invoice_claim"/>
+                <field name="invoice_cert_amount"/>
+                <field name="remarks"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Unit Price Form View-->
+    <record model="ir.ui.view" id="view_form_invoice">
+        <field name="name">Unit Price</field>
+        <field name="model">outsource.invoice</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                <field name="invoice_date"/>
+                <field name="invoice_hour"/>
+                <field name="invoice_claim"/>
+                <field name="invoice_cert_amount"/>
+                <field name="remarks"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+<!--END VIEWS-->
+
+  </data>
+</openerp>

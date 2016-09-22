@@ -7,6 +7,7 @@ class PurchaseOrder(models.Model):
     _rec_name = 'po_num'
     _description = 'Purchase Order'
     _order = 'po_date desc, po_num'
+    _inherit = ['mail.thread', 'ir.needaction_mixin']
 
     # CHOICES
     # ----------------------------------------------------------
@@ -35,20 +36,40 @@ class PurchaseOrder(models.Model):
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
-    approval_ids = fields.One2many('outsource.approval',
-                                  'po_id',
-                                  string="Approvals")
-    po_line_ids = fields.One2many('outsource.purchase.order.line',
-                                  'po_id',
-                                  string="Purchase Order Lines")
+    approval_ids = fields.One2many('outsource.approval', 'po_id', string="Approvals")
+    po_line_ids = fields.One2many('outsource.purchase.order.line', 'po_id', string="Purchase Order Lines")
+
     # COMPUTE FIELDS
     # ----------------------------------------------------------
-    total_approval = fields.Integer(compute='get_total_approval', store=True)
+    total_approval = fields.Integer(compute='_compute_total_approval')
+    total_po_line = fields.Integer(compute='_compute_total_po_line')
+    total_po_line_detail = fields.Integer(compute='_compute_total_po_line_detail')
+    all_po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
+                                             'po_line_id',
+                                             compute="_compute_o2m_all_po_line_detail_ids"
+                                             )
 
-    @api.one
-    @api.depends('total_approval')
-    def get_total_approval(self):
-        return len(self.approval_ids)
+    @api.depends('total_approval', 'approval_ids')
+    def _compute_total_approval(self):
+        self.total_approval = len(self.approval_ids)
+
+    @api.depends('total_po_line', 'po_line_ids')
+    def _compute_total_po_line(self):
+        self.total_po_line = len(self.po_line_ids)
+
+    @api.depends('total_po_line_detail', 'po_line_ids')
+    def _compute_total_po_line_detail(self):
+        for po_line in self.po_line_ids:
+            self.total_po_line_detail += len(po_line.po_line_detail_ids)
+
+    @api.depends('all_po_line_detail_ids', 'po_line_ids')
+    def _compute_o2m_all_po_line_detail_ids(self):
+        for po_line in self.po_line_ids:
+            self.all_po_line_detail_ids |= po_line.po_line_detail_ids
+
+    # def _inverse_total_approval(self):
+    #     self.total_approval = len(self.approval_ids)
+
 
 class PurchaseOrderLine(models.Model):
     _name = 'outsource.purchase.order.line'
@@ -72,13 +93,14 @@ class PurchaseOrderLine(models.Model):
                                   'po_line_id',
                                   string="Line Details")
 
+
 class PurchaseOrderLineDetail(models.Model):
     _name = 'outsource.purchase.order.line.detail'
-    _rec_name = 'po_os_ref'
+    _rec_name = 'job_id'
 
     # BASIC FIELDS
     # ----------------------------------------------------------
-    po_os_ref = fields.Char(string='Contractor Reference', required=True)
+    job_id = fields.Char(string='Job ID', required=True)
     position = fields.Char(string='Position', required=True)
     level = fields.Char(string='Level', required=True)
     rate = fields.Float(string='Rate', digits=(32, 2), default=0.00)
@@ -99,4 +121,7 @@ class PurchaseOrderLineDetail(models.Model):
     # RELATIONSHIPS
     # ----------------------------------------------------------
     po_line_id = fields.Many2one('outsource.purchase.order.line', string='Purchase Order Line')
+    resource_ids = fields.One2many('outsource.resource',
+                             'po_line_detail_id',
+                             string="Resource")
 

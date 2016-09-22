@@ -1,4 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from . import approval
-from . import purchase_order
+from . import approval, invoice, purchase_order, resource, unit_rate

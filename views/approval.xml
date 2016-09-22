@@ -71,7 +71,7 @@
             <form>
                 <header>
                     <button
-                        string="Validate PO"
+                        string="Validate Approval"
                         name="create_po_line_details"
                         type="object"
                         states="received purchase order,waiting purchase order" />
@@ -139,11 +139,11 @@
                         </page>
                     </notebook>
                 </sheet>
-                <!--<div class = "oe_chatter">-->
-                    <!--<field name="message_followers_ids" widget="mail_followers"/>-->
-                    <!--<field name="message_ids" widget="mail_thread"/>-->
-                <!--</div>-->
             </form>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
         </field>
     </record>
 <!--END VIEWS-->

@@ -25,8 +25,13 @@
 
     # always loaded
     'data': [
+        'data/outsource.unit.rate.csv',
+
         'views/purchase_order.xml',
         'views/approval.xml',
+        'views/unit_rate.xml',
+        'views/resource.xml',
+        'views/invoice.xml',
 
         'views/menu.xml',
     ],

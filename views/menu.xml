@@ -23,27 +23,50 @@
 
     <!--PARENT-->
     <menuitem
-        id="menu_outsourcing_top_left"
+        id="menu_purchase_order_top_left"
         name="Purchase Order"
         parent="menu_outsourcing_top"/>
     <!--CHILD-->
     <menuitem
         id="menu_purchase_order"
         name="Purchase Order"
-        parent="menu_outsourcing_top_left"
+        parent="menu_purchase_order_top_left"
         action="action_purchase_order"/>
-
     <menuitem
         id="menu_purchase_order_line"
         name="Purchase Order Line"
-        parent="menu_outsourcing_top_left"
+        parent="menu_purchase_order_top_left"
         action="action_purchase_order_line"/>
-
     <menuitem
         id="menu_purchase_order_line_detail"
         name="Purchase Order Line Detail"
-        parent="menu_outsourcing_top_left"
+        parent="menu_purchase_order_top_left"
         action="action_purchase_order_line_detail"/>
+    <!--PARENT-->
+    <menuitem
+        id="menu_resource_top_left"
+        name="Resource"
+        parent="menu_outsourcing_top"/>
+    <!--CHILD-->
+    <menuitem
+        id="menu_invoice"
+        name="Invoice"
+        parent="menu_resource_top_left"
+        action="action_invoice"
+        sequence="1"/>
 
+    <menuitem
+        id="menu_resource"
+        name="Resource"
+        parent="menu_resource_top_left"
+        action="action_resource"
+        sequence="2"/>
+
+    <menuitem
+        id="menu_unit_rate"
+        name="Unit Rate"
+        parent="menu_resource_top_left"
+        action="action_unit_rate"
+        sequence="3"/>
   </data>
 </openerp>

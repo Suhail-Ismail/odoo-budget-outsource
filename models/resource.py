@@ -4,7 +4,7 @@ from openerp import models, fields, api
 
 class Resource(models.Model):
     _name = 'outsource.resource'
-    _rec_name = 'res_full_name'
+    _rec_name = 'full_name'
 
     # BASIC FIELDS
     # ----------------------------------------------------------
@@ -34,13 +34,10 @@ class Resource(models.Model):
     opex_value = fields.Float(string='OPEX Value', digits=(32, 2), default=0.00)
     revenue_value = fields.Float(string='Revenue Value', digits=(32, 2), default=0.00)
     contractor = fields.Char(string='Contractor')
-    po_os_ref = fields.Char(string='Service Reference')
+    job_id = fields.Char(string='job_id')
     has_tool_or_uniform = fields.Boolean(string='has tool or uniform')
-
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
-    # po_line_detail = models.ForeignKey(PurchaseOrderLineDetail, null=True, on_delete=models.CASCADE)
-    # po = models.ForeignKey(PurchaseOrder, null=True, on_delete=models.CASCADE)
-    # po_num = fields.CharField(blank=True, max_length=255)
-    # po_value = fields.DecimalField(max_digits=20, decimal_places=2, default=Decimal('0.00'))
+    po_line_detail_id = fields.Many2one('outsource.purchase.order.line.detail', string='Line Detail')
+    invoice_ids = fields.One2many('outsource.invoice', 'resource_id', string="Resources")

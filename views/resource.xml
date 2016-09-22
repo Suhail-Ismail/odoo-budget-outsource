@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+  <data>
+<!--START ACTIONS-->
+    <!--Resource Action-->
+    <act_window
+        id="action_resource"
+        name="Resource"
+        res_model="outsource.resource"/>
+<!--END ACTIONS-->
+
+<!--START SEARCH-->
+    <!--<record model="ir.ui.view" id="search_resource">-->
+        <!--<field name="name">Resource</field>-->
+        <!--<field name="model">outsource.resource</field>-->
+        <!--<field name="arch" type="xml">-->
+            <!--<search>-->
+                <!--<field name="contractor"/>-->
+                <!--<field name="position"/>-->
+                <!--<field name="level"/>-->
+                <!--<field name="amount"/>-->
+                <!--<field name="percent"/>-->
+            <!--</search>-->
+        <!--</field>-->
+    <!--</record>-->
+<!--END SEARCH-->
+
+
+<!--START VIEWS-->
+    <!--Tree View-->
+    <record model="ir.ui.view" id="view_tree_resource">
+        <field name="name">Resource</field>
+        <field name="model">outsource.resource</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="emp_num"/>
+                <field name="full_name"/>
+                <field name="date_of_join"/>
+                <field name="job_title"/>
+                <field name="grade_level"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Unit Price Form View-->
+    <record model="ir.ui.view" id="view_form_resource">
+        <field name="name">Unit Price</field>
+        <field name="model">outsource.resource</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="emp_num"/>
+                        <field name="full_name"/>
+                    </group>
+                    <group>
+                        <field name="date_of_join"/>
+                        <field name="job_title"/>
+                        <field name="grade_level"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+<!--END VIEWS-->
+
+  </data>
+</openerp>

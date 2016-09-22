@@ -8,7 +8,7 @@ class Approval(models.Model):
     _name = 'outsource.approval'
     _rec_name = 'ref'
     _description = 'Section Reference'
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'ir.needaction_mixin']
 #    _order = 'po_date desc, po_num'
 
     # CHOICES
@@ -94,7 +94,7 @@ class Approval(models.Model):
                     for i in range(0, quantity_per_level):
                         write_list.append(
                             (0,0,{
-                            'po_os_ref': self.job_id,
+                            'job_id': self.job_id,
                             'position': required_team.position,
                             'level': ' '.join(level.split('_')),
                             'division': '',
@@ -118,7 +118,7 @@ class RequiredTeam(models.Model):
 
     # CHOICES
     POSITIONS = choices_tuple(['labor', 'driver', 'technician', 'rigger', 'associate engineer',
-                               'engineer', 'senior engineer', 'expert engineer', 'car'])
+                               'engineer', 'senior engineer', 'expert engineer', 'car', 'shahid'])
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
