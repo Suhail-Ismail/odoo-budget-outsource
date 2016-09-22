@@ -72,8 +72,6 @@ class Approval(models.Model):
             po = self.env['outsource.purchase.order'].create({'po_num': self.po_temp,
                                     'contractor': self.contractor,
                                     'task_num': 'TEST',
-                                    'renew_status': 'TEST',
-                                    'renew_po_no': 'TEST',
                                     'status': 'TEST',
                                     'type': 'TEST',
                                     'approval_ids': [(4, self.id)],

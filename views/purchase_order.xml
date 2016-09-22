@@ -100,8 +100,7 @@
                             <field name="contractor"/>
                             <field name="type"/>
                             <field name="task_num"/>
-                            <field name="renew_status"/>
-                            <field name="renew_po_no"/>
+                            <field name="is_renewed"/>
                             <field name="status"/>
                         </group>
                         <group>
@@ -129,10 +128,10 @@
                     </notebook>
                 </sheet>
             </form>
-            <div class="oe_chatter">
-                <field name="message_follower_ids" widget="mail_followers"/>
-                <field name="message_ids" widget="mail_thread"/>
-            </div>
+            <!--<div class="oe_chatter">-->
+                <!--<field name="message_follower_ids" widget="mail_followers"/>-->
+                <!--<field name="message_ids" widget="mail_thread"/>-->
+            <!--</div>-->
         </field>
     </record>
 <!--END PURCHASE ORDER VIEWS-->
