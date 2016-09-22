@@ -41,12 +41,16 @@ class PurchaseOrder(models.Model):
 
     # COMPUTE FIELDS
     # ----------------------------------------------------------
-    total_approval = fields.Integer(compute='_compute_total_approval')
-    total_po_line = fields.Integer(compute='_compute_total_po_line')
-    total_po_line_detail = fields.Integer(compute='_compute_total_po_line_detail')
+    total_approval = fields.Integer(compute='_compute_total_approval', store=True)
+    total_po_line = fields.Integer(compute='_compute_total_po_line', store=True)
+    total_po_line_detail = fields.Integer(compute='_compute_total_po_line_detail', store=True)
+    total_invoice = fields.Integer(compute='_compute_total_invoice', store=True)
+    total_resource = fields.Integer(compute='_compute_total_resource', store=True)
+    total_non_mobilize = fields.Integer(compute='_compute_total_non_mobilize', store=True)
     all_po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
                                              'po_line_id',
-                                             compute="_compute_o2m_all_po_line_detail_ids"
+                                             compute="_compute_o2m_all_po_line_detail_ids",
+                                             store=True
                                              )
 
     @api.depends('total_approval', 'approval_ids')
@@ -57,19 +61,35 @@ class PurchaseOrder(models.Model):
     def _compute_total_po_line(self):
         self.total_po_line = len(self.po_line_ids)
 
+    @api.depends('total_invoice', 'po_line_ids')
+    def _compute_total_invoice(self):
+        self.total_invoice = 0
+
+    @api.depends('total_resource', 'po_line_ids')
+    def _compute_total_resource(self):
+        resource_count = 0
+        for line_detail in self.mapped('po_line_ids.po_line_detail_ids'):
+            if len(line_detail.resource_ids):
+                resource_count += 1
+            self.total_resource = resource_count
+
+    @api.depends('total_non_mobilize', 'po_line_ids')
+    def _compute_total_non_mobilize(self):
+        self.total_non_mobilize = self.total_po_line_detail - self.total_resource
+
     @api.depends('total_po_line_detail', 'po_line_ids')
     def _compute_total_po_line_detail(self):
-        for po_line in self.po_line_ids:
-            self.total_po_line_detail += len(po_line.po_line_detail_ids)
+        self.total_po_line_detail = len(self.mapped('po_line_ids.po_line_detail_ids'))
 
     @api.depends('all_po_line_detail_ids', 'po_line_ids')
     def _compute_o2m_all_po_line_detail_ids(self):
-        for po_line in self.po_line_ids:
-            self.all_po_line_detail_ids |= po_line.po_line_detail_ids
+        self.all_po_line_detail_ids = self.mapped('po_line_ids.po_line_detail_ids')
 
-    # def _inverse_total_approval(self):
-    #     self.total_approval = len(self.approval_ids)
-
+    # BUTTON ACTIONS / TRANSITIONS
+    # ----------------------------------------------------------
+    @api.one
+    def set2close(self):
+        import ipdb; ipdb.set_trace()
 
 class PurchaseOrderLine(models.Model):
     _name = 'outsource.purchase.order.line'
