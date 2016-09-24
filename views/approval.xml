@@ -111,6 +111,7 @@
                                     <field name="level_2"/>
                                     <field name="level_3"/>
                                     <field name="level_4"/>
+                                    <field name="total_cost"/>
                                 </tree>
                             </field>
                         <!--</page>-->

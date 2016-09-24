@@ -54,14 +54,6 @@ class Approval(models.Model):
     po_temp = fields.Char(string='New Purchase Order', required=False)
     is_linked_to_po = fields.Boolean(string="Is Linked to PO", default=False)
 
-    # CONSTRAINS
-    # ----------------------------------------------------------
-    # @api.one
-    # @api.constrains('state')
-    # def _check_description(self):
-    #     if self.state == 'received purchase order':
-    #         raise ValidationError("Edit is not allowed when PO arrived")
-
     @api.one
     def create_po_line_details(self):
         if self.state == 'waiting purchase order':
@@ -109,6 +101,14 @@ class Approval(models.Model):
             })
 
 
+    # CONSTRAINS
+    # ----------------------------------------------------------
+    # @api.one
+    # @api.constrains('state')
+    # def _check_description(self):
+    #     if self.state == 'received purchase order':
+    #         raise ValidationError("Edit is not allowed when PO arrived")
+
 class RequiredTeam(models.Model):
     _name = 'outsource.required.team'
     _rec_name = 'position'
@@ -118,11 +118,34 @@ class RequiredTeam(models.Model):
     POSITIONS = choices_tuple(['labor', 'driver', 'technician', 'rigger', 'associate engineer',
                                'engineer', 'senior engineer', 'expert engineer', 'car', 'shahid'])
 
-    # RELATIONSHIPS
+    # BASIC FIELDS
     # ----------------------------------------------------------
-    approval_id = fields.Many2one('outsource.approval', string='Approval')
     position = fields.Selection(POSITIONS)
     level_1 = fields.Integer(string='Level 1', default=0)
     level_2 = fields.Integer(string='Level 2', default=0)
     level_3 = fields.Integer(string='Level 3', default=0)
     level_4 = fields.Integer(string='Level 4', default=0)
+
+    # RELATIONSHIPS
+    # ----------------------------------------------------------
+    approval_id = fields.Many2one('outsource.approval', string='Approval')
+
+    # COMPUTE FIELDS
+    # ----------------------------------------------------------
+    total_cost = fields.Integer(compute='_compute_total_cost', store=True)
+
+
+    @api.depends('approval_id', 'position', 'level_1', 'level_2', 'level_3', 'level_4', 'total_cost')
+    def _compute_total_cost(self):
+        for i in ['1', '2', '3', '4']:
+            unit_rate = self.env['outsource.unit.rate'].search([
+                ('position', '=', self.position),
+                ('contractor', '=', self.approval_id.contractor),
+                ('level', '=', int(i))
+            ])
+            self.total_cost += getattr(self,'level_'+ i) * unit_rate.amount
+
+        # import ipdb; ipdb.set_trace()
+        # for i in unit_rate.mapped('level'):
+        #     unit_rate.search([])
+        #     self.total_po_line = (self.level_1*unit_rate.le) + () + () + ()
