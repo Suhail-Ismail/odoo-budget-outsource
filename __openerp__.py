@@ -28,6 +28,7 @@
         'data/outsource.unit.rate.csv',
 
         'views/purchase_order.xml',
+        'views/purchase_order_collection.xml',
         'views/approval.xml',
         'views/unit_rate.xml',
         'views/resource.xml',

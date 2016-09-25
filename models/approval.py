@@ -18,7 +18,7 @@ class Approval(models.Model):
                                 'skylog', 'telephony', 'sgem', 'xad', 'canal', 'tasc',
                                 'innovation', 'penta', 'al rostamani', 'technologia'])
     STATES = choices_tuple(['waiting purchase order', 'received purchase order'], is_sorted=False)
-
+    IS_RENEWALS = [(False, "New Entry"), (True, "Renewal")]
     # BASIC FIELDS
     # ----------------------------------------------------------
     state = fields.Selection(STATES, default='waiting purchase order')
@@ -53,37 +53,29 @@ class Approval(models.Model):
     # ----------------------------------------------------------
     po_temp = fields.Char(string='New Purchase Order', required=False)
     is_linked_to_po = fields.Boolean(string="Is Linked to PO", default=False)
+    is_renewal = fields.Boolean(string="For Renewal", default=False)
 
     @api.one
-    def create_po_line_details(self):
-        if self.state == 'waiting purchase order':
-            self.state = 'received purchase order'
-            # Create Purchase Order
-            # po = self.env['outsource.purchase.order']
+    def validate_and_create(self):
+        """
+        Validates and Create related objects
+        Purchase Order
+        Purchase Order Line
+        Purchase Order Line Details
+        Purchase Order Collection
+        """
 
-            po = self.env['outsource.purchase.order'].create({'po_num': self.po_temp,
-                                    'contractor': self.contractor,
-                                    'task_num': 'TEST',
-                                    'status': 'TEST',
-                                    'type': 'TEST',
-                                    'approval_ids': [(4, self.id)],
-                                    'po_line_ids': [(0, 0, {
-                                        'line_num': '1',
-                                        'line_status': 'active'
-                                    })],
-                                    })
-            if po:
-                self.is_linked_to_po = True
+        if self.state == 'received purchase order':
+            ValidationError('Purchase Order already Created')
 
         # Creates PO Line Details if state is received PO
-            write_list = []
-            import ipdb; ipdb.set_trace()
-            for required_team in self.required_team_ids:
-                for level in ['level_1', 'level_2', 'level_3', 'level_4']:
-                    quantity_per_level = getattr(required_team, level)
-                    for i in range(0, quantity_per_level):
-                        write_list.append(
-                            (0,0,{
+        detail_list = []
+        for required_team in self.required_team_ids:
+            for level in ['level_1', 'level_2', 'level_3', 'level_4']:
+                quantity_per_level = getattr(required_team, level)
+                for i in range(0, quantity_per_level):
+                    detail_list.append(
+                        (0, 0, {
                             'job_id': self.job_id,
                             'position': required_team.position,
                             'level': ' '.join(level.split('_')),
@@ -94,12 +86,29 @@ class Approval(models.Model):
                             'frozen_status': '',
                             'approval_ref_num': '',
                             'kpi_2016': '',
-                            })
-                        )
-            self.po_id.po_line_ids[0].write({
-                'po_line_detail_ids': write_list
-            })
+                        })
+                    )
 
+        po = self.env['outsource.purchase.order'].create({
+                                'po_num': self.po_temp,
+                                'contractor': self.contractor,
+                                'task_num': 'TEST',
+                                'status': 'TEST',
+                                'type': 'TEST',
+                                'approval_ids': [(4, self.id)],
+                                'po_line_ids': [(0, 0, {
+                                    'line_num': '1',
+                                    'line_status': 'active',
+                                    'po_line_detail_ids': detail_list
+                                })],
+        })
+
+        if po:
+            self.is_linked_to_po = True
+            self.state = 'received purchase order'
+
+        if not self.is_renewal:
+            self.env['outsource.purchase.order.collection'].create({'po_ids' : [(4, po.id)]})
 
     # CONSTRAINS
     # ----------------------------------------------------------
@@ -108,6 +117,12 @@ class Approval(models.Model):
     # def _check_description(self):
     #     if self.state == 'received purchase order':
     #         raise ValidationError("Edit is not allowed when PO arrived")
+
+
+    # @api.model
+    # @api.returns(self, lambda rec : rec.id)
+    # def create(self, values):
+    #     return super(Approval,self).create(values)
 
 class RequiredTeam(models.Model):
     _name = 'outsource.required.team'
@@ -132,7 +147,7 @@ class RequiredTeam(models.Model):
 
     # COMPUTE FIELDS
     # ----------------------------------------------------------
-    total_cost = fields.Integer(compute='_compute_total_cost', store=True)
+    total_cost = fields.Integer(compute='_compute_total_cost')
 
 
     @api.depends('approval_id', 'position', 'level_1', 'level_2', 'level_3', 'level_4', 'total_cost')

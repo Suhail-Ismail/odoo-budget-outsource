@@ -72,7 +72,7 @@
                 <header>
                     <button
                         string="Validate Approval"
-                        name="create_po_line_details"
+                        name="validate_and_create"
                         type="object"
                         states="received purchase order,waiting purchase order" />
                         <!--groups="academy.group_manager,base.group_no_one"/>                    -->
@@ -84,6 +84,9 @@
                         <h1>
                             <field name="ref" class="oe_inline"/>
                         </h1>
+                        <group>
+                            <field name="is_renewal"/>
+                        </group>
                     </div>
                     <group>
                         <group>

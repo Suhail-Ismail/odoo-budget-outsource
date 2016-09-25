@@ -28,6 +28,11 @@
         parent="menu_outsourcing_top"/>
     <!--CHILD-->
     <menuitem
+        id="menu_purchase_order_collection"
+        name="Purchase Order Collection"
+        parent="menu_purchase_order_top_left"
+        action="action_purchase_order_collection"/>
+    <menuitem
         id="menu_purchase_order"
         name="Purchase Order"
         parent="menu_purchase_order_top_left"

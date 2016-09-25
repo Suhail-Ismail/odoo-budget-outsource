@@ -100,7 +100,8 @@
                             <field name="contractor"/>
                             <field name="type"/>
                             <field name="task_num"/>
-                            <field name="is_renewed"/>
+                            <!--<field name="is_renewed"/>-->
+                            <field name="new_po_id"/>
                             <field name="status"/>
                         </group>
                         <group>
@@ -125,6 +126,9 @@
                         <page string="Approvals">
                             <field name="approval_ids"/>
                         </page>
+                        <!--<page string="Renewals">-->
+                            <!--<field name="renewed_po_ids"/>-->
+                        <!--</page>-->
                     </notebook>
                 </sheet>
             </form>
