@@ -26,6 +26,7 @@
     # always loaded
     'data': [
         'data/outsource.unit.rate.csv',
+        'data/approval.xml',
 
         'views/purchase_order.xml',
         'views/purchase_order_collection.xml',

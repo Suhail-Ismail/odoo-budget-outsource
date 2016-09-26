@@ -7,7 +7,8 @@
     <act_window
         id="action_purchase_order_collection"
         name="Purchase Order Collection"
-        res_model="outsource.purchase.order.collection" />
+        res_model="outsource.purchase.order.collection"
+        view_mode="tree,form,pivot"/>
 
 <!--END ACTIONS-->
 
@@ -51,32 +52,32 @@
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <!--<div class="oe_button_box" name="button_box">-->
-                        <!--<button class="oe_stat_button" type="action"-->
-                            <!--icon="fa-star">-->
-                            <!--<field string="Approvals" name="total_approval" widget="statinfo"/>-->
-                        <!--</button>-->
-                        <!--<button class="oe_stat_button" type="action"-->
-                            <!--icon="fa-bars">-->
-                            <!--<field string="Line" name="total_po_line" widget="statinfo"/>-->
-                        <!--</button>-->
-                        <!--<button class="oe_stat_button" type="action"-->
-                            <!--icon="fa-list-ul">-->
-                            <!--<field string="Line Details" name="total_po_line_detail" widget="statinfo"/>-->
-                        <!--</button>-->
-                        <!--<button class="oe_stat_button" type="action"-->
-                            <!--icon="fa-check-square-o">-->
-                            <!--<field string="Invoiced" name="total_invoice" widget="statinfo"/>-->
-                        <!--</button>-->
-                        <!--<button class="oe_stat_button" type="action"-->
-                            <!--icon="fa-users">-->
-                            <!--<field string="Resource" name="total_resource" widget="statinfo"/>-->
-                        <!--</button>-->
-                        <!--<button class="oe_stat_button" type="action"-->
-                            <!--icon="fa-user-times">-->
-                            <!--<field string="Non Mobilized" name="total_non_mobilize" widget="statinfo"/>-->
-                        <!--</button>-->
-                    <!--</div>-->
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action"
+                            icon="fa-star">
+                            <field string="Approvals" name="total_approval" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="action"
+                            icon="fa-bars">
+                            <field string="Line" name="total_po_line" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="action"
+                            icon="fa-list-ul">
+                            <field string="Line Details" name="total_po_line_detail" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="action"
+                            icon="fa-check-square-o">
+                            <field string="Invoiced" name="total_invoice" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="action"
+                            icon="fa-users">
+                            <field string="Resource" name="total_resource" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="action"
+                            icon="fa-user-times">
+                            <field string="Non Mobilized" name="total_non_mobilize" widget="statinfo"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <label for="po_num" class="oe_edit_only"/>
                         <h1>

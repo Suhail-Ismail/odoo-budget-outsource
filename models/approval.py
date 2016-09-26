@@ -53,21 +53,9 @@ class Approval(models.Model):
     # ----------------------------------------------------------
     po_temp = fields.Char(string='New Purchase Order', required=False)
     is_linked_to_po = fields.Boolean(string="Is Linked to PO", default=False)
-    is_renewal = fields.Boolean(string="For Renewal", default=False)
+    is_renewal = fields.Boolean(string="Is Renewal", default=False)
 
-    @api.one
-    def validate_and_create(self):
-        """
-        Validates and Create related objects
-        Purchase Order
-        Purchase Order Line
-        Purchase Order Line Details
-        Purchase Order Collection
-        """
-
-        if self.state == 'received purchase order':
-            ValidationError('Purchase Order already Created')
-
+    def generate_required_details(self):
         # Creates PO Line Details if state is received PO
         detail_list = []
         for required_team in self.required_team_ids:
@@ -88,7 +76,50 @@ class Approval(models.Model):
                             'kpi_2016': '',
                         })
                     )
+        return detail_list
 
+    @api.one
+    def validate_approval(self):
+        """
+            Validates Approval
+        """
+        if self.state == 'received purchase order':
+            ValidationError('Purchase Order already Created')
+        if self.is_linked_to_po:
+            self.update_po_related_objects()
+        else:
+            self.create_po_related_objects()
+
+    @api.one
+    def update_po_related_objects(self):
+        """
+        Update
+        Purchase Order
+        Purchase Order Line
+        Purchase Order Line Details
+        Purchase Order Collection
+        """
+        detail_list = self.generate_required_details()
+        self.po_id.write({
+            'po_line_ids': [(0, 0, {
+                'line_num': '%s' % (int(self.po_id.po_line_ids.mapped('line_num')[-1]) + 1),
+                'line_status': 'active',
+                'po_line_detail_ids': detail_list
+            })],
+        })
+        self.state = 'received purchase order'
+
+    @api.one
+    def create_po_related_objects(self):
+        """
+        Create
+        Purchase Order
+        Purchase Order Line
+        Purchase Order Line Details
+        Purchase Order Collection
+        """
+
+        detail_list = self.generate_required_details()
         po = self.env['outsource.purchase.order'].create({
                                 'po_num': self.po_temp,
                                 'contractor': self.contractor,

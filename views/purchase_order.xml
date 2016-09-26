@@ -7,7 +7,8 @@
     <act_window
         id="action_purchase_order"
         name="Purchase Order"
-        res_model="outsource.purchase.order" />
+        res_model="outsource.purchase.order"
+        view_mode="tree,form,pivot,graph"/>
 
     <!--Purchase Order Line Action-->
     <act_window
@@ -138,6 +139,19 @@
             <!--</div>-->
         </field>
     </record>
+
+    <!--Purchase Graph View-->
+    <record model="ir.ui.view" id="view_graph_bar_approval">
+        <field name="name">Purchase Order</field>
+        <field name="model">outsource.purchase.order</field>
+        <field name="arch" type="xml">
+            <graph string="Participations by Courses" type="pie">
+                <field name="po_num"/>
+                <field name="po_value" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
 <!--END PURCHASE ORDER VIEWS-->
 
 <!--START PURCHASE ORDER VIEWS-->

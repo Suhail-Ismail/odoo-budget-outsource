@@ -7,7 +7,7 @@ class PurchaseOrder(models.Model):
     _name = 'outsource.purchase.order'
     _rec_name = 'po_num'
     _description = 'Purchase Order'
-    _order = 'po_date desc, po_num'
+#    _order = 'id'
     _inherit = ['mail.thread', 'ir.needaction_mixin']
 
     # CHOICES
@@ -57,8 +57,6 @@ class PurchaseOrder(models.Model):
     total_resource = fields.Integer(compute='_compute_total_resource', store=True)
     total_non_mobilize = fields.Integer(compute='_compute_total_non_mobilize', store=True)
 
-    is_renewed = fields.Boolean(compute='_compute_is_renewed', store=True)
-
     all_po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
                                              'po_line_id',
                                              compute="_compute_o2m_all_po_line_detail_ids",
@@ -67,11 +65,11 @@ class PurchaseOrder(models.Model):
 
     @api.depends('total_approval', 'approval_ids')
     def _compute_total_approval(self):
-        self.total_approval = len(self.approval_ids)
+        self.total_approval = len(self.mapped('approval_ids'))
 
     @api.depends('total_po_line', 'po_line_ids')
     def _compute_total_po_line(self):
-        self.total_po_line = len(self.po_line_ids)
+        self.total_po_line = len(self.mapped('po_line_ids'))
 
     @api.depends('total_invoice', 'po_line_ids')
     def _compute_total_invoice(self):
@@ -97,17 +95,34 @@ class PurchaseOrder(models.Model):
     def _compute_o2m_all_po_line_detail_ids(self):
         self.all_po_line_detail_ids = self.mapped('po_line_ids.po_line_detail_ids')
 
-    # MISC FUNCTION
-    # ----------------------------------------------------------
-    def _compute_is_renewed(self):
-        # CHECKS IF THE PO IS RENEWED BY LOOKING IF NEW PO EXIST
-        self.is_renewed = bool(self.new_po_id)
+    # # MISC FUNCTION
+    # # ----------------------------------------------------------
+    # def _compute_is_renewed(self):
+    #     # CHECKS IF THE PO IS RENEWED BY LOOKING IF NEW PO EXIST
+    #     self.is_renewed = bool(self.new_po_id)
 
     # BUTTON ACTIONS / TRANSITIONS
     # ----------------------------------------------------------
     @api.one
     def set2close(self):
         import ipdb; ipdb.set_trace()
+
+    @api.model
+    @api.returns('self', lambda rec: rec.id)
+    def create(self, values):
+        new_po_id = values.get('new_po_id', False)
+        if new_po_id:
+            po = self.env['outsource.purchase.order'].search([('new_po_id', '=', new_po_id)])
+            values['po_collection_id'] = po[0].po_collection_id.id
+
+            import ipdb; ipdb.set_trace()
+        return super(PurchaseOrder, self).create(values)
+
+    @api.multi
+    def write(self, values):
+        if self.new_po_id:
+            values['po_collection_id'] = self.new_po_id.po_collection_id.id
+        return super(PurchaseOrder, self).write(values)
 
 class PurchaseOrderLine(models.Model):
     _name = 'outsource.purchase.order.line'
