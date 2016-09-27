@@ -39,6 +39,7 @@
                 <field name="date_of_join"/>
                 <field name="job_title"/>
                 <field name="grade_level"/>
+                <field name="po_line_detail_id"/>
             </tree>
         </field>
     </record>
@@ -58,6 +59,9 @@
                         <field name="date_of_join"/>
                         <field name="job_title"/>
                         <field name="grade_level"/>
+                    </group>
+                    <group>
+                        <field name="po_line_detail_id"/>
                     </group>
                 </sheet>
             </form>

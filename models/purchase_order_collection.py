@@ -126,11 +126,8 @@ class PurchaseOrderCollection(models.Model):
 
     @api.depends('total_resource')
     def _compute_total_resource(self):
-        resource_count = 0
-        for line_detail in self.mapped('po_ids.po_line_ids.po_line_detail_ids'):
-            if len(line_detail.resource_ids):
-                resource_count += 1
-            self.total_resource = resource_count
+        self.total_resource = self.mapped('po_ids.po_line_ids.po_line_detail_ids.resource_ids')
+
 
     @api.depends('total_non_mobilize')
     def _compute_total_non_mobilize(self):
@@ -138,34 +135,39 @@ class PurchaseOrderCollection(models.Model):
 
     @api.depends('total_po_line_detail')
     def _compute_total_po_line_detail(self):
-        self.total_po_line_detail = len(self.mapped('po_ids.all_po_line_detail_ids'))
+        self.total_po_line_detail = len(self.mapped('po_ids.po_line_detail_ids'))
 
     # RELATIONSHIPS COMPUTED FIELDS
     # ----------------------------------------------------------
     approval_ids = fields.One2many('outsource.approval',
                                    'po_id',
-                                   compute="_compute_o2m_all_approval_ids"
+                                   compute="_compute_o2m_approval_ids"
                                    )
     po_line_ids = fields.One2many('outsource.purchase.order.line',
-                                  'po_id',
-                                  compute="_compute_o2m_all_po_line_ids",
+                                  compute="_compute_o2m_po_line_ids",
                                   )
     po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
-                                             'po_line_id',
-                                             compute="_compute_o2m_all_po_line_detail_ids",
+                                             compute="_compute_o2m_po_line_detail_ids",
                                              )
+    resource_ids = fields.One2many('outsource.resource',
+                                   compute="_compute_o2m_resource_ids",
+                                   )
+
     @api.depends('approval_ids')
-    def _compute_o2m_all_approval_ids(self):
+    def _compute_o2m_approval_ids(self):
         self.approval_ids = self.mapped('po_ids.approval_ids')
 
     @api.depends('po_line_ids')
-    def _compute_o2m_all_po_line_ids(self):
+    def _compute_o2m_po_line_ids(self):
         self.po_line_ids = self.mapped('po_ids.po_line_ids')
 
     @api.depends('po_line_detail_ids')
-    def _compute_o2m_all_po_line_detail_ids(self):
-        self.po_line_detail_ids = self.mapped('po_ids.all_po_line_detail_ids')
+    def _compute_o2m_po_line_detail_ids(self):
+        self.po_line_detail_ids = self.mapped('po_ids.po_line_detail_ids')
 
+    @api.depends('resource_ids')
+    def _compute_o2m_resource_ids(self):
+        self.resource_ids = self.mapped('po_line_ids.po_line_detail_ids.resource_ids')
 
     # BUTTON ACTIONS / TRANSITIONS
     # ----------------------------------------------------------

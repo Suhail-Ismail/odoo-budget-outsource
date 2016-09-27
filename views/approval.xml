@@ -87,6 +87,16 @@
                     </div>
                     <group>
                         <group>
+                            <field name="objective"/>
+                            <field name="po_temp" attrs="{'invisible': [('objective', 'not in', [1, 2])]}"/>
+                            <field name="po_id" attrs="{'invisible': [('objective', 'not in', [3, 2])]}"/>
+                        </group>
+                        <group>
+
+                        </group>
+                    </group>
+                    <group>
+                        <group>
                             <field name="service_description"/>
                             <field name="section"/>
                             <field name="job_id"/>
@@ -94,10 +104,6 @@
                         <group>
                             <field name="budget_type"/>
                             <field name="contractor"/>
-                            <field name="is_renewal"/>
-                            <field name="is_linked_to_po"/>
-                            <field name="po_temp" attrs="{'invisible': [('is_linked_to_po', '=', True)]}"/>
-                            <field name="po_id" attrs="{'invisible': [('is_linked_to_po', '=', False)]}"/>
                         </group>
                     </group>
                     <group>

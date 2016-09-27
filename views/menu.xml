@@ -11,22 +11,15 @@
 <!--SIDEBAR-->
     <!--PARENT-->
     <menuitem
-        id="menu_approval_top_left"
-        name="Approval"
+        id="menu_purchase_order_top_left"
+        name="Purchase Order"
         parent="menu_outsourcing_top"/>
     <!--CHILD-->
     <menuitem
         id="menu_approval"
         name="Approval"
-        parent="menu_approval_top_left"
+        parent="menu_purchase_order_top_left"
         action="action_approval"/>
-
-    <!--PARENT-->
-    <menuitem
-        id="menu_purchase_order_top_left"
-        name="Purchase Order"
-        parent="menu_outsourcing_top"/>
-    <!--CHILD-->
     <menuitem
         id="menu_purchase_order_collection"
         name="Purchase Order Collection"

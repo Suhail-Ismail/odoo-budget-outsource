@@ -19,6 +19,7 @@
             <field name="required_team_ids" eval="[(0, 0, {'position': 'engineer', 'level_1': 9, 'level_2': 10, 'level_3': 0, 'level_4': 0}),
                                                    (0, 0, {'position': 'senior engineer', 'level_1': 0, 'level_2': 10, 'level_3': 1, 'level_4': 0}),]"/>
         </record>
+
         <record model="outsource.approval" id="demo_2">
             <field name="state">waiting purchase order</field>
             <field name="ref">Section Reference</field>
@@ -38,6 +39,7 @@
             <field name="required_team_ids" eval="[(0, 0, {'position': 'engineer', 'level_1': 8, 'level_2': 10, 'level_3': 9, 'level_4': 0}),
                                                    (0, 0, {'position': 'senior engineer', 'level_1': 0, 'level_2': 10, 'level_3': 1, 'level_4': 0}),]"/>
         </record>
+
         <record model="outsource.approval" id="demo_3">
             <field name="state">waiting purchase order</field>
             <field name="ref">Section Reference</field>
@@ -57,6 +59,7 @@
             <field name="required_team_ids" eval="[(0, 0, {'position': 'engineer', 'level_1': 9, 'level_2': 10, 'level_3': 0, 'level_4': 0}),
                                                    (0, 0, {'position': 'senior engineer', 'level_1': 0, 'level_2': 10, 'level_3': 1, 'level_4': 0}),]"/>
         </record>
+
         <record model="outsource.approval" id="demo_4">
             <field name="state">waiting purchase order</field>
             <field name="ref">Section Reference</field>

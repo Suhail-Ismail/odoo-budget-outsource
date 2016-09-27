@@ -115,8 +115,11 @@
                         <page string="Approvals">
                             <field name="approval_ids"/>
                         </page>
-                        <page string="Renewals">
+                        <page string="Related POs">
                             <field name="po_ids"/>
+                        </page>
+                        <page string="Resources">
+                            <field name="resource_ids"/>
                         </page>
                     </notebook>
                 </sheet>

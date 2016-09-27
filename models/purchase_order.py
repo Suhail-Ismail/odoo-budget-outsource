@@ -45,7 +45,7 @@ class PurchaseOrder(models.Model):
 
     # self reference, one new po to many renewals
     renewed_po_ids = fields.One2many('outsource.purchase.order', 'new_po_id', string="Renewals")
-    new_po_id = fields.Many2one('outsource.purchase.order', string='New PO After Renewal')
+    new_po_id = fields.Many2one('outsource.purchase.order', string='Renewed PO')
 
     # COMPUTE FIELDS
     # ----------------------------------------------------------
@@ -57,43 +57,52 @@ class PurchaseOrder(models.Model):
     total_resource = fields.Integer(compute='_compute_total_resource', store=True)
     total_non_mobilize = fields.Integer(compute='_compute_total_non_mobilize', store=True)
 
-    all_po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
-                                             'po_line_id',
-                                             compute="_compute_o2m_all_po_line_detail_ids",
-                                             store=True
-                                             )
+    po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
+                                         compute="_compute_o2m_po_line_detail_ids",
+                                         )
 
+    resource_ids = fields.One2many('outsource.resource',
+                                   compute="_compute_o2m_resource_ids",
+                                   )
+    @api.one
     @api.depends('total_approval', 'approval_ids')
     def _compute_total_approval(self):
         self.total_approval = len(self.mapped('approval_ids'))
 
+    @api.one
     @api.depends('total_po_line', 'po_line_ids')
     def _compute_total_po_line(self):
         self.total_po_line = len(self.mapped('po_line_ids'))
 
-    @api.depends('total_invoice', 'po_line_ids')
+    @api.one
+    @api.depends('total_invoice')
     def _compute_total_invoice(self):
         self.total_invoice = 0
 
-    @api.depends('total_resource', 'po_line_ids')
+    @api.one
+    @api.depends('total_resource', 'po_line_ids.po_line_detail_ids.resource_ids')
     def _compute_total_resource(self):
-        resource_count = 0
-        for line_detail in self.mapped('po_line_ids.po_line_detail_ids'):
-            if len(line_detail.resource_ids):
-                resource_count += 1
-            self.total_resource = resource_count
+        self.total_resource =  len(self.mapped('po_line_ids.po_line_detail_ids.resource_ids'))
 
-    @api.depends('total_non_mobilize', 'po_line_ids')
+    @api.one
+    @api.depends('total_non_mobilize', 'total_po_line_detail', 'total_resource')
     def _compute_total_non_mobilize(self):
         self.total_non_mobilize = self.total_po_line_detail - self.total_resource
 
-    @api.depends('total_po_line_detail', 'po_line_ids')
+    @api.one
+    @api.depends('total_po_line_detail', 'po_line_ids.po_line_detail_ids')
     def _compute_total_po_line_detail(self):
         self.total_po_line_detail = len(self.mapped('po_line_ids.po_line_detail_ids'))
 
-    @api.depends('all_po_line_detail_ids', 'po_line_ids')
-    def _compute_o2m_all_po_line_detail_ids(self):
-        self.all_po_line_detail_ids = self.mapped('po_line_ids.po_line_detail_ids')
+    @api.one
+    @api.depends('po_line_detail_ids')
+    def _compute_o2m_po_line_detail_ids(self):
+        self.po_line_detail_ids = self.mapped('po_line_ids.po_line_detail_ids')
+
+    @api.one
+    @api.depends('resource_ids')
+    def _compute_o2m_resource_ids(self):
+        self.resource_ids = self.mapped('po_line_ids.po_line_detail_ids.resource_ids')
 
     # # MISC FUNCTION
     # # ----------------------------------------------------------
@@ -114,13 +123,12 @@ class PurchaseOrder(models.Model):
         if new_po_id:
             po = self.env['outsource.purchase.order'].search([('new_po_id', '=', new_po_id)])
             values['po_collection_id'] = po[0].po_collection_id.id
-
-            import ipdb; ipdb.set_trace()
         return super(PurchaseOrder, self).create(values)
 
     @api.multi
     def write(self, values):
-        if self.new_po_id:
+        new_po_id = values.get('new_po_id', False)
+        if new_po_id:
             values['po_collection_id'] = self.new_po_id.po_collection_id.id
         return super(PurchaseOrder, self).write(values)
 

@@ -122,21 +122,21 @@
                             <field name="po_line_ids"/>
                         </page>
                         <page string="PO Line Details">
-                            <field name="all_po_line_detail_ids"/>
+                            <field name="po_line_detail_ids"/>
                         </page>
                         <page string="Approvals">
                             <field name="approval_ids"/>
                         </page>
+                        <page string="Resources">
+                            <field name="resource_ids"/>
+                        </page>
+
                         <!--<page string="Renewals">-->
                             <!--<field name="renewed_po_ids"/>-->
                         <!--</page>-->
                     </notebook>
                 </sheet>
             </form>
-            <!--<div class="oe_chatter">-->
-                <!--<field name="message_follower_ids" widget="mail_followers"/>-->
-                <!--<field name="message_ids" widget="mail_thread"/>-->
-            <!--</div>-->
         </field>
     </record>
 
