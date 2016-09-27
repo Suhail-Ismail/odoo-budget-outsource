@@ -21,15 +21,18 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base',
-                'mail'],
+                'mail',
+                ],
 
     # always loaded
     'data': [
+        'data/outsource.contractor.csv',
         'data/outsource.unit.rate.csv',
 
         'views/purchase_order.xml',
         'views/purchase_order_collection.xml',
         'views/approval.xml',
+        'views/contractor.xml',
         'views/unit_rate.xml',
         'views/resource.xml',
         'views/invoice.xml',
