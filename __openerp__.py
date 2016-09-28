@@ -21,23 +21,30 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base',
-                'mail'],
+                'mail',
+                ],
 
     # always loaded
     'data': [
+        'data/outsource.contractor.csv',
         'data/outsource.unit.rate.csv',
+        'data/outsource.approval.csv',
+        'data/outsource.required.team.csv',
 
         'views/purchase_order.xml',
         'views/purchase_order_collection.xml',
         'views/approval.xml',
+        'views/contractor.xml',
         'views/unit_rate.xml',
         'views/resource.xml',
         'views/invoice.xml',
 
         'views/menu.xml',
+
+        'security/outsource.xml',
+        'security/ir.model.access.csv'
     ],
     # only loaded in demonstration mode
     'demo': [
-        'demo/approval.xml',
     ],
 }

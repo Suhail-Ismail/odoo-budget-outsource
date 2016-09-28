@@ -9,12 +9,32 @@
         sequence="99"/>
 
 <!--SIDEBAR-->
-    <!--PARENT-->
+    <!--PARENT CONTRACTOR-->
+    <menuitem
+        id="menu_contractor_top_left"
+        name="Contractor"
+        parent="menu_outsourcing_top"/>
+    <!--CHILD CONTRACTOR-->
+    <menuitem
+        id="menu_contractor"
+        name="Contractor"
+        parent="menu_contractor_top_left"
+        action="action_contractor"
+        sequence="1"/>
+    <menuitem
+        id="menu_unit_rate"
+        name="Unit Rate"
+        parent="menu_contractor_top_left"
+        action="action_unit_rate"
+        sequence="2"/>
+    <!--END CHILD CONTRACTOR-->
+
+    <!--PARENT PURCHASE ORDER-->
     <menuitem
         id="menu_purchase_order_top_left"
         name="Purchase Order"
         parent="menu_outsourcing_top"/>
-    <!--CHILD-->
+    <!--CHILD PURCHASE ORDER-->
     <menuitem
         id="menu_approval"
         name="Approval"
@@ -40,31 +60,25 @@
         name="Purchase Order Line Detail"
         parent="menu_purchase_order_top_left"
         action="action_purchase_order_line_detail"/>
-    <!--PARENT-->
+    <!--END CHILD PURCHASE ORDER-->
+    <!--PARENT RESOURCE-->
     <menuitem
         id="menu_resource_top_left"
         name="Resource"
         parent="menu_outsourcing_top"/>
-    <!--CHILD-->
+    <!--CHILD RESOURCE-->
     <menuitem
         id="menu_invoice"
         name="Invoice"
         parent="menu_resource_top_left"
         action="action_invoice"
         sequence="1"/>
-
     <menuitem
         id="menu_resource"
         name="Resource"
         parent="menu_resource_top_left"
         action="action_resource"
         sequence="2"/>
-
-    <menuitem
-        id="menu_unit_rate"
-        name="Unit Rate"
-        parent="menu_resource_top_left"
-        action="action_unit_rate"
-        sequence="3"/>
+    <!--END CHILD RESOURCE-->
   </data>
 </openerp>

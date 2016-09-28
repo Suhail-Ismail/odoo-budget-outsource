@@ -19,11 +19,11 @@
         <field name="model">outsource.unit.rate</field>
         <field name="arch" type="xml">
             <search>
-                <field name="contractor"/>
+                <!--<field name="contractor"/>-->
                 <field name="position"/>
-                <field name="level"/>
-                <field name="amount"/>
-                <field name="percent"/>
+                <!--<field name="level"/>-->
+                <!--<field name="amount"/>-->
+                <!--<field name="percent"/>-->
             </search>
         </field>
     </record>
@@ -37,11 +37,11 @@
         <field name="model">outsource.unit.rate</field>
         <field name="arch" type="xml">
             <tree editable="bottom">
-                <field name="contractor"/>
+                <!--<field name="contractor"/>-->
                 <field name="position"/>
-                <field name="level"/>
-                <field name="amount"/>
-                <field name="percent"/>
+                <field name="level_1"/>
+                <!--<field name="amount"/>-->
+                <!--<field name="percent"/>-->
             </tree>
         </field>
     </record>
@@ -54,13 +54,13 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="contractor"/>
+                        <!--<field name="contractor"/>-->
                         <field name="position"/>
-                        <field name="level"/>
+                        <!--<field name="level"/>-->
                     </group>
                     <group>
-                        <field name="amount"/>
-                        <field name="percent"/>
+                        <!--<field name="amount"/>-->
+                        <!--<field name="percent"/>-->
                     </group>
                 </sheet>
             </form>
@@ -72,9 +72,9 @@
         <field name="model">outsource.unit.rate</field>
         <field name="arch" type="xml">
             <pivot type="pivot">
-                <field name="contractor"/>
-                <field name="level" type="col"/>
-                <field name="amount" type="measure"/>
+                <!--<field name="contractor"/>-->
+                <!--<field name="level" type="col"/>-->
+                <!--<field name="amount" type="measure"/>-->
             </pivot>
         </field>
     </record>

@@ -20,7 +20,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="po_num"/>
-                <field name="contractor"/>
+                <field name="contractor_id"/>
                 <!--<field name="type"/>-->
                 <!--<field name="task_num"/>-->
                 <!--<field name="status"/>-->
@@ -86,7 +86,7 @@
                     </div>
                     <group>
                         <group>
-                            <field name="contractor"/>
+                            <field name="contractor_id"/>
                             <field name="type"/>
                             <field name="task_num"/>
                             <!--<field name="is_renewed"/>-->
