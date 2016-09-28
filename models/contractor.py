@@ -6,15 +6,15 @@ from openerp import models, fields, api
 class Contractor(models.Model):
     _name = 'outsource.contractor'
     _rec_name = 'name'
-    _inherit = 'res.partner'
+#    _inherit = 'res.partner'
 
     alias = fields.Char(string="Alias")
-    # name = fields.Char(string="Name")
-    #
-    # street = fields.Char(string="Street")
-    # street2 = fields.Char(string="Street2")
-    # city = fields.Char(string="City")
-    # website = fields.Char(string="Website")
+    name = fields.Char(string="Name")
+
+    street = fields.Char(string="Street")
+    street2 = fields.Char(string="Street2")
+    city = fields.Char(string="City")
+    website = fields.Char(string="Website")
     # image = fields.Binary("Image", attachment=True,
     #     help="This field holds the image used as avatar for this contact, limited to 1024x1024px",
     #     default=lambda self: self._get_default_image(False, True))
@@ -33,7 +33,9 @@ class Contractor(models.Model):
     resource_ids = fields.One2many('outsource.resource',
                              'contractor_id',
                              string="Resources")
-
+    contact_ids = fields.One2many('outsource.contractor.contact',
+                             'contractor_id',
+                             string="Contacts")
     # COMPUTE FIELDS
     # ----------------------------------------------------------
     total_approval = fields.Integer(compute='_compute_total_approval', store=True)
@@ -81,6 +83,25 @@ class Contractor(models.Model):
     @api.depends('po_line_detail_ids', 'po_ids.po_line_ids.po_line_detail_ids')
     def _compute_o2m_po_line_detail_ids(self):
         self.po_line_detail_ids = self.mapped('po_ids.po_line_ids.po_line_detail_ids')
+
+
+class ContractorContact(models.Model):
+    _name = 'outsource.contractor.contact'
+    _rec_name = 'name'
+    _order = 'name'
+
+    # BASIC FIELDS
+    # ----------------------------------------------------------
+    name = fields.Char(string="Name")
+    job_position = fields.Char(string="Position")
+    is_spoc = fields.Boolean(string="Is SPOC")
+    phone = fields.Char(string="Phone")
+    mobile = fields.Char(string="Mobile")
+    email = fields.Char(string="E-Mail")
+
+    # RELATIONSHIPS
+    # ----------------------------------------------------------
+    contractor_id = fields.Many2one('outsource.contractor', string='Contractor')
 
 
 class UnitRate(models.Model):

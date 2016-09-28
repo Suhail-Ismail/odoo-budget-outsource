@@ -199,7 +199,7 @@ class RequiredTeam(models.Model):
 
     # CHOICES
     POSITIONS = choices_tuple(['labor', 'driver', 'technician', 'rigger', 'associate engineer',
-                               'engineer', 'senior engineer', 'expert engineer', 'car', 'shahid'])
+                               'engineer', 'senior engineer', 'expert engineer', 'car'])
 
     # BASIC FIELDS
     # ----------------------------------------------------------

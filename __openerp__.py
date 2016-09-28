@@ -28,7 +28,8 @@
     'data': [
         'data/outsource.contractor.csv',
         'data/outsource.unit.rate.csv',
-        'data/approval.xml',
+        'data/outsource.approval.csv',
+        'data/outsource.required.team.csv',
 
         'views/purchase_order.xml',
         'views/purchase_order_collection.xml',

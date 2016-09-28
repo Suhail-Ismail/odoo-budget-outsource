@@ -34,7 +34,7 @@
                             <field string="Non Mobilized" name="total_non_mobilize" widget="statinfo"/>
                         </button>
                         <button class="oe_stat_button" type="action"
-                            icon="fa-question-circle-o">
+                            icon="fa-question-circle">
                             <field string="Approvals" name="total_approval" widget="statinfo"/>
                         </button>
                         <button class="oe_stat_button" type="action"
@@ -47,12 +47,6 @@
                         </button>
 
                     </div>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="toggle_active" type="object" groups="base.group_no_one" class="oe_stat_button" icon="fa-archive">
-                            <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
-                        </button>
-                    </div>
-                    <field name="image" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;image_medium&quot;, &quot;size&quot;: [90, 90]}"/>
                     <div class="oe_title">
                         <h1>
                             <field name="name" default_focus="1" placeholder="Name"/>
@@ -63,10 +57,6 @@
                         <group>
                             <label for="street" string="Address"/>
                             <div class="o_address_format">
-                                <div class="oe_edit_only">
-                                    <button name="open_parent" type="object" string="(edit)" class="oe_link"/>
-                                </div>
-
                                 <field name="street" placeholder="Street..." class="o_address_street"/>
                                 <field name="street2" placeholder="Street 2..." class="o_address_street"/>
                                 <field name="city" placeholder="City" class="o_address_city"/>
@@ -78,99 +68,33 @@
                     </group>
 
                     <notebook colspan="4">
-                        <!--<page string="Contacts &amp; Addresses" autofocus="autofocus">-->
-                            <!--<field name="child_ids" mode="kanban" context="{'default_parent_id': active_id, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_supplier': supplier, 'default_customer': customer, 'default_lang': lang,}">-->
-                                <!--<kanban>-->
-                                    <!--<field name="color"/>-->
-                                    <!--<field name="name"/>-->
-                                    <!--<field name="title"/>-->
-                                    <!--<field name="type"/>-->
-                                    <!--<field name="email"/>-->
-                                    <!--<field name="parent_id"/>-->
-                                    <!--<field name="is_company"/>-->
-                                    <!--<field name="function"/>-->
-                                    <!--<field name="phone"/>-->
-                                    <!--<field name="street"/>-->
-                                    <!--<field name="street2"/>-->
-                                    <!--<field name="zip"/>-->
-                                    <!--<field name="city"/>-->
-                                    <!--<field name="country_id"/>-->
-                                    <!--<field name="mobile"/>-->
-                                    <!--<field name="fax"/>-->
-                                    <!--<field name="state_id"/>-->
-                                    <!--<field name="image"/>-->
-                                    <!--<field name="lang"/>-->
-                                    <!--<templates>-->
-                                        <!--<t t-name="kanban-box">-->
-                                            <!--<t t-set="color" t-value="kanban_color(record.color.raw_value)"/>-->
-                                            <!--<div t-att-class="color + (record.title.raw_value == 1 ? ' oe_kanban_color_alert' : '') + ' oe_kanban_global_click'">-->
-                                                <!--<a t-if="!read_only_mode" type="delete" class="fa fa-times pull-right"/>-->
-                                                <!--<div class="o_kanban_image">-->
-                                                    <!--<img t-if="record.image.raw_value" t-att-src="'data:image/png;base64,'+record.image.raw_value"/>-->
-                                                    <!--<t t-if="!record.image.raw_value">-->
-                                                        <!--<img t-if="record.type.raw_value === 'delivery'" t-att-src="_s + &quot;/base/static/src/img/truck.png&quot;"/>-->
-                                                        <!--<img t-if="record.type.raw_value === 'invoice'" t-att-src="_s + &quot;/base/static/src/img/money.png&quot;"/>-->
-                                                        <!--<t t-if="record.type.raw_value !== 'invoice' &amp;&amp; record.type.raw_value !== 'delivery'">-->
-                                                            <!--<img t-if="record.is_company.raw_value === true" t-att-src="_s + &quot;/base/static/src/img/company_image.png&quot;"/>-->
-                                                            <!--<img t-if="record.is_company.raw_value === false" t-att-src="_s + &quot;/base/static/src/img/avatar.png&quot;"/>-->
-                                                        <!--</t>-->
-                                                    <!--</t>-->
-                                                <!--</div>-->
-                                                <!--<div class="oe_kanban_details">-->
-                                                    <!--<field name="name"/>-->
-                                                    <!--<div t-if="record.function.raw_value"><field name="function"/></div>-->
-                                                    <!--<div t-if="record.email.raw_value"><field name="email"/></div>-->
-                                                    <!--<div t-if="record.type.raw_value != 'contact'">-->
-                                                        <!--<div>-->
-                                                            <!--<field name="zip"/>-->
-                                                            <!--<field name="city"/>-->
-                                                        <!--</div>-->
-                                                        <!--<field t-if="record.state_id.raw_value" name="state_id"/>-->
-                                                        <!--<field name="country_id"/>-->
-                                                    <!--</div>-->
-                                                    <!--<div t-if="record.phone.raw_value">Phone: <field name="phone"/></div>-->
-                                                    <!--<div t-if="record.mobile.raw_value">Mobile: <field name="mobile"/></div>-->
-                                                    <!--<div t-if="record.fax.raw_value">Fax: <field name="fax"/></div>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</t>-->
-                                    <!--</templates>-->
-                                <!--</kanban>-->
-                                <!--<form string="Contact / Address">-->
-                                    <!--<sheet>-->
-                                        <!--<field name="type" required="1" widget="radio" options="{'horizontal': true}"/>-->
-                                        <!--<hr/>-->
-                                        <!--<group>-->
-                                            <!--<group attrs="{'invisible': [('type','=', 'contact')]}">-->
-                                                <!--<label for="street" string="Address"/>-->
-                                                <!--<div>-->
-                                                    <!--<div class="o_address_format" name="div_address">-->
-                                                        <!--<field name="street" placeholder="Street..." class="o_address_street"/>-->
-                                                        <!--<field name="street2" placeholder="Street 2..." class="o_address_street"/>-->
-                                                        <!--<field name="city" placeholder="City" class="o_address_city"/>-->
-                                                        <!--<field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}" on_change="onchange_state(state_id)" context="{'country_id': country_id, 'zip': zip}"/>-->
-                                                        <!--<field name="zip" placeholder="ZIP" class="o_address_zip"/>-->
-                                                        <!--<field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                            <!--</group>-->
-                                            <!--<group>-->
-                                                <!--<field name="name" string="Contact Name" attrs="{'required' : [('type', '=', 'contact')]}"/>-->
-                                                <!--<field name="title" placeholder="e.g. Mr." attrs="{'invisible': [('type','&lt;&gt;', 'contact')]}"/>-->
-                                                <!--<field name="function" placeholder="e.g. Sales Director" attrs="{'invisible': [('type','&lt;&gt;', 'contact')]}"/>-->
-                                                <!--<field name="email"/>-->
-                                                <!--<field name="phone" widget="phone"/>-->
-                                                <!--<field name="mobile" widget="phone"/>-->
-                                                <!--<field name="comment" placeholder="internal note..."/>-->
-                                            <!--</group>-->
-                                        <!--</group>-->
-                                        <!--<field name="supplier" invisible="True"/>-->
-                                        <!--<field name="customer" invisible="True"/>-->
-                                        <!--<field name="lang" invisible="True"/>-->
-                                    <!--</sheet>-->
-                                <!--</form>-->
-                            <!--</field>-->
-                        <!--</page>-->
+                        <page string="Contacts">
+                            <field name="contact_ids" mode="kanban" context="{'default_contractor_id': active_id}">
+                                <kanban>
+                                    <field name="name"/>
+                                    <field name="job_position"/>
+                                    <field name="email"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="oe_kanban_global_click o_res_partner_kanban">
+                                                <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+                                                <div class="o_kanban_image">
+                                                    <img t-att-src="_s + &quot;/base/static/src/img/avatar.png&quot;"/>
+                                                </div>
+                                                <div class="oe_kanban_details">
+                                                    <div><strong><field name="name"/></strong></div>
+                                                    <div><field name="email"/></div>
+                                                    <div><field name="job_position"/></div>
+                                                    <div><field name="is_spoc"/></div>
+                                                    <div><field name="phone"/></div>
+                                                    <div><field name="mobile"/></div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
                         <page string="Unit Rates">
                             <field name="unit_rate_ids">
                                 <tree editable="bottom">
@@ -207,48 +131,24 @@
         <field name="arch" type="xml">
             <kanban class="o_res_partner_kanban">
                 <field name="name"/>
-                <!--<templates>-->
-                    <!--<t t-name="kanban-box">-->
-                        <!--<div class="oe_kanban_global_click o_res_partner_kanban">-->
-                            <!--<div class="o_kanban_tags_section oe_kanban_partner_categories"/>-->
-                            <!--<div class="o_kanban_image">-->
-                                <!--<t t-if="record.image.raw_value">-->
-                                    <!--<img t-att-src="kanban_image('res.partner', 'image_small', record.id.value)"/>-->
-                                <!--</t>-->
-                                <!--<t t-if="!record.image.raw_value">-->
-                                    <!--<t t-if="record.type.raw_value === 'delivery'">-->
-                                        <!--<img t-att-src="_s + &quot;/base/static/src/img/truck.png&quot;" class="o_kanban_image oe_kanban_avatar_smallbox"/>-->
-                                    <!--</t>-->
-                                    <!--<t t-if="record.type.raw_value === 'invoice'">-->
-                                        <!--<img t-att-src="_s + &quot;/base/static/src/img/money.png&quot;" class="o_kanban_image oe_kanban_avatar_smallbox"/>-->
-                                     <!--</t>-->
-                                    <!--<t t-if="record.type.raw_value != 'invoice' &amp;&amp; record.type.raw_value != 'delivery'">-->
-                                        <!--<t t-if="record.is_company.raw_value === true">-->
-                                            <!--<img t-att-src="_s + &quot;/base/static/src/img/company_image.png&quot;"/>-->
-                                        <!--</t>-->
-                                        <!--<t t-if="record.is_company.raw_value === false">-->
-                                            <!--<img t-att-src="_s + &quot;/base/static/src/img/avatar.png&quot;"/>-->
-                                        <!--</t>-->
-                                    <!--</t>-->
-                                <!--</t>-->
-                            <!--</div>-->
-                            <!--<div class="oe_kanban_details">-->
-                                <!--<strong class="oe_partner_heading"><field name="name"/></strong>-->
-                                <!--<ul>-->
-                                    <!--<li t-if="record.parent_id.raw_value and !record.function.raw_value"><field name="parent_id"/></li>-->
-                                    <!--<li t-if="!record.parent_id.raw_value and record.function.raw_value"><field name="function"/></li>-->
-                                    <!--<li t-if="record.parent_id.raw_value and record.function.raw_value"><field name="function"/> at <field name="parent_id"/></li>-->
-                                    <!--<li t-if="record.city.raw_value and !record.country_id.raw_value"><field name="city"/></li>-->
-                                    <!--<li t-if="!record.city.raw_value and record.country_id.raw_value"><field name="country_id"/></li>-->
-                                    <!--<li t-if="record.city.raw_value and record.country_id.raw_value"><field name="city"/>, <field name="country_id"/></li>-->
-                                    <!--<li t-if="record.email.raw_value" class="o_text_overflow"><field name="email"/></li>-->
-                                <!--</ul>-->
-                                <!--<div class="oe_kanban_partner_links"/>-->
-                            <!--</div>-->
-                        <!--</div>-->
-
-                    <!--</t>-->
-                <!--</templates>-->
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_res_partner_kanban">
+                            <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+                            <div class="o_kanban_image">
+                                <img t-att-src="_s + &quot;/base/static/src/img/company_image.png&quot;"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="oe_partner_heading"><field name="name"/></strong>
+                                <div class="oe_kanban_partner_links"/>
+                                <div><field name="website"/></div>
+                                <!--<div><field name="street"/></div>-->
+                                <!--<div><field name="street2"/></div>-->
+                                <div><field name="city"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
             </kanban>
         </field>
       </record>
