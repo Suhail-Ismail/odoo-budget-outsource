@@ -23,7 +23,6 @@ class PurchaseOrder(models.Model):
     po_num = fields.Char(string='Purchase Order')
     po_date = fields.Date(string='Starting Date')
     po_value = fields.Float(string='PO Value', digits=(32, 2), default=0.00)
-    contractor = fields.Char(string='Contractor')
     capex_commitment_value = fields.Float(string='CAPEX Commitment', digits=(32, 2), default=0.00)
     capex_expenditure_value = fields.Float(string='CAPEX Expenditure', digits=(32, 2), default=0.00)
     opex_value = fields.Float(string='OPEX Value', digits=(32, 2), default=0.00)
@@ -42,6 +41,7 @@ class PurchaseOrder(models.Model):
     approval_ids = fields.One2many('outsource.approval', 'po_id', string="Approvals")
     po_line_ids = fields.One2many('outsource.purchase.order.line', 'po_id', string="Purchase Order Lines")
     po_collection_id = fields.Many2one('outsource.purchase.order.collection', string='{PO Collection')
+    contractor_id = fields.Many2one('outsource.contractor', string='Contractor')
 
     # self reference, one new po to many renewals
     renewed_po_ids = fields.One2many('outsource.purchase.order', 'new_po_id', string="Renewals")

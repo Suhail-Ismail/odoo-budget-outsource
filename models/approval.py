@@ -14,9 +14,6 @@ class Approval(models.Model):
     # CHOICES
     # ----------------------------------------------------------
     BUDGET_TYPES = choices_tuple(['capex', 'opex', 'revenue'])
-    CONTRACTORS = choices_tuple(['tamdeed', 'reach', 'inteltec', 'star', 'al hadeer',
-                                'skylog', 'telephony', 'sgem', 'xad', 'canal', 'tasc',
-                                'innovation', 'penta', 'al rostamani', 'technologia'])
     STATES = choices_tuple(['waiting purchase order', 'received purchase order'], is_sorted=False)
     OBJECTIVES = [(1, "For New PO"), (2, "For Renewal"), (3, "For Addendum")]
 
@@ -30,7 +27,6 @@ class Approval(models.Model):
     job_id = fields.Char(string='Job ID', required=False)
     remarks = fields.Text(string='Remarks')
     budget_type = fields.Selection(BUDGET_TYPES)
-    contractor = fields.Selection(CONTRACTORS)
     budget_team_head = fields.Char(string='TBPC Head', required=False)
     budget_team_sign_date = fields.Date(string='Sign Date')
     budget_team_remarks = fields.Text()
@@ -46,6 +42,8 @@ class Approval(models.Model):
     # RELATIONSHIPS
     # ----------------------------------------------------------
     po_id = fields.Many2one('outsource.purchase.order', string='Purchase Order')
+    contractor_id = fields.Many2one('outsource.contractor', string='Contractor')
+
     required_team_ids = fields.One2many('outsource.required.team',
                                   'approval_id',
                                   string="Required Team")
@@ -109,10 +107,9 @@ class Approval(models.Model):
         Purchase Order Collection
         """
         detail_list = self.generate_required_details()
-        import ipdb; ipdb.set_trace()
         po = self.env['outsource.purchase.order'].create({
                                 'po_num': self.po_temp,
-                                'contractor': self.contractor,
+                                'contractor_id': self.contractor_id.id,
                                 'task_num': 'TEST',
                                 'status': 'TEST',
                                 'type': 'TEST',
@@ -145,7 +142,7 @@ class Approval(models.Model):
         detail_list = self.generate_required_details()
         po = self.po_id.create({
                                 'po_num': self.po_temp,
-                                'contractor': self.contractor,
+                                'contractor_id': self.contractor_id.id,
                                 'task_num': 'TEST',
                                 'status': 'TEST',
                                 'type': 'TEST',
@@ -224,9 +221,8 @@ class RequiredTeam(models.Model):
     @api.depends('approval_id', 'position', 'level_1', 'level_2', 'level_3', 'level_4', 'total_cost')
     def _compute_total_cost(self):
         for i in ['1', '2', '3', '4']:
-            unit_rate = self.env['outsource.unit.rate'].search([
-                ('position', '=', self.position),
-                ('contractor', '=', self.approval_id.contractor),
-                ('level', '=', int(i))
-            ])
-            self.total_cost += getattr(self,'level_' + i) * unit_rate.amount
+            unit_rate = self.approval_id.\
+                contractor_id.\
+                unit_rate_ids.\
+                filtered(lambda rec: rec.position == self.position)
+            self.total_cost += getattr(self,'level_' + i) * getattr(unit_rate,'level_' + i)

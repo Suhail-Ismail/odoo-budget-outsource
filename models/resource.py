@@ -33,11 +33,11 @@ class Resource(models.Model):
     capex_commitment_value = fields.Float(string='CAPEX Commitment', digits=(32, 2), default=0.00)
     opex_value = fields.Float(string='OPEX Value', digits=(32, 2), default=0.00)
     revenue_value = fields.Float(string='Revenue Value', digits=(32, 2), default=0.00)
-    contractor = fields.Char(string='Contractor')
     job_id = fields.Char(string='job_id')
     has_tool_or_uniform = fields.Boolean(string='has tool or uniform')
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
     po_line_detail_id = fields.Many2one('outsource.purchase.order.line.detail', string='Line Detail')
+    contractor_id = fields.Many2one('outsource.contractor', string='Contractor')
     invoice_ids = fields.One2many('outsource.invoice', 'resource_id', string="Resources")

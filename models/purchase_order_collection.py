@@ -20,7 +20,9 @@ class PurchaseOrderCollection(models.Model):
     # RELATIONSHIPS
     # ----------------------------------------------------------
     po_ids = fields.One2many('outsource.purchase.order', 'po_collection_id', string="PO Collections")
-
+    contractor_id = fields.Many2one('outsource.contractor',
+                                    compute='_compute_contractor_id',
+                                    string='Contractor')
     # COMPUTED FIELDS
     # ----------------------------------------------------------
     state = fields.Selection(compute='_compute_state', selection=STATES)
@@ -28,7 +30,6 @@ class PurchaseOrderCollection(models.Model):
     po_num = fields.Char(compute='_compute_po_num', string='Purchase Order' )
     po_date = fields.Date(compute='_compute_po_date', string='Starting Date' )
     po_value = fields.Float(compute='_compute_po_value', string='PO Value', digits=(32, 2) )
-    contractor = fields.Char(compute='_compute_po_contractor', string='Contractor' )
     capex_commitment_value = fields.Float(compute='_compute_capex_commitment_value', string='CAPEX Commitment', digits=(32, 2))
     capex_expenditure_value = fields.Float(compute='_compute_capex_expenditure_value', string='CAPEX Expenditure', digits=(32, 2))
     opex_value = fields.Float(compute='_compute_opex_value', string='OPEX Value', digits=(32, 2))
@@ -67,10 +68,10 @@ class PurchaseOrderCollection(models.Model):
         if self.po_ids:
             self.po_value = sum(self.mapped('po_ids.po_value'))
 
-    @api.depends('contractor')
-    def _compute_po_contractor(self):
+    @api.depends('contractor_id')
+    def _compute_contractor_id(self):
         if self.po_ids:
-            self.contractor = self.mapped('po_ids.contractor')[-1]
+            self.contractor_id = self.mapped('po_ids.contractor_id')[-1]
 
     @api.depends('capex_commitment_value')
     def _compute_capex_commitment_value(self):

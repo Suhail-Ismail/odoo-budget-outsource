@@ -24,7 +24,7 @@
                 <field name="section"/>
                 <field name="job_id"/>
                 <field name="budget_type"/>
-                <field name="contractor"/>
+                <field name="contractor_id"/>
                 <field name="state"/>
                 <filter
                     name="filter_state"
@@ -49,7 +49,7 @@
         <field name="model">outsource.approval</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="contractor"/>
+                <field name="contractor_id"/>
                 <field name="ref"/>
                 <field name="service_description"/>
                 <field name="job_id"/>
@@ -103,7 +103,7 @@
                         </group>
                         <group>
                             <field name="budget_type"/>
-                            <field name="contractor"/>
+                            <field name="contractor_id"/>
                         </group>
                     </group>
                     <group>
