@@ -6,7 +6,7 @@ from openerp import models, fields, api
 class Contractor(models.Model):
     _name = 'outsource.contractor'
     _rec_name = 'name'
-#    _inherit = 'res.partner'
+    _description = 'Contractor'
 
     alias = fields.Char(string="Alias")
     name = fields.Char(string="Name")
@@ -89,6 +89,7 @@ class ContractorContact(models.Model):
     _name = 'outsource.contractor.contact'
     _rec_name = 'name'
     _order = 'name'
+    _description = 'Contractor Contact'
 
     # BASIC FIELDS
     # ----------------------------------------------------------

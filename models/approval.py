@@ -7,7 +7,7 @@ from openerp import models, fields, api
 class Approval(models.Model):
     _name = 'outsource.approval'
     _rec_name = 'ref'
-    _description = 'Section Reference'
+    _description = 'Approval'
     _inherit = ['mail.thread', 'ir.needaction_mixin']
 #    _order = 'po_date desc, po_num'
 

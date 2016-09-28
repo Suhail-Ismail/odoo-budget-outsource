@@ -5,6 +5,7 @@ from openerp import models, fields, api
 class Resource(models.Model):
     _name = 'outsource.resource'
     _rec_name = 'full_name'
+    _description = 'Resource'
 
     # BASIC FIELDS
     # ----------------------------------------------------------

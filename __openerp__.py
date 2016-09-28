@@ -40,6 +40,9 @@
         'views/invoice.xml',
 
         'views/menu.xml',
+
+        'security/outsource.xml',
+        'security/ir.model.access.csv'
     ],
     # only loaded in demonstration mode
     'demo': [

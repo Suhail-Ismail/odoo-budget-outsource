@@ -135,6 +135,7 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _name = 'outsource.purchase.order.line'
     _rec_name = 'po_id'
+    _description = 'Purchase Order Line'
 
     line_num = fields.Char(string='Line Number')
     line_duration = fields.Integer(string='Duration', default=0)
@@ -158,6 +159,7 @@ class PurchaseOrderLine(models.Model):
 class PurchaseOrderLineDetail(models.Model):
     _name = 'outsource.purchase.order.line.detail'
     _rec_name = 'job_id'
+    _description = 'Purchase Order Line Detail'
 
     # BASIC FIELDS
     # ----------------------------------------------------------
