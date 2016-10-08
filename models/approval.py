@@ -9,7 +9,7 @@ class Approval(models.Model):
     _rec_name = 'ref'
     _description = 'Approval'
     _inherit = ['mail.thread', 'ir.needaction_mixin']
-#    _order = 'po_date desc, po_num'
+    # _order = 'po_date desc, po_num'
 
     # CHOICES
     # ----------------------------------------------------------
@@ -43,7 +43,6 @@ class Approval(models.Model):
     # ----------------------------------------------------------
     po_id = fields.Many2one('outsource.purchase.order', string='Purchase Order')
     contractor_id = fields.Many2one('res.partner', string='Contractor')
-
     required_team_ids = fields.One2many('outsource.required.team',
                                   'approval_id',
                                   string="Required Team")

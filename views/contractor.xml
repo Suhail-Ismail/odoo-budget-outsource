@@ -2,11 +2,28 @@
 
 <openerp>
   <data>
+<<<<<<< HEAD
+=======
+<!--START ACTIONS-->
+    <!--Contractor Action-->
+    <act_window
+        id="action_contractor"
+        name="Contractor"
+        res_model="outsource.contractor"
+        view_mode="kanban,form"/>
+
+<!--END ACTIONS-->
+
+>>>>>>> 5a4a4db51b19b86ed09a1f73b0db91f4bde3eb28
 <!--START CONTRACTOR VIEWS-->
     <!--CONTRACTOR FORM VIEW-->
     <record model="ir.ui.view" id="view_form_contractor">
         <field name="name">Contractor</field>
+<<<<<<< HEAD
         <field name="model">res.partner</field>
+=======
+        <field name="model">outsource.contractor</field>
+>>>>>>> 5a4a4db51b19b86ed09a1f73b0db91f4bde3eb28
         <field name="arch" type="xml">
             <form string="Partners">
                 <sheet>
@@ -117,7 +134,11 @@
     <!--CONTRACTOR KANBAN VIEW-->
     <record model="ir.ui.view" id="view_kanban_contractor">
         <field name="name">Contractor</field>
+<<<<<<< HEAD
         <field name="model">res.partner</field>
+=======
+        <field name="model">outsource.contractor</field>
+>>>>>>> 5a4a4db51b19b86ed09a1f73b0db91f4bde3eb28
         <field name="arch" type="xml">
             <kanban class="o_res_partner_kanban">
                 <field name="name"/>
@@ -144,6 +165,7 @@
       </record>
 <!--END CONTRACTOR VIEWS-->
 
+<<<<<<< HEAD
 <!--START ACTIONS-->
     <!--Contractor Action-->
     <record model="ir.actions.act_window" id="action_contractor">
@@ -170,5 +192,7 @@
 
 <!--END ACTIONS-->
 
+=======
+>>>>>>> 5a4a4db51b19b86ed09a1f73b0db91f4bde3eb28
 </data>
 </openerp>

@@ -5,20 +5,11 @@ from openerp import models, fields, api
 
 class Contractor(models.Model):
     _inherit = 'res.partner'
-    # _name = 'res.partner'
-    # _rec_name = 'name'
-    # _description = 'Contractor'
+    _rec_name = 'name'
+    _description = 'Contractor'
 
     alias = fields.Char(string="Alias")
     is_contractor = fields.Boolean(string="Contractor", default=False)
-    #
-    # street = fields.Char(string="Street")
-    # street2 = fields.Char(string="Street2")
-    # city = fields.Char(string="City")
-    # website = fields.Char(string="Website")
-    # image = fields.Binary("Image", attachment=True,
-    #     help="This field holds the image used as avatar for this contact, limited to 1024x1024px",
-    #     default=lambda self: self._get_default_image(False, True))
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
