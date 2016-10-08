@@ -41,7 +41,7 @@ class PurchaseOrder(models.Model):
     approval_ids = fields.One2many('outsource.approval', 'po_id', string="Approvals")
     po_line_ids = fields.One2many('outsource.purchase.order.line', 'po_id', string="Purchase Order Lines")
     po_collection_id = fields.Many2one('outsource.purchase.order.collection', string='{PO Collection')
-    contractor_id = fields.Many2one('outsource.contractor', string='Contractor')
+    contractor_id = fields.Many2one('res.partner', string='Contractor')
 
     # self reference, one new po to many renewals
     renewed_po_ids = fields.One2many('outsource.purchase.order', 'new_po_id', string="Renewals")
@@ -154,7 +154,6 @@ class PurchaseOrderLine(models.Model):
     po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
                                   'po_line_id',
                                   string="Line Details")
-
 
 class PurchaseOrderLineDetail(models.Model):
     _name = 'outsource.purchase.order.line.detail'

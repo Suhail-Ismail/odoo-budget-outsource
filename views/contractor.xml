@@ -2,21 +2,11 @@
 
 <openerp>
   <data>
-<!--START ACTIONS-->
-    <!--Contractor Action-->
-    <act_window
-        id="action_contractor"
-        name="Contractor"
-        res_model="outsource.contractor"
-        view_mode="kanban,form"/>
-
-<!--END ACTIONS-->
-
 <!--START CONTRACTOR VIEWS-->
     <!--CONTRACTOR FORM VIEW-->
     <record model="ir.ui.view" id="view_form_contractor">
         <field name="name">Contractor</field>
-        <field name="model">outsource.contractor</field>
+        <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <form string="Partners">
                 <sheet>
@@ -127,7 +117,7 @@
     <!--CONTRACTOR KANBAN VIEW-->
     <record model="ir.ui.view" id="view_kanban_contractor">
         <field name="name">Contractor</field>
-        <field name="model">outsource.contractor</field>
+        <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <kanban class="o_res_partner_kanban">
                 <field name="name"/>
@@ -153,6 +143,32 @@
         </field>
       </record>
 <!--END CONTRACTOR VIEWS-->
+
+<!--START ACTIONS-->
+    <!--Contractor Action-->
+    <record model="ir.actions.act_window" id="action_contractor">
+        <field name="name">Contractor</field>
+        <field name="res_model">res.partner</field>
+        <field name="domain">[('is_contractor','=',True)]</field>
+        <!--<field name="view_mode">kanban,form</field>-->
+    </record>
+
+    <!--Override View-->
+    <!--Override Default View-->
+    <record model="ir.actions.act_window.view" id="action_contractor_view_kanban">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="view_kanban_contractor"/>
+        <field name="act_window_id" ref="action_contractor"/>
+    </record>
+    <record model="ir.actions.act_window.view" id="action_contractor_view_form">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_form_contractor"/>
+        <field name="act_window_id" ref="action_contractor"/>
+    </record>
+
+<!--END ACTIONS-->
 
 </data>
 </openerp>

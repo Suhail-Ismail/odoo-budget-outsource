@@ -42,7 +42,7 @@ class Approval(models.Model):
     # RELATIONSHIPS
     # ----------------------------------------------------------
     po_id = fields.Many2one('outsource.purchase.order', string='Purchase Order')
-    contractor_id = fields.Many2one('outsource.contractor', string='Contractor')
+    contractor_id = fields.Many2one('res.partner', string='Contractor')
 
     required_team_ids = fields.One2many('outsource.required.team',
                                   'approval_id',

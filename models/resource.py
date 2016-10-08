@@ -40,5 +40,5 @@ class Resource(models.Model):
     # RELATIONSHIPS
     # ----------------------------------------------------------
     po_line_detail_id = fields.Many2one('outsource.purchase.order.line.detail', string='Line Detail')
-    contractor_id = fields.Many2one('outsource.contractor', string='Contractor')
+    contractor_id = fields.Many2one('res.partner', string='Contractor')
     invoice_ids = fields.One2many('outsource.invoice', 'resource_id', string="Resources")

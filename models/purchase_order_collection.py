@@ -20,7 +20,7 @@ class PurchaseOrderCollection(models.Model):
     # RELATIONSHIPS
     # ----------------------------------------------------------
     po_ids = fields.One2many('outsource.purchase.order', 'po_collection_id', string="PO Collections")
-    contractor_id = fields.Many2one('outsource.contractor',
+    contractor_id = fields.Many2one('res.partner',
                                     compute='_compute_contractor_id',
                                     string='Contractor')
     # COMPUTED FIELDS

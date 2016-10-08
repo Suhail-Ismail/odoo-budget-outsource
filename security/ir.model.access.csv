@@ -1,7 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_approval_user,outsource.approval,model_outsource_approval,group_outsource_user,1,1,1,0
 access_required_team_user,outsource.required.team,model_outsource_required_team,group_outsource_user,1,1,1,0
-access_contractor_user,outsource.contractor,model_outsource_contractor,group_outsource_user,1,1,1,0
+access_contractor_user,res.partner,model_res_partner,group_outsource_user,1,1,1,0
 access_contractor_contact_user,outsource.contractor.contact,model_outsource_contractor_contact,group_outsource_user,1,1,1,0
 access_unit_rate_user,outsource.unit.rate,model_outsource_unit_rate,group_outsource_user,1,1,1,0
 access_invoice_user,outsource.invoice,model_outsource_invoice,group_outsource_user,1,1,1,0
@@ -13,7 +13,7 @@ access_collection_user,outsource.purchase.order.collection,model_outsource_purch
 access_resource_user,outsource.resource,model_outsource_resource,group_outsource_user,1,1,1,0
 access_approval_manager,outsource.approval,model_outsource_approval,group_outsource_manager,1,1,1,1
 access_required_team_manager,outsource.required.team,model_outsource_required_team,group_outsource_manager,1,1,1,1
-access_contractor_manager,outsource.contractor,model_outsource_contractor,group_outsource_manager,1,1,1,1
+access_contractor_manager,res.partner,model_res_partner,group_outsource_manager,1,1,1,1
 access_contractor_contact_manager,outsource.contractor.contact,model_outsource_contractor_contact,group_outsource_manager,1,1,1,1
 access_unit_rate_manager,outsource.unit.rate,model_outsource_unit_rate,group_outsource_manager,1,1,1,1
 access_invoice_manager,outsource.invoice,model_outsource_invoice,group_outsource_manager,1,1,1,1

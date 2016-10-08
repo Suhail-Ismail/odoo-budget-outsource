@@ -26,7 +26,7 @@
 
     # always loaded
     'data': [
-        'data/outsource.contractor.csv',
+        'data/contractor.xml',
         'data/outsource.unit.rate.csv',
         'data/outsource.approval.csv',
         'data/outsource.required.team.csv',
