@@ -16,7 +16,7 @@ class Invoice(models.Model):
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
-    resource_id = fields.Many2one('outsource.resource', string='Resource')
+    resource_id = fields.Many2one('res.partner', string='Resource')
     approval_ids = fields.One2many('outsource.approval', 'po_id', string="Approvals")
 
 

@@ -10,7 +10,7 @@ access_purchase_order_user,outsource.purchase.order,model_outsource_purchase_ord
 access_purchase_order_line_user,outsource.purchase.order.line,model_outsource_purchase_order_line,group_outsource_user,1,1,1,0
 access_purchase_order_line_detail_user,outsource.purchase.order.line.detail,model_outsource_purchase_order_line_detail,group_outsource_user,1,1,1,0
 access_collection_user,outsource.purchase.order.collection,model_outsource_purchase_order_collection,group_outsource_user,1,1,1,0
-access_resource_user,outsource.resource,model_outsource_resource,group_outsource_user,1,1,1,0
+access_resource_user,outsource.resource,model_res_partner,group_outsource_user,1,1,1,0
 access_approval_manager,outsource.approval,model_outsource_approval,group_outsource_manager,1,1,1,1
 access_required_team_manager,outsource.required.team,model_outsource_required_team,group_outsource_manager,1,1,1,1
 access_contractor_manager,res.partner,model_res_partner,group_outsource_manager,1,1,1,1
@@ -22,4 +22,4 @@ access_purchase_order_manager,outsource.purchase.order,model_outsource_purchase_
 access_purchase_order_line_manager,outsource.purchase.order.line,model_outsource_purchase_order_line,group_outsource_manager,1,1,1,1
 access_purchase_order_line_detail_manager,outsource.purchase.order.line.detail,model_outsource_purchase_order_line_detail,group_outsource_manager,1,1,1,1
 access_collection_manager,outsource.purchase.order.collection,model_outsource_purchase_order_collection,group_outsource_manager,1,1,1,1
-access_resource_manager,outsource.resource,model_outsource_resource,group_outsource_manager,1,1,1,1
+access_resource_manager,outsource.resource,model_res_partner,group_outsource_manager,1,1,1,1

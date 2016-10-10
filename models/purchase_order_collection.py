@@ -46,6 +46,7 @@ class PurchaseOrderCollection(models.Model):
     total_resource = fields.Integer(compute='_compute_total_resource')
     total_non_mobilize = fields.Integer(compute='_compute_total_non_mobilize')
 
+    @api.one
     @api.depends('state')
     def _compute_state(self):
         if 'active' in self.po_ids.mapped('state'):
@@ -53,88 +54,106 @@ class PurchaseOrderCollection(models.Model):
         else:
             self.state = 'closed'
 
-    @api.depends('po_num')
+    @api.one
+    @api.depends('po_ids')
     def _compute_po_num(self):
         if self.po_ids:
             self.po_num = self.mapped('po_ids.po_num')[-1]
 
-    @api.depends('po_date')
+    @api.one
+    @api.depends('po_ids')
     def _compute_po_date(self):
         if self.po_ids:
             self.po_date = self.mapped('po_ids.po_date')[-1]
 
-    @api.depends('po_value')
+    @api.one
+    @api.depends('po_ids')
     def _compute_po_value(self):
         if self.po_ids:
             self.po_value = sum(self.mapped('po_ids.po_value'))
 
-    @api.depends('contractor_id')
+    @api.one
+    @api.depends('po_ids')
     def _compute_contractor_id(self):
         if self.po_ids:
             self.contractor_id = self.mapped('po_ids.contractor_id')[-1]
 
-    @api.depends('capex_commitment_value')
+    @api.one
+    @api.depends('po_ids')
     def _compute_capex_commitment_value(self):
         if self.po_ids:
             self.capex_commitment_value = sum(self.mapped('po_ids.capex_commitment_value'))
 
-    @api.depends('capex_expenditure_value')
+    @api.one
+    @api.depends('po_ids')
     def _compute_capex_expenditure_value(self):
         if self.po_ids:
             self.capex_expenditure_value = sum(self.mapped('po_ids.capex_expenditure_value'))
 
-    @api.depends('opex_value')
+    @api.one
+    @api.depends('po_ids')
     def _compute_opex_value(self):
         if self.po_ids:
             self.opex_value = sum(self.mapped('po_ids.opex_value'))
 
-    @api.depends('revenue_value')
+    @api.one
+    @api.depends('po_ids')
     def _compute_revenue_value(self):
         if self.po_ids:
             self.revenue_value = sum(self.mapped('po_ids.revenue_value'))
 
-    @api.depends('task_num')
+    @api.one
+    @api.depends('po_ids')
     def _compute_task_num(self):
         if self.po_ids:
             self.task_num = self.mapped('po_ids.task_num')[-1]
 
-    @api.depends('status')
+    @api.one
+    @api.depends('po_ids')
     def _compute_status(self):
         if self.po_ids:
             self.status = self.mapped('po_ids.status')[-1]
 
-    @api.depends('remarks')
+    @api.one
+    @api.depends('po_ids')
     def _compute_remarks(self):
         if self.po_ids:
             self.remarks = self.mapped('po_ids.remarks')[-1]
 
-    @api.depends('type')
+    @api.one
+    @api.depends('po_ids')
     def _compute_type(self):
         if self.po_ids:
             self.type = self.mapped('po_ids.type')[-1]
 
-    @api.depends('total_approval')
+    @api.one
+    @api.depends('po_ids')
     def _compute_total_approval(self):
         self.total_approval = len(self.mapped('po_ids.approval_ids'))
 
-    @api.depends('total_po_line')
+    @api.one
+    @api.depends('po_ids')
     def _compute_total_po_line(self):
         self.total_po_line = len(self.mapped('po_ids.po_line_ids'))
 
-    @api.depends('total_invoice')
+    @api.one
+    @api.depends('po_ids')
     def _compute_total_invoice(self):
         self.total_invoice = 0
 
-    @api.depends('total_resource')
+    @api.one
+    @api.depends('po_ids')
     def _compute_total_resource(self):
-        self.total_resource = self.mapped('po_ids.po_line_ids.po_line_detail_ids.resource_ids')
+        self.total_resource = len(self.mapped(
+            'po_ids.po_line_ids.po_line_detail_ids.resource_ids'))
 
-
-    @api.depends('total_non_mobilize')
+    @api.one
+    @api.depends('po_ids')
     def _compute_total_non_mobilize(self):
-        self.total_non_mobilize = self.total_po_line_detail - self.total_resource
+        self.total_non_mobilize = sum(self.mapped('po_ids.total_non_mobilize'))
 
-    @api.depends('total_po_line_detail')
+    @api.one
+    @api.depends('po_ids')
     def _compute_total_po_line_detail(self):
         self.total_po_line_detail = len(self.mapped('po_ids.po_line_detail_ids'))
 
@@ -150,7 +169,7 @@ class PurchaseOrderCollection(models.Model):
     po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
                                              compute="_compute_o2m_po_line_detail_ids",
                                              )
-    resource_ids = fields.One2many('outsource.resource',
+    resource_ids = fields.One2many('res.partner',
                                    compute="_compute_o2m_resource_ids",
                                    )
 

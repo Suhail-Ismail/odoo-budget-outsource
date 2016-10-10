@@ -9,7 +9,7 @@ class Contractor(models.Model):
     _description = 'Contractor'
 
     alias = fields.Char(string="Alias")
-    is_contractor = fields.Boolean(string="Contractor", default=False)
+    is_contractor = fields.Boolean(string="Contractor")
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
@@ -22,7 +22,7 @@ class Contractor(models.Model):
     po_ids = fields.One2many('outsource.purchase.order',
                                     'contractor_id',
                                     string="Purchase Orders")
-    resource_ids = fields.One2many('outsource.resource',
+    resource_ids = fields.One2many('res.partner',
                              'contractor_id',
                              string="Resources")
     contact_ids = fields.One2many('outsource.contractor.contact',
@@ -30,46 +30,46 @@ class Contractor(models.Model):
                              string="Contacts")
     # COMPUTE FIELDS
     # ----------------------------------------------------------
-    total_approval = fields.Integer(compute='_compute_total_approval', store=True)
-    total_po = fields.Integer(compute='_compute_total_po', store=True)
-    total_resource = fields.Integer(compute='_compute_total_resource', store=True)
-    total_po_line_detail = fields.Integer(compute='_compute_total_po_line_detail', store=True)
-    total_non_mobilize = fields.Integer(compute='_compute_total_non_mobilize', store=True)
-    total_invoice = fields.Integer(compute='_compute_total_invoice', store=True)
-
+    total_approval = fields.Integer(compute='_compute_total_approval')
+    total_po = fields.Integer(compute='_compute_total_po')
+    total_resource = fields.Integer(compute='_compute_total_resource')
+    total_po_line_detail = fields.Integer(compute='_compute_total_po_line_detail')
+    total_non_mobilize = fields.Integer(compute='_compute_total_non_mobilize')
+    total_invoice = fields.Integer(compute='_compute_total_invoice')
     po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
                                          compute="_compute_o2m_po_line_detail_ids",
                                          )
 
     @api.one
-    @api.depends('total_approval', 'approval_ids')
-    def _compute_total_approval(self):
-        self.total_approval = len(self.mapped('approval_ids'))
+    @api.depends('po_ids')
+    def _compute_total_non_mobilize(self):
+        positions = self.mapped('po_ids.po_line_ids.po_line_detail_ids')
+        self.total_non_mobilize = len([r for r in positions if not r.mobilize_status == 'mobilized'])
 
     @api.one
-    @api.depends('total_po', 'po_ids')
-    def _compute_total_po(self):
-        self.total_po = len(self.mapped('po_ids'))
-
-    @api.one
-    @api.depends('total_resource', 'resource_ids')
+    @api.depends('resource_ids')
     def _compute_total_resource(self):
         self.total_resource = len(self.mapped('resource_ids'))
 
     @api.one
-    @api.depends('total_po_line_detail', 'po_ids.po_line_ids.po_line_detail_ids')
+    @api.depends('po_ids')
     def _compute_total_po_line_detail(self):
         self.total_po_line_detail = len(self.mapped('po_ids.po_line_ids.po_line_detail_ids'))
 
     @api.one
-    @api.depends('total_non_mobilize', 'total_po_line_detail', 'total_resource')
-    def _compute_total_non_mobilize(self):
-        self.total_non_mobilize = self.total_po_line_detail - self.total_resource
+#    @api.depends('invoice_ids')
+    def _compute_total_invoice(self):
+        self.total_invoice = 0
 
     @api.one
-    @api.depends('total_resource', 'resource_ids')
-    def _compute_total_invoice(self):
-        self.total_resource = self.mapped('resource_ids')
+    @api.depends('po_ids')
+    def _compute_total_po(self):
+        self.total_po = len(self.mapped('po_ids'))
+
+    @api.one
+    @api.depends('approval_ids')
+    def _compute_total_approval(self):
+        self.total_approval = len(self.mapped('approval_ids'))
 
     @api.one
     @api.depends('po_line_detail_ids', 'po_ids.po_line_ids.po_line_detail_ids')

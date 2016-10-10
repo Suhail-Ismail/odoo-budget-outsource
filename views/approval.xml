@@ -2,17 +2,6 @@
 
 <openerp>
   <data>
-<!--START ACTIONS-->
-    <!--Approval Action-->
-    <record model="ir.actions.act_window" id="action_approval">
-        <field name="name">Approval</field>
-        <field name="res_model">outsource.approval</field>
-        <field name="view_mode">tree,form,pivot</field>
-        <field name="context">{'search_default_filter_state': 1}</field>
-
-    </record>
-<!--END ACTIONS-->
-
 <!--START SEARCH-->
     <record model="ir.ui.view" id="search_approval">
         <field name="name">approval</field>
@@ -108,7 +97,7 @@
                         </group>
                         <group>
                             <field name="budget_type"/>
-                            <field name="contractor_id"/>
+                            <field name="contractor_id" domain="[('is_contractor', '=', True)]"/>
                         </group>
                     </group>
                     <group>
@@ -160,6 +149,17 @@
         </field>
     </record>
 <!--END VIEWS-->
+
+<!--START ACTIONS-->
+    <!--Approval Action-->
+    <record model="ir.actions.act_window" id="action_approval">
+        <field name="name">Approval</field>
+        <field name="res_model">outsource.approval</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="context">{'search_default_filter_state': 1}</field>
+        <!--<field name="domain">['contractor_id','in',[r.id for r in contractor]]</field>-->
+    </record>
+<!--END ACTIONS-->
 
   </data>
 </openerp>

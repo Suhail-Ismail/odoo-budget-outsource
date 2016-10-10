@@ -18,7 +18,7 @@
         <field name="name">Purchase Order Collection</field>
         <field name="model">outsource.purchase.order.collection</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree create="false">
                 <field name="po_num"/>
                 <field name="contractor_id"/>
                 <!--<field name="type"/>-->
@@ -41,7 +41,7 @@
         <field name="name">Purchase Order Collection</field>
         <field name="model">outsource.purchase.order.collection</field>
         <field name="arch" type="xml">
-            <form>
+            <form create="false" edit="false">
                 <header>
                     <button
                         string="Close Purchase Order"

@@ -50,18 +50,18 @@ class PurchaseOrder(models.Model):
     # COMPUTE FIELDS
     # ----------------------------------------------------------
 
-    total_approval = fields.Integer(compute='_compute_total_approval', store=True)
-    total_po_line = fields.Integer(compute='_compute_total_po_line', store=True)
-    total_po_line_detail = fields.Integer(compute='_compute_total_po_line_detail', store=True)
-    total_invoice = fields.Integer(compute='_compute_total_invoice', store=True)
-    total_resource = fields.Integer(compute='_compute_total_resource', store=True)
-    total_non_mobilize = fields.Integer(compute='_compute_total_non_mobilize', store=True)
+    total_approval = fields.Integer(compute='_compute_total_approval')
+    total_po_line = fields.Integer(compute='_compute_total_po_line')
+    total_po_line_detail = fields.Integer(compute='_compute_total_po_line_detail')
+    total_invoice = fields.Integer(compute='_compute_total_invoice')
+    total_resource = fields.Integer(compute='_compute_total_resource')
+    total_non_mobilize = fields.Integer(compute='_compute_total_non_mobilize')
 
     po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
                                          compute="_compute_o2m_po_line_detail_ids",
                                          )
 
-    resource_ids = fields.One2many('outsource.resource',
+    resource_ids = fields.One2many('res.partner',
                                    compute="_compute_o2m_resource_ids",
                                    )
     @api.one
@@ -85,9 +85,10 @@ class PurchaseOrder(models.Model):
         self.total_resource =  len(self.mapped('po_line_ids.po_line_detail_ids.resource_ids'))
 
     @api.one
-    @api.depends('total_non_mobilize', 'total_po_line_detail', 'total_resource')
+    @api.depends('po_line_ids')
     def _compute_total_non_mobilize(self):
-        self.total_non_mobilize = self.total_po_line_detail - self.total_resource
+        positions = self.mapped('po_line_ids.po_line_detail_ids')
+        self.total_non_mobilize = len([r for r in positions if not r.mobilize_status == 'mobilized'])
 
     @api.one
     @api.depends('total_po_line_detail', 'po_line_ids.po_line_detail_ids')
@@ -134,8 +135,17 @@ class PurchaseOrder(models.Model):
 
 class PurchaseOrderLine(models.Model):
     _name = 'outsource.purchase.order.line'
-    _rec_name = 'po_id'
     _description = 'Purchase Order Line'
+
+    @api.multi
+    def name_get(self):
+        result = []
+        for r in self:
+            result.append((
+                r.id,
+                u"%s\%s" % (r.po_id.po_num, r.line_num)
+            ))
+        return result
 
     line_num = fields.Char(string='Line Number')
     line_duration = fields.Integer(string='Duration', default=0)
@@ -154,6 +164,7 @@ class PurchaseOrderLine(models.Model):
     po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
                                   'po_line_id',
                                   string="Line Details")
+
 
 class PurchaseOrderLineDetail(models.Model):
     _name = 'outsource.purchase.order.line.detail'
@@ -183,7 +194,44 @@ class PurchaseOrderLineDetail(models.Model):
     # RELATIONSHIPS
     # ----------------------------------------------------------
     po_line_id = fields.Many2one('outsource.purchase.order.line', string='Purchase Order Line')
-    resource_ids = fields.One2many('outsource.resource',
+    resource_ids = fields.One2many('res.partner',
                              'po_line_detail_id',
                              string="Resource")
+    position_history_ids = fields.One2many('outsource.position.history',
+                                   'po_line_detail_id',
+                                   string="Position History")
+
+    # CONSTRAINS
+    # ----------------------------------------------------------
+    @api.constrains('position_history_ids')
+    def _check_status(self):
+        count = 0
+        for r in self.position_history_ids:
+            if r.status == 'active':
+                count += 1
+
+        if count > 1:
+            raise models.ValidationError('Only 1 Resource can be active per position')
+
+    # COMPUTE FIELDS
+    # ----------------------------------------------------------
+    mobilize_status = fields.Char(compute='_compute_mobilize_status', store=True)
+
+    @api.one
+    @api.depends('position_history_ids')
+    def _compute_mobilize_status(self):
+        # mobilized; new; vacant
+        # If total number of position history is 0 it means it is new
+
+        if len(self.position_history_ids) == 0:
+            self.mobilize_status = 'new'
+
+        # If total number of position history is more than 1 it means it is vacant or mobilized
+        else:
+            for record in self.position_history_ids:
+                self.mobilize_status = 'vacant'
+
+                if record.status == 'active':
+                    self.mobilize_status = 'mobilized'
+                    break
 
