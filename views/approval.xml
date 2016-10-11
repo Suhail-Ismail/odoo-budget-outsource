@@ -2,35 +2,6 @@
 
 <openerp>
   <data>
-<!--START SEARCH-->
-    <record model="ir.ui.view" id="search_approval">
-        <field name="name">approval</field>
-        <field name="model">outsource.approval</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="ref"/>
-                <field name="service_description"/>
-                <field name="section"/>
-                <field name="job_id"/>
-                <field name="budget_type"/>
-                <field name="contractor_id"/>
-                <field name="state"/>
-                <filter
-                    name="filter_state"
-                    string="Need Action"
-                    domain="[('state', '=', 'waiting purchase order')]"/>
-                <group string="Group by">
-                    <filter
-                        name="group_section"
-                        string="By Section"
-                        context="{'group_by': 'section'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-<!--END SEARCH-->
-
-
 <!--START VIEWS-->
     <!--Tree View-->
     <record model="ir.ui.view" id="view_tree_approval">
@@ -64,7 +35,6 @@
                         name="validate_approval"
                         type="object"
                         states="received purchase order,waiting purchase order" />
-                        <!--groups="academy.group_manager,base.group_no_one"/>                    -->
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -142,13 +112,37 @@
                     </notebook>
                 </sheet>
             </form>
-                <!--<div class="oe_chatter">-->
-                    <!--<field name="message_follower_ids" widget="mail_followers"/>-->
-                    <!--<field name="message_ids" widget="mail_thread"/>-->
-                <!--</div>-->
         </field>
     </record>
 <!--END VIEWS-->
+
+<!--START SEARCH-->
+    <record model="ir.ui.view" id="search_approval">
+        <field name="name">approval</field>
+        <field name="model">outsource.approval</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="ref"/>
+                <field name="service_description"/>
+                <field name="section"/>
+                <field name="job_id"/>
+                <field name="budget_type"/>
+                <field name="contractor_id"/>
+                <field name="state"/>
+                <filter
+                    name="filter_state"
+                    string="Need Action"
+                    domain="[('state', '=', 'waiting purchase order')]"/>
+                <group string="Group by">
+                    <filter
+                        name="group_section"
+                        string="By Section"
+                        context="{'group_by': 'section'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+<!--END SEARCH-->
 
 <!--START ACTIONS-->
     <!--Approval Action-->

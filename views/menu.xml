@@ -13,20 +13,22 @@
     <menuitem
         id="menu_contractor_top_left"
         name="Contractor"
-        parent="menu_outsourcing_top"/>
-    <!--CHILD CONTRACTOR-->
-    <menuitem
-        id="menu_contractor"
-        name="Contractor"
-        parent="menu_contractor_top_left"
+        parent="menu_outsourcing_top"
         action="action_contractor"
         sequence="1"/>
-    <menuitem
-        id="menu_unit_rate"
-        name="Unit Rate"
-        parent="menu_contractor_top_left"
-        action="action_unit_rate"
-        sequence="2"/>
+    <!--CHILD CONTRACTOR-->
+    <!--<menuitem-->
+        <!--id="menu_contractor"-->
+        <!--name="Contractor"-->
+        <!--parent="menu_contractor_top_left"-->
+        <!--action="action_contractor"-->
+        <!--sequence="1"/>-->
+    <!--<menuitem-->
+        <!--id="menu_unit_rate"-->
+        <!--name="Unit Rate"-->
+        <!--parent="menu_contractor_top_left"-->
+        <!--action="action_unit_rate"-->
+        <!--sequence="2"/>-->
     <!--END CHILD CONTRACTOR-->
 
     <!--PARENT PURCHASE ORDER-->
@@ -50,16 +52,16 @@
         name="Purchase Order"
         parent="menu_purchase_order_top_left"
         action="action_purchase_order"/>
-    <menuitem
-        id="menu_purchase_order_line"
-        name="Purchase Order Line"
-        parent="menu_purchase_order_top_left"
-        action="action_purchase_order_line"/>
-    <menuitem
-        id="menu_purchase_order_line_detail"
-        name="Purchase Order Line Detail"
-        parent="menu_purchase_order_top_left"
-        action="action_purchase_order_line_detail"/>
+    <!--<menuitem-->
+        <!--id="menu_purchase_order_line"-->
+        <!--name="Purchase Order Line"-->
+        <!--parent="menu_purchase_order_top_left"-->
+        <!--action="action_purchase_order_line"/>-->
+    <!--<menuitem-->
+        <!--id="menu_purchase_order_line_detail"-->
+        <!--name="Purchase Order Line Detail"-->
+        <!--parent="menu_purchase_order_top_left"-->
+        <!--action="action_purchase_order_line_detail"/>-->
     <!--END CHILD PURCHASE ORDER-->
     <!--PARENT RESOURCE-->
     <menuitem

@@ -25,11 +25,15 @@ class Resource(models.Model):
     contractor_id = fields.Many2one('res.partner', string='Contractor')
     invoice_ids = fields.One2many('outsource.invoice',
                                   'resource_id',
-                                  string="Resources")
+                                  string="Invoices")
     position_history_ids = fields.One2many('outsource.position.history',
                                            'resource_id',
-                                           string="Resources")
+                                           string="Position Histories")
 
+
+    # COMPUTE FIELD REFERENCES
+    # ----------------------------------------------------------
+    _compute_resource_po_id = fields.Many2one('outsource.purchase.order', string='Compute Purchase Order')
 
 class PositionHistory(models.Model):
     _name = 'outsource.position.history'
@@ -47,20 +51,16 @@ class PositionHistory(models.Model):
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
-    po_line_detail_id = fields.Many2one('outsource.purchase.order.line.detail',
-                                          string='Purchase Order Line Detail')
-
     resource_id = fields.Many2one('res.partner',
                                   string='Employee')
 
-    # COMPUTE FIELDS
+    po_line_detail_id = fields.Many2one(
+        'outsource.purchase.order.line.detail',
+        string='Purchase Order Line Detail',
+    )
+
+    # EXPOSE FIELDS
     # ----------------------------------------------------------
     contractor_id = fields.Many2one('res.partner',
-                                    compute='_compute_contractor',
+                                    related='resource_id.contractor_id',
                                     string='Contractor')
-
-
-    @api.one
-    @api.depends('resource_id')
-    def _compute_contractor(self):
-        self.contractor_id = self.resource_id.contractor_id

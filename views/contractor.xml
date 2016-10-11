@@ -42,7 +42,6 @@
                                 <field name="name" default_focus="1" placeholder="Name"/>
                             </h1>
                         </div>
-
                         <group>
                             <group>
                                 <label for="street" string="Address"/>
@@ -56,10 +55,9 @@
                             <group>
                             </group>
                         </group>
-
                         <notebook colspan="4">
                             <page string="Contacts">
-                                <field name="contact_ids" mode="kanban" context="{'default_contractor_id': active_id}">
+                                <field name="contact_ids" mode="kanban">
                                     <kanban>
                                         <field name="name"/>
                                         <field name="job_position"/>
@@ -104,10 +102,10 @@
                                 <field name="po_ids"/>
                             </page>
                             <page string="Resources">
-                                <field name="resource_ids"/>
+                                <field name="resource_ids" context="{'form_view_ref': 'outsource.view_form_resource'}"/>
                             </page>
                             <page string="Positions">
-                                <field name="po_line_detail_ids"/>
+                                <field name="po_line_detail_ids" readonly="0"/>
                             </page>
                         </notebook>
                     </sheet>
@@ -150,6 +148,7 @@
             <field name="name">Contractor</field>
             <field name="res_model">res.partner</field>
             <field name="domain">[('is_contractor','=',True)]</field>
+            <field name="context">{'default_is_contractor': True}</field>
         </record>
 
         <!--Override View-->

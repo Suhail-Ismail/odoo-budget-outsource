@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from .utils import choices_tuple
 from openerp import models, fields, api
-
+from openerp.exceptions import ValidationError
 
 class Contractor(models.Model):
     _inherit = 'res.partner'
@@ -76,6 +76,14 @@ class Contractor(models.Model):
     def _compute_o2m_po_line_detail_ids(self):
         self.po_line_detail_ids = self.mapped('po_ids.po_line_ids.po_line_detail_ids')
 
+
+    # CONSTRAINS
+    # ----------------------------------------------------------
+    @api.constrains('unit_rate_ids')
+    def _check_unit_rate_ids(self):
+        positions = self.unit_rate_ids.mapped('position')
+        if len(positions) != len(set(positions)):
+            raise ValidationError('Position in Unit Rate Must be unique')
 
 class ContractorContact(models.Model):
     _name = 'outsource.contractor.contact'

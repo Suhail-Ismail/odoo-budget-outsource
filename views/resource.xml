@@ -1,88 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <openerp>
-  <data>
-<!--START VIEWS-->
-    <!--Tree View-->
-    <record model="ir.ui.view" id="view_tree_resource">
-        <field name="name">Resource</field>
-        <field name="model">res.partner</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="emp_num"/>
-                <field name="date_of_join"/>
-                <field name="po_line_detail_id"/>
-            </tree>
-        </field>
-    </record>
+    <data>
+    <!--START VIEWS-->
 
-    <!--Unit Price Form View-->
-    <record model="ir.ui.view" id="view_form_resource">
-        <field name="name">Resource</field>
-        <field name="model">res.partner</field>
-        <field name="arch" type="xml">
-            <form name="Resources">
-                <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <!--<button name="toggle_active" type="object" groups="base.group_no_one" class="oe_stat_button" icon="fa-archive">-->
+        <!--Resource Form View-->
+        <record model="ir.ui.view" id="view_form_resource">
+            <field name="name">Resource</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <form name="Resources">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <!--<button name="toggle_active" type="object" groups="base.group_no_one" class="oe_stat_button" icon="fa-archive">-->
                             <!--<field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>-->
-                        <!--</button>-->
-                    </div>
-                    <div class="oe_title">
-                        <h1>
-                            <field name="name" default_focus="1" placeholder="Name"/>
-                        </h1>
-                        <field name="is_outsource_resource" attrs="{'invisible': True}"/>
-                    </div>
-                    <group>
+                            <!--</button>-->
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" default_focus="1" placeholder="Name"/>
+                            </h1>
+                            <!--<field name="is_outsource_resource" attrs="{'invisible': True}"/>-->
+                        </div>
                         <group>
-                            <field name="date_of_join"/>
-                            <field name="emp_num"/>
-                            <field name="agency_ref_num"/>
+                            <group>
+                                <field name="date_of_join"/>
+                                <field name="emp_num"/>
+                                <field name="agency_ref_num"/>
+                            </group>
+                            <group>
+                                <field name="type"/>
+                                <field name="type_class"/>
+                                <field name="has_tool_or_uniform"/>
+                            </group>
                         </group>
                         <group>
-                            <field name="contractor_id"/>
-                            <field name="po_line_detail_id"/>
-                        </group>
-                    </group>
-                    <group>
-                        <group>
-                            <field name="type"/>
-                            <field name="type_class"/>
-                            <field name="has_tool_or_uniform"/>
-                        </group>
-                        <group>
+                            <group>
+                                <field name="contractor_id"/>
+                            </group>
+                            <group>
 
+                            </group>
                         </group>
-                    </group>
-                    <notebook>
-                        <page string="Invoices">
-                            <field name="invoice_ids"/>
-                        </page>
-                        <page string="History">
-                            <field name="position_history_ids">
-                                <tree>
-                                    <field name="po_line_detail_id"/>
-                                    <field name="start_date"/>
-                                    <field name="end_date"/>
-                                    <field name="remarks"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
-<!--END VIEWS-->
+                        <notebook>
+                            <page string="Invoices">
+                                <field name="invoice_ids" readonly="1"/>
+                            </page>
+                            <page string="Position History">
+                                <field name="position_history_ids">
+                                    <tree editable="top">
+                                        <field name="po_line_detail_id"
+                                               domain="[('po_line_id.po_id.contractor_id','=',parent.contractor_id),
+                                                        ('mobilize_status','!=','mobilized')]"/>
+                                        <field name="start_date"/>
+                                        <field name="end_date"/>
+                                        <field name="status"/>
+                                        <field name="remarks"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!--END VIEWS-->
 
-<!--START ACTIONS-->
-    <!--Resource Action-->
+        <!--Resource Tree View-->
+        <record model="ir.ui.view" id="view_tree_resource">
+            <field name="name">Resource</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="contractor_id" domain="[('is_outsource_resource', '=', True)]"/>
+                    <field name="name"/>
+                    <field name="emp_num"/>
+                    <field name="agency_ref_num"/>
+                    <field name="date_of_join"/>
+                    <field name="has_tool_or_uniform"/>
+                </tree>
+            </field>
+        </record>
+        <!--End Resource Tree View-->
+
+        <!--START ACTIONS-->
+        <!--Resource Action-->
         <record model="ir.actions.act_window" id="action_resource">
             <field name="name">Resource</field>
             <field name="res_model">res.partner</field>
             <field name="domain">[('is_outsource_resource','=',True)]</field>
-            <field name="context">{'default_is_outsource_resource': True, 'default_name': 'working'}</field>
+            <field name="context">{'default_is_outsource_resource': True}</field>
         </record>
 
         <record model="ir.actions.act_window.view" id="action_resource_view_form">
@@ -91,8 +98,14 @@
             <field name="view_id" ref="view_form_resource"/>
             <field name="act_window_id" ref="action_resource"/>
         </record>
+        <record model="ir.actions.act_window.view" id="action_resource_view_tree">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_tree_resource"/>
+            <field name="act_window_id" ref="action_resource"/>
+        </record>
+        <!-- End Resource Action-->
+        <!--END ACTIONS-->
 
-<!--END ACTIONS-->
-
-  </data>
+    </data>
 </openerp>

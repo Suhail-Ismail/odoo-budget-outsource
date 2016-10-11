@@ -32,7 +32,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="po_num"/>
-                <field name="contractor_id"/>
+                <field name="contractor_id" domain="[('is_contractor', '=', True)]"/>
                 <field name="type"/>
                 <field name="task_num"/>
                 <field name="status"/>
@@ -98,7 +98,7 @@
                     </div>
                     <group>
                         <group>
-                            <field name="contractor_id"/>
+                            <field name="contractor_id" domain="[('is_contractor', '=', True)]"/>
                             <field name="type"/>
                             <field name="task_num"/>
                             <!--<field name="is_renewed"/>-->
@@ -119,16 +119,15 @@
                     </group>
                     <notebook>
                         <page string="PO Lines">
-                            <field name="po_line_ids"/>
+                            <field name="po_line_ids" context="{'default_po_id': active_id}"/>
                         </page>
                         <page string="PO Line Details">
-                            <field name="po_line_detail_ids"  readonly="0" >
-                                <tree create="false" edit="true">
+                            <field name="po_line_detail_ids" readonly="0" create="false" edit="true">
+                                <tree>
                                     <field name="job_id"/>
                                     <field name="position"/>
                                     <field name="level"/>
                                     <field name="rate"/>
-                                    <!--<field name="revise_rate"/>-->
                                     <field name="division"/>
                                     <field name="section"/>
                                     <field name="director_name"/>
@@ -140,10 +139,11 @@
                             </field>
                         </page>
                         <page string="Approvals">
-                            <field name="approval_ids"/>
+                            <field name="approval_ids" context="{'default_po_id': active_id}"/>
                         </page>
                         <page string="Resources">
-                            <field name="resource_ids"/>
+                            <field name="resource_ids" readonly="0" create="false" edit="true"
+                                   context="{'form_view_ref': 'outsource.view_form_resource'}"/>
                         </page>
 
                         <!--<page string="Renewals">-->
@@ -280,7 +280,7 @@
                         </group>
                         <group>
                             <field name="po_line_id"/>
-                            <field name="approval_ref_num"/>
+                            <!--<field name="approval_ref_num"/>-->
                             <field name="kpi_2016"/>
                         </group>
                         <group>
@@ -294,11 +294,12 @@
                         <page string="History">
                             <field name="position_history_ids">
                                 <tree editable="bottom">
-                                    <field name="resource_id"/>
-                                    <field name="contractor_id"/>
+                                    <field name="resource_id" domain="[('is_outsource_resource', '=', True)]"/>
+                                    <!--<field name="contractor_id" domain="[('is_contractor', '=', True)]"/>-->
                                     <field name="start_date"/>
                                     <field name="end_date"/>
                                     <field name="status"/>
+                                    <field name="remarks"/>
                                 </tree>
                             </field>
                         </page>
