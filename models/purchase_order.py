@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api
+from openerp.exceptions import ValidationError
 from .utils import choices_tuple
-
 
 class PurchaseOrder(models.Model):
     _name = 'outsource.purchase.order'
@@ -13,6 +13,7 @@ class PurchaseOrder(models.Model):
     # CHOICES
     # ----------------------------------------------------------
     STATES = choices_tuple(['active', 'closed'], is_sorted=False)
+    BUDGET_TYPES = choices_tuple(['capex', 'opex', 'revenue'])
 
     # BASIC FIELDS
     # ----------------------------------------------------------
@@ -20,15 +21,16 @@ class PurchaseOrder(models.Model):
 
     # BASIC FIELDS
     # ----------------------------------------------------------
+    budget_type = fields.Selection(BUDGET_TYPES)
     po_num = fields.Char(string='Purchase Order')
-    po_date = fields.Date(string='Starting Date')
+    po_date = fields.Date(string='PO Date')
     po_value = fields.Float(string='PO Value', digits=(32, 2), default=0.00)
     capex_commitment_value = fields.Float(string='CAPEX Commitment', digits=(32, 2), default=0.00)
     capex_expenditure_value = fields.Float(string='CAPEX Expenditure', digits=(32, 2), default=0.00)
     opex_value = fields.Float(string='OPEX Value', digits=(32, 2), default=0.00)
     revenue_value = fields.Float(string='Revenue Value', digits=(32, 2), default=0.00)
     task_num = fields.Char(string='Task Number')
-    status = fields.Char(string='Status')
+    # status = fields.Char(string='Status')
     remarks = fields.Text()
     type = fields.Char(string='Type')
 
@@ -38,14 +40,26 @@ class PurchaseOrder(models.Model):
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
+    # task_ids = fields.One2many('outsource.task', 'po_id', string="Tasks")
     approval_ids = fields.One2many('outsource.approval', 'po_id', string="Approvals")
     po_line_ids = fields.One2many('outsource.purchase.order.line', 'po_id', string="Purchase Order Lines")
-    po_collection_id = fields.Many2one('outsource.purchase.order.collection', string='{PO Collection')
+    invoice_ids = fields.One2many('outsource.invoice', 'po_id', string="Invoices")
+    po_collection_id = fields.Many2one('outsource.purchase.order.collection', string='PO Collection')
     contractor_id = fields.Many2one('res.partner', string='Contractor')
 
     # self reference, one new po to many renewals
     renewed_po_ids = fields.One2many('outsource.purchase.order', 'new_po_id', string="Renewals")
     new_po_id = fields.Many2one('outsource.purchase.order', string='Renewed PO')
+
+    # CONSTRAINTS
+    # ----------------------------------------------------------
+    _sql_constraints = [
+        (
+            '_uniq_po_num',
+            'UNIQUE(po_num)',
+            'PO Number must be unqiue!',
+            ),
+    ]
 
     # COMPUTE FIELDS
     # ----------------------------------------------------------
@@ -127,10 +141,15 @@ class PurchaseOrder(models.Model):
 
     @api.multi
     def write(self, values):
+        # disable edit when record is close
+        if self.state == 'closed':
+            raise ValidationError("PO can't be edited once close")
+        # Links Previous PO to new_po
         new_po_id = values.get('new_po_id', False)
         if new_po_id:
             values['po_collection_id'] = self.new_po_id.po_collection_id.id
         return super(PurchaseOrder, self).write(values)
+
 
 class PurchaseOrderLine(models.Model):
     _name = 'outsource.purchase.order.line'

@@ -26,10 +26,8 @@
 
     # always loaded
     'data': [
-        'data/contractor.xml',
-        'data/outsource.unit.rate.csv',
-        'data/outsource.approval.csv',
-        'data/outsource.required.team.csv',
+        'security/outsource.xml',
+        'security/ir.model.access.csv',
 
         'views/purchase_order.xml',
         'views/purchase_order_collection.xml',
@@ -40,11 +38,17 @@
         'views/invoice.xml',
 
         'views/menu.xml',
-
-        'security/outsource.xml',
-        'security/ir.model.access.csv'
     ],
     # only loaded in demonstration mode
     'demo': [
+        'data/contractor.xml',
+        'data/outsource.unit.rate.csv',
+        'data/outsource.approval.csv',
+        'data/outsource.required.team.csv',
+        'data/outsource.purchase.order.csv',
+        'data/outsource.purchase.order.line.csv',
+        'data/outsource.purchase.order.line.detail.csv',
+        'data/res.partner.csv'
+
     ],
 }

@@ -28,6 +28,9 @@ class Contractor(models.Model):
     contact_ids = fields.One2many('outsource.contractor.contact',
                              'contractor_id',
                              string="Contacts")
+    invoice_ids = fields.One2many('outsource.invoice',
+                             'contractor_id',
+                             string="Resources")
     # COMPUTE FIELDS
     # ----------------------------------------------------------
     total_approval = fields.Integer(compute='_compute_total_approval')

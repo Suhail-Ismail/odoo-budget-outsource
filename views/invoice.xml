@@ -1,69 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <openerp>
-  <data>
-<!--START ACTIONS-->
-    <!--Invoice Action-->
-    <record model="ir.actions.act_window" id="action_invoice">
-        <field name="name">Unit Rate</field>
-        <field name="res_model">outsource.invoice</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-<!--END ACTIONS-->
+    <data>
+        <!--START VIEWS-->
+        <!--Invoice Tree View-->
+        <record model="ir.ui.view" id="view_tree_invoice">
+            <field name="name">Unit Rate</field>
+            <field name="model">outsource.invoice</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="contractor_id"/>
+                    <field name="invoice_num"/>
+                    <field name="invoice_date"/>
+                    <field name="period_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <!--End Invoice Tree View-->
 
-<!--START SEARCH-->
-    <!--<record model="ir.ui.view" id="search_invoice">-->
-        <!--<field name="name">Unit Rate</field>-->
-        <!--<field name="model">outsource.invoice</field>-->
-        <!--<field name="arch" type="xml">-->
-            <!--<search>-->
-                <!--<field name="contractor"/>-->
-                <!--<field name="position"/>-->
-                <!--<field name="level"/>-->
-                <!--<field name="amount"/>-->
-                <!--<field name="percent"/>-->
-            <!--</search>-->
-        <!--</field>-->
-    <!--</record>-->
-<!--END SEARCH-->
+        <!--Invoice Form View-->
+        <record model="ir.ui.view" id="view_form_invoice">
+            <field name="name">Invoice</field>
+            <field name="model">outsource.invoice</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button
+                            string="Create Invoice Details"
+                            name="set2created_invoice_details"
+                            type="object"
+                            states="draft"/>
+                        <button
+                            string="Proceed Invoicing"
+                            name="set2close"
+                            type="object"
+                            states="invoice line created" />                        <!--groups="academy.group_manager,base.group_no_one"/>                    -->
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="action"
+                                icon="fa-users">
+                                0
+                                <!--<field string="Resource" name="total_resource" widget="statinfo"/>-->
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="invoice_num" class="oe_edit_only"/>
+                            <h1>
+                                <field name="invoice_num" class="oe_inline"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="invoice_date"/>
+                                <field name="period_id"/>
+                                <field name="required_hours" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="contractor_id" domain="[('is_contractor','=',True)]"/>
+                                <field name="po_id" domain="[('contractor_id','=',contractor_id)]"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Resource">
+                                <field name="resource_ids" domain="[('is_outsource_resource','=',True)]">
+                                    <!--<tree>-->
+                                        <!--<field name="resource_id"/>-->
+                                        <!--<field name="invoice_hour"/>-->
+                                        <!--<field name="invoice_claim"/>-->
+                                        <!--<field name="invoice_cert_amount"/>-->
+                                        <!--<field name="remarks"/>-->
+                                    <!--</tree>-->
+                                </field>
+                            </page>
+                            <page string="Invoice Details">
+                                <field name="invoice_line_ids">
+                                    <tree editable="true" create="false" edit="true">
+                                        <field name="resource_id"/>
+                                        <field name="invoice_hour"/>
+                                        <field name="invoice_claim"/>
+                                        <field name="invoice_cert_amount"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!--End Invoice Form View-->
 
+        <!--Period Tree View-->
+        <record model="ir.ui.view" id="view_tree_period">
+            <field name="name">Period</field>
+            <field name="model">outsource.invoice.period</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="period_start"/>
+                    <field name="period_end"/>
+                    <field name="ramadan_start"/>
+                    <field name="ramadan_end"/>
+                    <field name="remarks"/>
+                </tree>
+            </field>
+        </record>
+        <!--End Invoice Tree View-->
 
-<!--START VIEWS-->
-    <!--Tree View-->
-    <record model="ir.ui.view" id="view_tree_invoice">
-        <field name="name">Unit Rate</field>
-        <field name="model">outsource.invoice</field>
-        <field name="arch" type="xml">
-            <tree editable="bottom">
-                <field name="invoice_date"/>
-                <field name="invoice_hour"/>
-                <field name="invoice_claim"/>
-                <field name="invoice_cert_amount"/>
-                <field name="remarks"/>
-            </tree>
-        </field>
-    </record>
+        <!--Period Form View-->
+        <record model="ir.ui.view" id="view_form_period">
+            <field name="name">Period</field>
+            <field name="model">outsource.invoice.period</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="period_start"/>
+                                <field name="period_end"/>
+                            </group>
+                            <group>
+                                <field name="ramadan_start"/>
+                                <field name="ramadan_end"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="remarks"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-    <!--Unit Price Form View-->
-    <record model="ir.ui.view" id="view_form_invoice">
-        <field name="name">Unit Price</field>
-        <field name="model">outsource.invoice</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                <field name="invoice_date"/>
-                <field name="invoice_hour"/>
-                <field name="invoice_claim"/>
-                <field name="invoice_cert_amount"/>
-                <field name="remarks"/>
+        <!--END VIEWS-->
+
+        <!--START SEARCH-->
+        <record model="ir.ui.view" id="search_invoice">
+            <field name="name">Invoice</field>
+            <field name="model">outsource.invoice</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="contractor_id"/>
+                    <field name="invoice_num"/>
+                    <field name="state"/>
+                    <filter
+                        name="filter_state"
+                        string="Need Action"
+                        domain="[('state', 'in', ['draft', 'invoice line created'])]"/>
+                    <group string="Group by">
+                        <filter
+                            name="group_contractor"
+                            string="By Contractor"
+                            context="{'group_by': 'contractor_id'}"/>
                     </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
+                </search>
+            </field>
+        </record>
+        <!--END SEARCH-->
 
-<!--END VIEWS-->
+        <!--START ACTIONS-->
+        <!--Invoice Action-->
+        <record model="ir.actions.act_window" id="action_invoice">
+            <field name="name">Invoice</field>
+            <field name="res_model">outsource.invoice</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_filter_state': 1}</field>
 
-  </data>
+        </record>
+        <!--END ACTIONS-->
+
+    </data>
 </openerp>

@@ -52,16 +52,18 @@
         name="Purchase Order"
         parent="menu_purchase_order_top_left"
         action="action_purchase_order"/>
-    <!--<menuitem-->
-        <!--id="menu_purchase_order_line"-->
-        <!--name="Purchase Order Line"-->
-        <!--parent="menu_purchase_order_top_left"-->
-        <!--action="action_purchase_order_line"/>-->
-    <!--<menuitem-->
-        <!--id="menu_purchase_order_line_detail"-->
-        <!--name="Purchase Order Line Detail"-->
-        <!--parent="menu_purchase_order_top_left"-->
-        <!--action="action_purchase_order_line_detail"/>-->
+    <menuitem
+        id="menu_purchase_order_line"
+        name="Purchase Order Line"
+        parent="menu_purchase_order_top_left"
+        action="action_purchase_order_line"
+        groups="outsource.group_outsource_manager"/>
+    <menuitem
+        id="menu_purchase_order_line_detail"
+        name="Purchase Order Line Detail"
+        parent="menu_purchase_order_top_left"
+        action="action_purchase_order_line_detail"
+        groups="outsource.group_outsource_manager"/>
     <!--END CHILD PURCHASE ORDER-->
     <!--PARENT RESOURCE-->
     <menuitem

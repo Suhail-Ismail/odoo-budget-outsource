@@ -7,10 +7,15 @@ class Resource(models.Model):
     _rec_name = 'name'
     _description = 'Resource'
 
+    # CHOICES
+    # ----------------------------------------------------------
+    STATES = choices_tuple(['active', 'closed'], is_sorted=False)
+
     # BASIC FIELDS
     # ----------------------------------------------------------
     is_outsource_resource = fields.Boolean(string='is Outsource Resource')
 
+    state = fields.Selection(string='Status', selection=STATES, default='active')
     type = fields.Char(string='Type')
     type_class = fields.Char(string='Type Class')
     agency_ref_num = fields.Char(string='Agency Reference')
@@ -23,8 +28,8 @@ class Resource(models.Model):
     # ----------------------------------------------------------
     po_line_detail_id = fields.Many2one('outsource.purchase.order.line.detail', string='Line Detail')
     contractor_id = fields.Many2one('res.partner', string='Contractor')
-    invoice_ids = fields.One2many('outsource.invoice',
-                                  'resource_id',
+    invoice_ids = fields.Many2many('outsource.invoice',
+                                   relation='invoice_resource_rel',
                                   string="Invoices")
     position_history_ids = fields.One2many('outsource.position.history',
                                            'resource_id',

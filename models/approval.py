@@ -95,6 +95,8 @@ class Approval(models.Model):
         elif self.objective == 3: # For Addendum
             self.update_po_related_objects()
 
+        self.state = 'received purchase order'
+
     @api.one
     def create_po_related_objects(self):
         """
@@ -119,7 +121,6 @@ class Approval(models.Model):
                                     'po_line_detail_ids': detail_list
                                 })],
         })
-        self.state = 'received purchase order'
         self.env['outsource.purchase.order.collection'].create({'po_ids' : [(4, po.id)]})
 
     @api.one
@@ -159,7 +160,6 @@ class Approval(models.Model):
         renewed_po.po_collection_id.write({
             'po_ids': [(4, po.id)]
         })
-        self.state = 'received purchase order'
 
     @api.one
     def update_po_related_objects(self):
@@ -180,16 +180,20 @@ class Approval(models.Model):
             })],
         })
 
-        self.state = 'received purchase order'
-
-    # CONSTRAINS
-    # ----------------------------------------------------------
+    # # CONSTRAINS
+    # # ----------------------------------------------------------
     # @api.one
     # @api.constrains('state')
-    # def _check_description(self):
+    # def _check_state(self):
     #     if self.state == 'received purchase order':
-    #         raise ValidationError("Edit is not allowed when PO arrived")
+    #         raise ValidationError("PO has been received edit is not allowed")
 
+    # Prevents Editing After Approval state is 'received purchase order'
+    # @api.multi
+    # def write(self, values):
+    #     if self.state == 'received purchase order':
+    #         raise ValidationError("PO has been received edit is not allowed")
+    #     return super(Approval, self).write(values)
 
 class RequiredTeam(models.Model):
     _name = 'outsource.required.team'

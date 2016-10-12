@@ -1,315 +1,342 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <openerp>
-  <data>
-<!--START ACTIONS-->
-    <!--Purchase Order Action-->
-    <act_window
-        id="action_purchase_order"
-        name="Purchase Order"
-        res_model="outsource.purchase.order"
-        view_mode="tree,form,pivot,graph"/>
+    <data>
+        <!--START PURCHASE ORDER VIEWS-->
+        <!--Purchase Order Tree View-->
+        <record model="ir.ui.view" id="view_tree_purchase_order">
+            <field name="name">Purchase Order</field>
+            <field name="model">outsource.purchase.order</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="po_num"/>
+                    <field name="contractor_id" domain="[('is_contractor', '=', True)]"/>
+                    <field name="type"/>
+                    <field name="task_num"/>
+                    <field name="po_date"/>
+                    <field name="po_value"/>
+                    <field name="capex_commitment_value"/>
+                    <field name="capex_expenditure_value"/>
+                    <field name="opex_value"/>
+                    <field name="revenue_value"/>
+                    <field name="remarks"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
 
-    <!--Purchase Order Line Action-->
-    <act_window
-        id="action_purchase_order_line"
-        name="Purchase Order Line"
-        res_model="outsource.purchase.order.line" />
-
-    <!--Purchase Order Line Details Action-->
-    <act_window
-        id="action_purchase_order_line_detail"
-        name="Purchase Order Line Detail"
-        res_model="outsource.purchase.order.line.detail"/>
-
-<!--END ACTIONS-->
-
-<!--START PURCHASE ORDER VIEWS-->
-    <!--Purchase Order Tree View-->
-    <record model="ir.ui.view" id="view_tree_purchase_order">
-        <field name="name">Purchase Order</field>
-        <field name="model">outsource.purchase.order</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="po_num"/>
-                <field name="contractor_id" domain="[('is_contractor', '=', True)]"/>
-                <field name="type"/>
-                <field name="task_num"/>
-                <field name="status"/>
-                <field name="po_date"/>
-                <field name="po_value"/>
-                <field name="capex_commitment_value"/>
-                <field name="capex_expenditure_value"/>
-                <field name="opex_value"/>
-                <field name="revenue_value"/>
-                <field name="remarks"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-
-    <!--Purchase Order Form View-->
-    <record model="ir.ui.view" id="view_form_purchase_order">
-        <field name="name">Purchase Order</field>
-        <field name="model">outsource.purchase.order</field>
-        <field name="arch" type="xml">
-            <form>
-                <header>
-                    <button
-                        string="Close Purchase Order"
-                        name="set2close"
-                        type="object"
-                        states="active,done" />
-                        <!--groups="academy.group_manager,base.group_no_one"/>                    -->
-                    <field name="state" widget="statusbar"/>
-                </header>
-                <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" type="action"
-                            icon="fa-star">
-                            <field string="Approvals" name="total_approval" widget="statinfo"/>
-                        </button>
-                        <button class="oe_stat_button" type="action"
-                            icon="fa-bars">
-                            <field string="Line" name="total_po_line" widget="statinfo"/>
-                        </button>
-                        <button class="oe_stat_button" type="action"
-                            icon="fa-list-ul">
-                            <field string="Line Details" name="total_po_line_detail" widget="statinfo"/>
-                        </button>
-                        <button class="oe_stat_button" type="action"
-                            icon="fa-check-square-o">
-                            <field string="Invoiced" name="total_invoice" widget="statinfo"/>
-                        </button>
-                        <button class="oe_stat_button" type="action"
-                            icon="fa-users">
-                            <field string="Resource" name="total_resource" widget="statinfo"/>
-                        </button>
-                        <button class="oe_stat_button" type="action"
-                            icon="fa-user-times">
-                            <field string="Non Mobilized" name="total_non_mobilize" widget="statinfo"/>
-                        </button>
-                    </div>
-                    <div class="oe_title">
-                        <label for="po_num" class="oe_edit_only"/>
-                        <h1>
-                            <field name="po_num" class="oe_inline"/>
-                        </h1>
-                    </div>
-                    <group>
+        <!--Purchase Order Form View-->
+        <record model="ir.ui.view" id="view_form_purchase_order">
+            <field name="name">Purchase Order</field>
+            <field name="model">outsource.purchase.order</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button
+                            string="Close Purchase Order"
+                            name="set2close"
+                            type="object"
+                            states="active,done" />
+                            <!--groups="academy.group_manager,base.group_no_one"/>                    -->
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="action"
+                                icon="fa-star">
+                                <field string="Approvals" name="total_approval" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="action"
+                                icon="fa-bars">
+                                <field string="Line" name="total_po_line" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="action"
+                                icon="fa-list-ul">
+                                <field string="Line Details" name="total_po_line_detail" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="action"
+                                icon="fa-check-square-o">
+                                <field string="Invoiced" name="total_invoice" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="action"
+                                icon="fa-users">
+                                <field string="Resource" name="total_resource" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="action"
+                                icon="fa-user-times">
+                                <field string="Non Mobilized" name="total_non_mobilize" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="po_num" class="oe_edit_only"/>
+                            <h1>
+                                <field name="po_num" class="oe_inline"/>
+                            </h1>
+                        </div>
                         <group>
-                            <field name="contractor_id" domain="[('is_contractor', '=', True)]"/>
-                            <field name="type"/>
-                            <field name="task_num"/>
-                            <!--<field name="is_renewed"/>-->
-                            <field name="new_po_id"/>
-                            <field name="status"/>
+                            <group>
+                                <field name="contractor_id" domain="[('is_contractor', '=', True)]"/>
+                                <field name="type"/>
+                                <field name="task_num"/>
+                                <!--<field name="is_renewed"/>-->
+                                <field name="new_po_id"/>
+                            </group>
+                            <group>
+                                <field name="po_date"/>
+                                <field name="po_value"/>
+                                <field name="capex_commitment_value"/>
+                                <field name="capex_expenditure_value"/>
+                                <field name="opex_value"/>
+                                <field name="revenue_value"/>
+                            </group>
                         </group>
                         <group>
-                            <field name="po_date"/>
-                            <field name="po_value"/>
-                            <field name="capex_commitment_value"/>
-                            <field name="capex_expenditure_value"/>
-                            <field name="opex_value"/>
-                            <field name="revenue_value"/>
+                            <field name="remarks"/>
                         </group>
-                    </group>
-                    <group>
-                        <field name="remarks"/>
-                    </group>
-                    <notebook>
-                        <page string="PO Lines">
-                            <field name="po_line_ids" context="{'default_po_id': active_id}"/>
-                        </page>
-                        <page string="PO Line Details">
-                            <field name="po_line_detail_ids" readonly="0" create="false" edit="true">
-                                <tree>
-                                    <field name="job_id"/>
-                                    <field name="position"/>
-                                    <field name="level"/>
-                                    <field name="rate"/>
-                                    <field name="division"/>
-                                    <field name="section"/>
-                                    <field name="director_name"/>
-                                    <field name="capex_percent"/>
-                                    <field name="opex_percent"/>
-                                    <field name="revenue_percent"/>
-                                    <field name="mobilize_status"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Approvals">
-                            <field name="approval_ids" context="{'default_po_id': active_id}"/>
-                        </page>
-                        <page string="Resources">
-                            <field name="resource_ids" readonly="0" create="false" edit="true"
-                                   context="{'form_view_ref': 'outsource.view_form_resource'}"/>
-                        </page>
+                        <notebook>
+                            <page string="PO Lines">
+                                <field name="po_line_ids" context="{'default_po_id': active_id}"/>
+                            </page>
+                            <page string="PO Line Details">
+                                <field name="po_line_detail_ids" readonly="0" create="false" edit="true">
+                                    <tree>
+                                        <field name="job_id"/>
+                                        <field name="position"/>
+                                        <field name="level"/>
+                                        <field name="rate"/>
+                                        <field name="division"/>
+                                        <field name="section"/>
+                                        <field name="director_name"/>
+                                        <field name="capex_percent"/>
+                                        <field name="opex_percent"/>
+                                        <field name="revenue_percent"/>
+                                        <field name="mobilize_status"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Approvals">
+                                <field name="approval_ids" context="{'default_po_id': active_id}"/>
+                            </page>
+                            <page string="Resources">
+                                <field name="resource_ids" readonly="0" create="false" edit="true"
+                                       context="{'form_view_ref': 'outsource.view_form_resource'}"/>
+                            </page>
 
-                        <!--<page string="Renewals">-->
-                            <!--<field name="renewed_po_ids"/>-->
-                        <!--</page>-->
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
+                            <!--<page string="Renewals">-->
+                                <!--<field name="renewed_po_ids"/>-->
+                            <!--</page>-->
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-    <!--Purchase Graph View-->
-    <record model="ir.ui.view" id="view_graph_bar_approval">
-        <field name="name">Purchase Order</field>
-        <field name="model">outsource.purchase.order</field>
-        <field name="arch" type="xml">
-            <graph string="Participations by Courses" type="pie">
-                <field name="po_num"/>
-                <field name="po_value" type="measure"/>
-            </graph>
-        </field>
-    </record>
+        <!--Purchase Graph View-->
+        <record model="ir.ui.view" id="view_graph_bar_approval">
+            <field name="name">Purchase Order</field>
+            <field name="model">outsource.purchase.order</field>
+            <field name="arch" type="xml">
+                <graph string="Participations by Courses" type="pie">
+                    <field name="po_num"/>
+                    <field name="po_value" type="measure"/>
+                </graph>
+            </field>
+        </record>
 
-<!--END PURCHASE ORDER VIEWS-->
+        <!--END PURCHASE ORDER VIEWS-->
 
-<!--START PURCHASE ORDER LINE VIEWS-->
-    <!--Purchase Order Line Tree View-->
-    <record model="ir.ui.view" id="view_tree_purchase_order_line">
-        <field name="name">Purchase Order Line</field>
-        <field name="model">outsource.purchase.order.line</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="po_id"/>
-                <field name="line_num"/>
-                <field name="line_duration"/>
-                <field name="line_value"/>
-                <field name="line_revise_rate"/>
-                <field name="line_rate"/>
-                <field name="line_status"/>
-                <field name="line_actuals"/>
-                <field name="capex_percent"/>
-                <field name="opex_percent"/>
-                <field name="revenue_percent"/>
-            </tree>
-        </field>
-    </record>
+        <!--START PURCHASE ORDER LINE VIEWS-->
+        <!--Purchase Order Line Tree View-->
+        <record model="ir.ui.view" id="view_tree_purchase_order_line">
+            <field name="name">Purchase Order Line</field>
+            <field name="model">outsource.purchase.order.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="po_id"/>
+                    <field name="line_num"/>
+                    <field name="line_duration"/>
+                    <field name="line_value"/>
+                    <field name="line_revise_rate"/>
+                    <field name="line_rate"/>
+                    <field name="line_status"/>
+                    <field name="line_actuals"/>
+                    <field name="capex_percent"/>
+                    <field name="opex_percent"/>
+                    <field name="revenue_percent"/>
+                </tree>
+            </field>
+        </record>
 
-    <!--Purchase Order Line Form View-->
-    <record model="ir.ui.view" id="view_form_purchase_order_line">
-        <field name="name">Purchase Order Line</field>
-        <field name="model">outsource.purchase.order.line</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
+        <!--Purchase Order Line Form View-->
+        <record model="ir.ui.view" id="view_form_purchase_order_line">
+            <field name="name">Purchase Order Line</field>
+            <field name="model">outsource.purchase.order.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
                         <group>
-                            <field name="po_id"/>
-                            <field name="line_num"/>
-                            <field name="line_duration"/>
-                            <field name="line_status"/>
+                            <group>
+                                <field name="po_id"/>
+                                <field name="line_num"/>
+                                <field name="line_duration"/>
+                                <field name="line_status"/>
+                            </group>
+                            <group>
+                                <field name="line_value"/>
+                                <field name="line_revise_rate"/>
+                                <field name="line_rate"/>
+                                <field name="line_actuals"/>
+                            </group>
                         </group>
                         <group>
-                            <field name="line_value"/>
-                            <field name="line_revise_rate"/>
-                            <field name="line_rate"/>
-                            <field name="line_actuals"/>
-                        </group>
-                    </group>
-                    <group>
-                        <field name="capex_percent"/>
-                        <field name="opex_percent"/>
-                        <field name="revenue_percent"/>
-                    </group>
-                    <notebook>
-                        <page string="Line Details">
-                            <field name="po_line_detail_ids"/>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-      </record>
-
-<!--END PURCHASE ORDER LINE VIEWS-->
-
-<!--START PURCHASE ORDER LINE DETAIL VIEWS-->
-    <!--Purchase Order Line Detail Tree View-->
-    <record model="ir.ui.view" id="view_tree_purchase_order_line_detail">
-        <field name="name">Purchase Order Line Detail</field>
-        <field name="model">outsource.purchase.order.line.detail</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="job_id"/>
-                <field name="position"/>
-                <field name="level"/>
-                <field name="rate"/>
-                <!--<field name="revise_rate"/>-->
-                <field name="division"/>
-                <field name="section"/>
-                <field name="director_name"/>
-                <field name="capex_percent"/>
-                <field name="opex_percent"/>
-                <field name="revenue_percent"/>
-                <field name="mobilize_status"/>
-            </tree>
-        </field>
-    </record>
-
-    <!--Purchase Order Line Detail Form View-->
-    <record model="ir.ui.view" id="view_form_purchase_order_line_detail">
-        <field name="name">Purchase Order Line Detail</field>
-        <field name="model">outsource.purchase.order.line.detail</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <div class="oe_title">
-                        <label for="job_id" class="oe_edit_only"/>
-                        <h1>
-                            <field name="job_id" class="oe_inline"/>
-                        </h1>
-                    </div>
-                    <group>
-                        <group>
-                            <field name="position"/>
-                            <field name="level"/>
-                            <field name="rate"/>
-                            <field name="revise_rate"/>
-                        </group>
-                        <group>
-                            <field name="director_name"/>
-                            <field name="division"/>
-                            <field name="section"/>
-                            <field name="sub_section"/>
-                        </group>
-                        <group>
-                            <field name="po_line_id"/>
-                            <!--<field name="approval_ref_num"/>-->
-                            <field name="kpi_2016"/>
-                        </group>
-                        <group>
-                            <field name="rate_diff_percent"/>
                             <field name="capex_percent"/>
                             <field name="opex_percent"/>
                             <field name="revenue_percent"/>
                         </group>
+                        <notebook>
+                            <page string="Line Details">
+                                <field name="po_line_detail_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+          </record>
+
+        <!--END PURCHASE ORDER LINE VIEWS-->
+
+        <!--START PURCHASE ORDER LINE DETAIL VIEWS-->
+        <!--Purchase Order Line Detail Tree View-->
+        <record model="ir.ui.view" id="view_tree_purchase_order_line_detail">
+            <field name="name">Purchase Order Line Detail</field>
+            <field name="model">outsource.purchase.order.line.detail</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="job_id"/>
+                    <field name="position"/>
+                    <field name="level"/>
+                    <field name="rate"/>
+                    <!--<field name="revise_rate"/>-->
+                    <field name="division"/>
+                    <field name="section"/>
+                    <field name="director_name"/>
+                    <field name="capex_percent"/>
+                    <field name="opex_percent"/>
+                    <field name="revenue_percent"/>
+                    <field name="mobilize_status"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Purchase Order Line Detail Form View-->
+        <record model="ir.ui.view" id="view_form_purchase_order_line_detail">
+            <field name="name">Purchase Order Line Detail</field>
+            <field name="model">outsource.purchase.order.line.detail</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="job_id" class="oe_edit_only"/>
+                            <h1>
+                                <field name="job_id" class="oe_inline"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="position"/>
+                                <field name="level"/>
+                                <field name="rate"/>
+                                <field name="revise_rate"/>
+                            </group>
+                            <group>
+                                <field name="director_name"/>
+                                <field name="division"/>
+                                <field name="section"/>
+                                <field name="sub_section"/>
+                            </group>
+                            <group>
+                                <field name="po_line_id"/>
+                                <!--<field name="approval_ref_num"/>-->
+                                <field name="kpi_2016"/>
+                            </group>
+                            <group>
+                                <field name="rate_diff_percent"/>
+                                <field name="capex_percent"/>
+                                <field name="opex_percent"/>
+                                <field name="revenue_percent"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="History">
+                                <field name="position_history_ids">
+                                    <tree editable="bottom">
+                                        <field name="resource_id" domain="[('is_outsource_resource', '=', True)]"/>
+                                        <!--<field name="contractor_id" domain="[('is_contractor', '=', True)]"/>-->
+                                        <field name="start_date"/>
+                                        <field name="end_date"/>
+                                        <field name="status"/>
+                                        <field name="remarks"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--END PURCHASE ORDER LINE DETAIL VIEWS-->
+
+        <!--START SEARCH-->
+        <record model="ir.ui.view" id="search_purchase_order">
+            <field name="name">Purchase Order</field>
+            <field name="model">outsource.purchase.order</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="po_num"/>
+                    <field name="contractor_id"/>
+                    <field name="type"/>
+                    <field name="task_num"/>
+                    <field name="po_date"/>
+                    <field name="state"/>
+                    <filter
+                        name="filter_state"
+                        string="Active"
+                        domain="[('state', '=', 'active')]"/>
+                    <group string="Group by">
+                        <filter
+                            name="group_contractor"
+                            string="By Contractor"
+                            context="{'group_by': 'contractor_id'}"/>
                     </group>
-                    <notebook>
-                        <page string="History">
-                            <field name="position_history_ids">
-                                <tree editable="bottom">
-                                    <field name="resource_id" domain="[('is_outsource_resource', '=', True)]"/>
-                                    <!--<field name="contractor_id" domain="[('is_contractor', '=', True)]"/>-->
-                                    <field name="start_date"/>
-                                    <field name="end_date"/>
-                                    <field name="status"/>
-                                    <field name="remarks"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
+                </search>
+            </field>
+        </record>
+        <!--END SEARCH-->
 
-<!--END PURCHASE ORDER LINE DETAIL VIEWS-->
+        <!--START ACTIONS-->
+        <!--Purchase Order Action-->
+        <record model="ir.actions.act_window" id="action_purchase_order">
+            <field name="name">Purchase Order</field>
+            <field name="res_model">outsource.purchase.order</field>
+            <field name="view_mode">tree,form,pivot,graph</field>
+            <field name="context">{'search_default_filter_state': 1}</field>
+            <!--<field name="domain">['contractor_id','in',[r.id for r in contractor]]</field>-->
+        </record>
 
-</data>
+        <!--Purchase Order Line Action-->
+        <act_window
+            id="action_purchase_order_line"
+            name="Purchase Order Line"
+            res_model="outsource.purchase.order.line" />
+
+        <!--Purchase Order Line Details Action-->
+        <act_window
+            id="action_purchase_order_line_detail"
+            name="Purchase Order Line Detail"
+            res_model="outsource.purchase.order.line.detail"/>
+
+        <!--END ACTIONS-->
+
+    </data>
 </openerp>
