@@ -42,7 +42,7 @@ class PurchaseOrderCollection(models.Model):
     total_approval = fields.Integer(compute='_compute_total_approval')
     total_po_line = fields.Integer(compute='_compute_total_po_line')
     total_po_line_detail = fields.Integer(compute='_compute_total_po_line_detail')
-    total_invoice = fields.Integer(compute='_compute_total_invoice')
+    total_claim = fields.Integer(compute='_compute_total_claim')
     total_resource = fields.Integer(compute='_compute_total_resource')
     total_non_mobilize = fields.Integer(compute='_compute_total_non_mobilize')
 
@@ -138,8 +138,8 @@ class PurchaseOrderCollection(models.Model):
 
     @api.one
     @api.depends('po_ids')
-    def _compute_total_invoice(self):
-        self.total_invoice = 0
+    def _compute_total_claim(self):
+        self.total_claim = 0
 
     @api.one
     @api.depends('po_ids')

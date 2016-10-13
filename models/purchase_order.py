@@ -43,7 +43,7 @@ class PurchaseOrder(models.Model):
     # task_ids = fields.One2many('outsource.task', 'po_id', string="Tasks")
     approval_ids = fields.One2many('outsource.approval', 'po_id', string="Approvals")
     po_line_ids = fields.One2many('outsource.purchase.order.line', 'po_id', string="Purchase Order Lines")
-    invoice_ids = fields.One2many('outsource.invoice', 'po_id', string="Invoices")
+    claim_ids = fields.One2many('outsource.claim', 'po_id', string="Claims")
     po_collection_id = fields.Many2one('outsource.purchase.order.collection', string='PO Collection')
     contractor_id = fields.Many2one('res.partner', string='Contractor')
 
@@ -66,7 +66,7 @@ class PurchaseOrder(models.Model):
     total_approval = fields.Integer(compute='_compute_total_approval', store=True)
     total_po_line = fields.Integer(compute='_compute_total_po_line', store=True)
     total_po_line_detail = fields.Integer(compute='_compute_total_po_line_detail', store=True)
-    total_invoice = fields.Integer(compute='_compute_total_invoice', store=True)
+    total_claim = fields.Integer(compute='_compute_total_claim', store=True)
     total_resource = fields.Integer(compute='_compute_total_resource', store=True)
     total_non_mobilize = fields.Integer(compute='_compute_total_non_mobilize', store=True)
 
@@ -94,9 +94,9 @@ class PurchaseOrder(models.Model):
         self.total_po_line = len(self.mapped('po_line_ids'))
 
     @api.one
-    @api.depends('total_invoice')
-    def _compute_total_invoice(self):
-        self.total_invoice = 0
+    @api.depends('total_claim')
+    def _compute_total_claim(self):
+        self.total_claim = 0
 
     @api.one
     @api.depends('po_line_ids.po_line_detail_ids.position_history_ids.resource_id')

@@ -43,8 +43,8 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Invoices">
-                                <field name="invoice_ids" readonly="1"/>
+                            <page string="Claims">
+                                <field name="claim_ids" readonly="1"/>
                             </page>
                             <page string="Position History">
                                 <field name="position_history_ids">

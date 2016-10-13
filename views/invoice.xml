@@ -3,39 +3,39 @@
 <openerp>
     <data>
         <!--START VIEWS-->
-        <!--Invoice Tree View-->
-        <record model="ir.ui.view" id="view_tree_invoice">
+        <!--Claim Tree View-->
+        <record model="ir.ui.view" id="view_tree_claim">
             <field name="name">Unit Rate</field>
-            <field name="model">outsource.invoice</field>
+            <field name="model">outsource.claim</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="contractor_id"/>
-                    <field name="invoice_num"/>
-                    <field name="invoice_date"/>
+                    <field name="claim_num"/>
+                    <field name="claim_date"/>
                     <field name="period_id"/>
                     <field name="state"/>
                 </tree>
             </field>
         </record>
-        <!--End Invoice Tree View-->
+        <!--End Claim Tree View-->
 
-        <!--Invoice Form View-->
-        <record model="ir.ui.view" id="view_form_invoice">
-            <field name="name">Invoice</field>
-            <field name="model">outsource.invoice</field>
+        <!--Claim Form View-->
+        <record model="ir.ui.view" id="view_form_claim">
+            <field name="name">Claim</field>
+            <field name="model">outsource.claim</field>
             <field name="arch" type="xml">
                 <form>
                     <header>
                         <button
-                            string="Create Invoice Details"
-                            name="set2created_invoice_details"
+                            string="Create Claim Details"
+                            name="set2created_claim_details"
                             type="object"
                             states="draft"/>
                         <button
                             string="Proceed Invoicing"
                             name="set2close"
                             type="object"
-                            states="invoice line created" />                        <!--groups="academy.group_manager,base.group_no_one"/>                    -->
+                            states="claim line created" />                        <!--groups="academy.group_manager,base.group_no_one"/>                    -->
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -47,14 +47,14 @@
                             </button>
                         </div>
                         <div class="oe_title">
-                            <label for="invoice_num" class="oe_edit_only"/>
+                            <label for="claim_num" class="oe_edit_only"/>
                             <h1>
-                                <field name="invoice_num" class="oe_inline"/>
+                                <field name="claim_num" class="oe_inline"/>
                             </h1>
                         </div>
                         <group>
                             <group>
-                                <field name="invoice_date"/>
+                                <field name="claim_date"/>
                                 <field name="period_id"/>
                                 <field name="required_hours" readonly="1"/>
                             </group>
@@ -68,20 +68,20 @@
                                 <field name="resource_ids" domain="[('is_outsource_resource','=',True)]">
                                     <!--<tree>-->
                                         <!--<field name="resource_id"/>-->
-                                        <!--<field name="invoice_hour"/>-->
-                                        <!--<field name="invoice_claim"/>-->
-                                        <!--<field name="invoice_cert_amount"/>-->
+                                        <!--<field name="claim_hour"/>-->
+                                        <!--<field name="claim_claim"/>-->
+                                        <!--<field name="claim_cert_amount"/>-->
                                         <!--<field name="remarks"/>-->
                                     <!--</tree>-->
                                 </field>
                             </page>
-                            <page string="Invoice Details">
-                                <field name="invoice_line_ids">
+                            <page string="Claim Details">
+                                <field name="claim_line_ids">
                                     <tree editable="true" create="false" edit="true">
                                         <field name="resource_id"/>
-                                        <field name="invoice_hour"/>
-                                        <field name="invoice_claim"/>
-                                        <field name="invoice_cert_amount"/>
+                                        <field name="claim_hour"/>
+                                        <field name="claim_claim"/>
+                                        <field name="claim_cert_amount"/>
                                     </tree>
                                 </field>
                             </page>
@@ -90,12 +90,12 @@
                 </form>
             </field>
         </record>
-        <!--End Invoice Form View-->
+        <!--End Claim Form View-->
 
         <!--Period Tree View-->
         <record model="ir.ui.view" id="view_tree_period">
             <field name="name">Period</field>
-            <field name="model">outsource.invoice.period</field>
+            <field name="model">outsource.claim.period</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="period_start"/>
@@ -106,12 +106,12 @@
                 </tree>
             </field>
         </record>
-        <!--End Invoice Tree View-->
+        <!--End Claim Tree View-->
 
         <!--Period Form View-->
         <record model="ir.ui.view" id="view_form_period">
             <field name="name">Period</field>
-            <field name="model">outsource.invoice.period</field>
+            <field name="model">outsource.claim.period</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>
@@ -136,18 +136,18 @@
         <!--END VIEWS-->
 
         <!--START SEARCH-->
-        <record model="ir.ui.view" id="search_invoice">
-            <field name="name">Invoice</field>
-            <field name="model">outsource.invoice</field>
+        <record model="ir.ui.view" id="search_claim">
+            <field name="name">Claim</field>
+            <field name="model">outsource.claim</field>
             <field name="arch" type="xml">
                 <search>
                     <field name="contractor_id"/>
-                    <field name="invoice_num"/>
+                    <field name="claim_num"/>
                     <field name="state"/>
                     <filter
                         name="filter_state"
                         string="Need Action"
-                        domain="[('state', 'in', ['draft', 'invoice line created'])]"/>
+                        domain="[('state', 'in', ['draft', 'claim line created'])]"/>
                     <group string="Group by">
                         <filter
                             name="group_contractor"
@@ -160,10 +160,10 @@
         <!--END SEARCH-->
 
         <!--START ACTIONS-->
-        <!--Invoice Action-->
-        <record model="ir.actions.act_window" id="action_invoice">
-            <field name="name">Invoice</field>
-            <field name="res_model">outsource.invoice</field>
+        <!--Claim Action-->
+        <record model="ir.actions.act_window" id="action_claim">
+            <field name="name">Claim</field>
+            <field name="res_model">outsource.claim</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{'search_default_filter_state': 1}</field>
 

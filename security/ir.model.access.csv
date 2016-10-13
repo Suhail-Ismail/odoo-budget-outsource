@@ -4,9 +4,9 @@ access_required_team_user,outsource.required.team,model_outsource_required_team,
 access_contractor_user,res.partner,model_res_partner,group_outsource_user,1,1,1,0
 access_contractor_contact_user,outsource.contractor.contact,model_outsource_contractor_contact,group_outsource_user,1,1,1,0
 access_unit_rate_user,outsource.unit.rate,model_outsource_unit_rate,group_outsource_user,1,1,1,0
-access_invoice_user,outsource.invoice,model_outsource_invoice,group_outsource_user,1,1,1,0
-access_invoice_line_user,outsource.invoice.line,model_outsource_invoice_line,group_outsource_user,1,1,1,0
-access_invoice_period_user,outsource.invoice.period,model_outsource_invoice_period,group_outsource_user,1,1,1,0
+access_claim_user,outsource.claim,model_outsource_claim,group_outsource_user,1,1,1,0
+access_claim_line_user,outsource.claim.line,model_outsource_claim_line,group_outsource_user,1,1,1,0
+access_claim_period_user,outsource.claim.period,model_outsource_claim_period,group_outsource_user,1,1,1,0
 access_purchase_order_user,outsource.purchase.order,model_outsource_purchase_order,group_outsource_user,1,1,1,0
 access_purchase_order_line_user,outsource.purchase.order.line,model_outsource_purchase_order_line,group_outsource_user,1,1,1,0
 access_purchase_order_line_detail_user,outsource.purchase.order.line.detail,model_outsource_purchase_order_line_detail,group_outsource_user,1,1,1,0
@@ -18,9 +18,9 @@ access_required_team_manager,outsource.required.team,model_outsource_required_te
 access_contractor_manager,res.partner,model_res_partner,group_outsource_manager,1,1,1,1
 access_contractor_contact_manager,outsource.contractor.contact,model_outsource_contractor_contact,group_outsource_manager,1,1,1,1
 access_unit_rate_manager,outsource.unit.rate,model_outsource_unit_rate,group_outsource_manager,1,1,1,1
-access_invoice_manager,outsource.invoice,model_outsource_invoice,group_outsource_manager,1,1,1,1
-access_invoice_line_manager,outsource.invoice.line,model_outsource_invoice_line,group_outsource_manager,1,1,1,1
-access_invoice_period_manager,outsource.invoice.period,model_outsource_invoice_period,group_outsource_manager,1,1,1,1
+access_claim_manager,outsource.claim,model_outsource_claim,group_outsource_manager,1,1,1,1
+access_claim_line_manager,outsource.claim.line,model_outsource_claim_line,group_outsource_manager,1,1,1,1
+access_claim_period_manager,outsource.claim.period,model_outsource_claim_period,group_outsource_manager,1,1,1,1
 access_purchase_order_manager,outsource.purchase.order,model_outsource_purchase_order,group_outsource_manager,1,1,1,1
 access_purchase_order_line_manager,outsource.purchase.order.line,model_outsource_purchase_order_line,group_outsource_manager,1,1,1,1
 access_purchase_order_line_detail_manager,outsource.purchase.order.line.detail,model_outsource_purchase_order_line_detail,group_outsource_manager,1,1,1,1

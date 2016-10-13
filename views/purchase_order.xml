@@ -56,7 +56,7 @@
                             </button>
                             <button class="oe_stat_button" type="action"
                                 icon="fa-check-square-o">
-                                <field string="Invoiced" name="total_invoice" widget="statinfo"/>
+                                <field string="Claims" name="total_claim" widget="statinfo"/>
                             </button>
                             <button class="oe_stat_button" type="action"
                                 icon="fa-users">

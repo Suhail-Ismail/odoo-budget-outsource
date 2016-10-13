@@ -72,10 +72,10 @@
         parent="menu_outsourcing_top"/>
     <!--CHILD RESOURCE-->
     <menuitem
-        id="menu_invoice"
-        name="Invoice"
+        id="menu_claim"
+        name="Claim"
         parent="menu_resource_top_left"
-        action="action_invoice"
+        action="action_claim"
         sequence="1"/>
     <menuitem
         id="menu_resource"

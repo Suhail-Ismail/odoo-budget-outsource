@@ -2,31 +2,31 @@
 from .utils import choices_tuple
 from openerp import models, fields, api
 
-class Invoice(models.Model):
-    _name = 'outsource.invoice'
-    _rec_name = 'invoice_num'
+class Claim(models.Model):
+    _name = 'outsource.claim'
+    _rec_name = 'claim_num'
 
     # CHOICES
     # ----------------------------------------------------------
-    STATES = choices_tuple(['draft', 'invoice line created', 'closed'], is_sorted=False)
+    STATES = choices_tuple(['draft', 'claim line created', 'closed'], is_sorted=False)
 
     # BASIC FIELDS
     # ----------------------------------------------------------
     state = fields.Selection(STATES, default='draft')
 
-    invoice_num = fields.Char(string='Invoice Number')
-    invoice_date = fields.Date(string='Invoice Date')
+    claim_num = fields.Char(string='Claim Number')
+    claim_date = fields.Date(string='Claim Date')
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
     contractor_id = fields.Many2one('res.partner', string='Contractor')
     po_id = fields.Many2one('outsource.purchase.order', string='Purchase Order')
-    period_id = fields.Many2one('outsource.invoice.period', string='Period')
-    invoice_line_ids = fields.One2many('outsource.invoice.line',
-                                           'invoice_id',
-                                           string="Invoice Lines")
+    period_id = fields.Many2one('outsource.claim.period', string='Period')
+    claim_line_ids = fields.One2many('outsource.claim.line',
+                                           'claim_id',
+                                           string="claim Lines")
     resource_ids = fields.Many2many('res.partner',
-                                     relation='invoice_resource_rel',
+                                     relation='claim_resource_rel',
                                         string="Resources")
 
     # RELATED FIELDS
@@ -38,19 +38,19 @@ class Invoice(models.Model):
         pass
 
     @api.one
-    def set2created_invoice_details(self):
+    def set2created_claim_details(self):
         for resource_id in self.resource_ids:
-            self.env['outsource.invoice.line'].create({
+            self.env['outsource.claim.line'].create({
                 'resource_id': resource_id.id,
-                'invoice_id': self.id,
-                'invoice_hour': self.required_hours,
-                'invoice_claim': self.required_hours,
+                'claim_id': self.id,
+                'claim_hour': self.required_hours,
+                'claim_claim': self.required_hours,
             })
 
-            self.state = 'invoice line created'
+            self.state = 'claim line created'
 
-class InvoiceLine(models.Model):
-    _name = 'outsource.invoice.line'
+class claimLine(models.Model):
+    _name = 'outsource.claim.line'
     _rec_name = 'resource_id'
 
     # CHOICES
@@ -61,19 +61,19 @@ class InvoiceLine(models.Model):
     # ----------------------------------------------------------
     state = fields.Selection(STATES, default='active')
 
-    invoice_hour = fields.Float(string='Invoice Hour', digits=(32, 2), default=0.00)
-    invoice_claim = fields.Float(string='Invoice Claim', digits=(32, 2), default=0.00)
-    invoice_cert_amount = fields.Float(string='Certified Amount', digits=(32, 2), default=0.00)
+    claim_hour = fields.Float(string='claim Hour', digits=(32, 2), default=0.00)
+    claim_claim = fields.Float(string='claim Claim', digits=(32, 2), default=0.00)
+    claim_cert_amount = fields.Float(string='Certified Amount', digits=(32, 2), default=0.00)
     remarks = fields.Text()
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
     resource_id = fields.Many2one('res.partner', string='Resource')
-    invoice_id = fields.Many2one('outsource.invoice', string='Invoice')
+    claim_id = fields.Many2one('outsource.claim', string='claim')
 
 
 class Period(models.Model):
-    _name = 'outsource.invoice.period'
+    _name = 'outsource.claim.period'
 
     @api.multi
     def name_get(self):
@@ -96,9 +96,9 @@ class Period(models.Model):
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
-    invoice_ids = fields.One2many('outsource.invoice',
+    claim_ids = fields.One2many('outsource.claim',
                                   'period_id',
-                                  string="Invoices")
+                                  string="claims")
 
     # COMPUTED FIELDS
     # ----------------------------------------------------------

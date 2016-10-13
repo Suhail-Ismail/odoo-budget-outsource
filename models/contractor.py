@@ -28,7 +28,7 @@ class Contractor(models.Model):
     contact_ids = fields.One2many('outsource.contractor.contact',
                              'contractor_id',
                              string="Contacts")
-    invoice_ids = fields.One2many('outsource.invoice',
+    claim_ids = fields.One2many('outsource.claim',
                              'contractor_id',
                              string="Resources")
     # COMPUTE FIELDS
@@ -38,7 +38,7 @@ class Contractor(models.Model):
     total_resource = fields.Integer(compute='_compute_total_resource')
     total_po_line_detail = fields.Integer(compute='_compute_total_po_line_detail')
     total_non_mobilize = fields.Integer(compute='_compute_total_non_mobilize')
-    total_invoice = fields.Integer(compute='_compute_total_invoice')
+    total_claim = fields.Integer(compute='_compute_total_claim')
     po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
                                          compute="_compute_o2m_po_line_detail_ids",
                                          )
@@ -60,9 +60,9 @@ class Contractor(models.Model):
         self.total_po_line_detail = len(self.mapped('po_ids.po_line_ids.po_line_detail_ids'))
 
     @api.one
-#    @api.depends('invoice_ids')
-    def _compute_total_invoice(self):
-        self.total_invoice = 0
+#    @api.depends('claim_ids')
+    def _compute_total_claim(self):
+        self.total_claim = 0
 
     @api.one
     @api.depends('po_ids')
