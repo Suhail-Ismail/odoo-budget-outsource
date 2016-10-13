@@ -12,7 +12,7 @@ access_purchase_order_line_user,outsource.purchase.order.line,model_outsource_pu
 access_purchase_order_line_detail_user,outsource.purchase.order.line.detail,model_outsource_purchase_order_line_detail,group_outsource_user,1,1,1,0
 access_collection_user,outsource.purchase.order.collection,model_outsource_purchase_order_collection,group_outsource_user,1,1,1,0
 access_resource_user,outsource.resource,model_res_partner,group_outsource_user,1,1,1,0
-access_position_history_user,outsource.position.history,model_outsource_position_history,group_outsource_user,1,1,1,0
+access_position_history_user,outsource.position.history,model_outsource_position_history,group_outsource_manager,1,1,1,1
 access_approval_manager,outsource.approval,model_outsource_approval,group_outsource_manager,1,1,1,1
 access_required_team_manager,outsource.required.team,model_outsource_required_team,group_outsource_manager,1,1,1,1
 access_contractor_manager,res.partner,model_res_partner,group_outsource_manager,1,1,1,1

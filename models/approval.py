@@ -112,7 +112,6 @@ class Approval(models.Model):
                                 'po_num': self.po_temp,
                                 'contractor_id': self.contractor_id.id,
                                 'task_num': 'TEST',
-                                'status': 'TEST',
                                 'type': 'TEST',
                                 'approval_ids': [(4, self.id)],
                                 'po_line_ids': [(0, 0, {
@@ -144,7 +143,6 @@ class Approval(models.Model):
                                 'po_num': self.po_temp,
                                 'contractor_id': self.contractor_id.id,
                                 'task_num': 'TEST',
-                                'status': 'TEST',
                                 'type': 'TEST',
                                 'po_line_ids': [(0, 0, {
                                     'line_num': '1',

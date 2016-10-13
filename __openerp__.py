@@ -28,6 +28,8 @@
     'data': [
         'security/outsource.xml',
         'security/ir.model.access.csv',
+        'security/approval_security.xml',
+        'security/purchase_order_security.xml',
 
         'views/purchase_order.xml',
         'views/purchase_order_collection.xml',

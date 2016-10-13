@@ -141,9 +141,6 @@ class PurchaseOrder(models.Model):
 
     @api.multi
     def write(self, values):
-        # disable edit when record is close
-        if self.state == 'closed':
-            raise ValidationError("PO can't be edited once close")
         # Links Previous PO to new_po
         new_po_id = values.get('new_po_id', False)
         if new_po_id:
