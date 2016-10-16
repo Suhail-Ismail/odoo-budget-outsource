@@ -5,7 +5,7 @@
         <record model="ir.rule" id="approval_edit_user">
             <field name="name">Approval: Disallow User to Edit Open approvals</field>
             <field name="model_id" ref="model_outsource_approval"/>
-            <field name="groups" eval="[(4,ref('outsource.group_outsource_user'))]"/>
+            <field name="groups" eval="[(4,ref('group_outsource_user'))]"/>
             <field name="domain_force">[('state', '!=', 'received purchase order')]</field>
             <field name="perm_read" eval="0"/>
             <field name="perm_write" eval="1"/>

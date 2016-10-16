@@ -1,32 +1,30 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "outsource",
-
-    'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
-
-    'description': """
-        Long description of module's purpose
-    """,
-    'application': True,
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
-    # for the full list
-    'category': 'tbpc',
+    'name': "Outsource",
     'version': '0.1',
+    'summary': 'Outsource Management',
+    'sequence': 4,
+    'description': """
+Odoo Module
+===========
+Specifically Designed for Etisalat-TBPC
 
-    # any module necessary for this one to work correctly
-    'depends': ['base',
-                'mail',
-                ],
-
-    # always loaded
+Outsource Management
+---------------------
+- Approval
+- Claim
+- Contractor
+- Contractor Contact
+- Purchase Order
+- Resource
+- Unit Rate
+    """,
+    'author': "Marc Philippe de Villeres",
+    'website': "https://github.com/mpdevilleres",
+    'category': 'TBPC Budget',
+    'depends': ['budget_contractor'],
     'data': [
-        'security/outsource.xml',
+        'security/budget_outsource.xml',
         'security/ir.model.access.csv',
         'security/approval_security.xml',
         'security/purchase_order_security.xml',
@@ -41,7 +39,6 @@
 
         'views/menu.xml',
     ],
-    # only loaded in demonstration mode
     'demo': [
         'data/contractor.xml',
         'data/outsource.unit.rate.csv',
@@ -51,6 +48,8 @@
         'data/outsource.purchase.order.line.csv',
         'data/outsource.purchase.order.line.detail.csv',
         'data/res.partner.csv'
-
     ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
 }
