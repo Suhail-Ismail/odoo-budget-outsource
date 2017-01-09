@@ -14,7 +14,7 @@
         id="menu_contractor_top_left"
         name="Contractor"
         parent="menu_outsourcing_top"
-        action="action_contractor"
+        action="budget_contractor.action_contractor"
         sequence="1"/>
     <!--CHILD CONTRACTOR-->
     <!--<menuitem-->

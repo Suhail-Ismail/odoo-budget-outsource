@@ -8,7 +8,7 @@ class PurchaseOrderCollection(models.Model):
     _rec_name = 'po_num'
     _description = 'Purchase Order Collection'
     # _order = 'po_date desc, po_num'
-    _inherit = ['mail.thread', 'ir.needaction_mixin']
+    # _inherit = ['mail.thread', 'ir.needaction_mixin']
 
     # CHOICES
     # ----------------------------------------------------------
@@ -35,7 +35,6 @@ class PurchaseOrderCollection(models.Model):
     opex_value = fields.Float(compute='_compute_opex_value', string='OPEX Value', digits=(32, 2))
     revenue_value = fields.Float(compute='_compute_revenue_value', string='Revenue Value', digits=(32, 2))
     task_num = fields.Char(compute='_compute_task_num', string='Task Number')
-    status = fields.Char(compute='_compute_status', string='Status')
     remarks = fields.Text(compute='_compute_remarks')
     type = fields.Char(compute='_compute_type', string='Type')
 
@@ -107,12 +106,6 @@ class PurchaseOrderCollection(models.Model):
     def _compute_task_num(self):
         if self.po_ids:
             self.task_num = self.mapped('po_ids.task_num')[-1]
-
-    @api.one
-    @api.depends('po_ids')
-    def _compute_status(self):
-        if self.po_ids:
-            self.status = self.mapped('po_ids.status')[-1]
 
     @api.one
     @api.depends('po_ids')

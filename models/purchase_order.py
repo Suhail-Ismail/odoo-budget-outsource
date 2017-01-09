@@ -193,7 +193,6 @@ class PurchaseOrderLineDetail(models.Model):
     rate = fields.Float(string='Rate', digits=(32, 2), default=0.00)
     revise_rate = fields.Float(string='Revise Rate', digits=(32, 2), default=0.00)
     division = fields.Char(string='Division')
-    section = fields.Char(string='Section')
     sub_section = fields.Char(string='Sub Section')
     director_name = fields.Char(string='Director Name')
     frozen_status = fields.Char(string='Frozen Status')
@@ -207,6 +206,7 @@ class PurchaseOrderLineDetail(models.Model):
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
+    section_id = fields.Many2one('res.partner', string='Section', domain=[('is_budget_section', '=', True)])
     po_line_id = fields.Many2one('outsource.purchase.order.line', string='Purchase Order Line')
     resource_ids = fields.One2many('res.partner',
                              'po_line_detail_id',

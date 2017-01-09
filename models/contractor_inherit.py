@@ -1,15 +1,9 @@
 # -*- coding: utf-8 -*-
-from .utils import choices_tuple
-from openerp import models, fields, api
-from openerp.exceptions import ValidationError
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 class Contractor(models.Model):
     _inherit = 'res.partner'
-    _rec_name = 'name'
-    _description = 'Contractor'
-
-    alias = fields.Char(string="Alias")
-    is_contractor = fields.Boolean(string="Contractor")
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
@@ -25,9 +19,6 @@ class Contractor(models.Model):
     resource_ids = fields.One2many('res.partner',
                              'contractor_id',
                              string="Resources")
-    contact_ids = fields.One2many('outsource.contractor.contact',
-                             'contractor_id',
-                             string="Contacts")
     claim_ids = fields.One2many('outsource.claim',
                              'contractor_id',
                              string="Resources")
@@ -88,43 +79,4 @@ class Contractor(models.Model):
         if len(positions) != len(set(positions)):
             raise ValidationError('Position in Unit Rate Must be unique')
 
-class ContractorContact(models.Model):
-    _name = 'outsource.contractor.contact'
-    _rec_name = 'name'
-    _order = 'name'
-    _description = 'Contractor Contact'
 
-    # BASIC FIELDS
-    # ----------------------------------------------------------
-    name = fields.Char(string="Name")
-    job_position = fields.Char(string="Position")
-    is_spoc = fields.Boolean(string="Is SPOC")
-    phone = fields.Char(string="Phone")
-    mobile = fields.Char(string="Mobile")
-    email = fields.Char(string="E-Mail")
-
-    # RELATIONSHIPS
-    # ----------------------------------------------------------
-    contractor_id = fields.Many2one('res.partner', string='Contractor')
-
-
-class UnitRate(models.Model):
-    _name = 'outsource.unit.rate'
-    _rec_name = 'position'
-    _description = 'Unit Rate'
-
-    POSITIONS = choices_tuple(['labor', 'driver', 'technician', 'rigger', 'associate engineer',
-                               'engineer', 'senior engineer', 'expert engineer', 'car'])
-
-    # BASIC FIELDS
-    # ----------------------------------------------------------
-    position = fields.Selection(string='Position', selection=POSITIONS)
-    level_1 = fields.Float(string='Level 1', digits=(32, 2), default=0.00)
-    level_2 = fields.Float(string='Level 2', digits=(32, 2), default=0.00)
-    level_3 = fields.Float(string='Level 3', digits=(32, 2), default=0.00)
-    level_4 = fields.Float(string='Level 4', digits=(32, 2), default=0.00)
-    percent = fields.Float(string='Percent', digits=(32, 2), default=0.00)
-
-    # RELATIONSHIPS
-    # ----------------------------------------------------------
-    contractor_id = fields.Many2one('res.partner', string='Contractor')

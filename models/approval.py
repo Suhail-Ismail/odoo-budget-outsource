@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from openerp.exceptions import ValidationError
+from odoo.exceptions import ValidationError
 from .utils import choices_tuple
-from openerp import models, fields, api
+from odoo import models, fields, api
 
 
 class Approval(models.Model):
@@ -22,7 +22,6 @@ class Approval(models.Model):
     state = fields.Selection(STATES, default='waiting purchase order')
 
     ref = fields.Char(string='Section Reference', required=False)
-    section = fields.Char(string='Section', required=False)
     service_description = fields.Char(string='Service Description', required=False)
     job_id = fields.Char(string='Job ID', required=False)
     remarks = fields.Text(string='Remarks')
@@ -41,6 +40,7 @@ class Approval(models.Model):
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
+    section_id = fields.Many2one('res.partner', string='Section', domain=[('is_budget_section','=',True)])
     po_id = fields.Many2one('outsource.purchase.order', string='Purchase Order')
     contractor_id = fields.Many2one('res.partner', string='Contractor')
     required_team_ids = fields.One2many('outsource.required.team',
@@ -52,6 +52,7 @@ class Approval(models.Model):
     po_temp = fields.Char(string='New Purchase Order', required=False)
     objective = fields.Selection(string='Objective', selection=OBJECTIVES)
 
+    @api.one
     def generate_required_details(self):
         # Creates PO Line Details if state is received PO
         detail_list = []
@@ -65,14 +66,17 @@ class Approval(models.Model):
                             'position': required_team.position,
                             'level': ' '.join(level.split('_')),
                             'division': '',
-                            'section': self.section,
+                            'section_id': self.section_id,
                             'sub_section': '',
                             'director_name': self.section_head,
                             'frozen_status': '',
                             'approval_ref_num': '',
-                            'kpi_2016': '',
+                            'kpi_2016': ''
                         })
                     )
+        # TODO, FIX RETURNING LIST WHEN CALLED VIA self.generate_required_details()
+        # RETURNS LIST INSIDE A LIST
+
         return detail_list
 
     @api.one
@@ -118,7 +122,7 @@ class Approval(models.Model):
                                     'line_num': '1',
                                     'line_status': 'active',
                                     'po_line_detail_ids': detail_list
-                                })],
+                                })]
         })
         self.env['outsource.purchase.order.collection'].create({'po_ids' : [(4, po.id)]})
 
@@ -148,12 +152,12 @@ class Approval(models.Model):
                                     'line_num': '1',
                                     'line_status': 'active',
                                     'po_line_detail_ids': detail_list
-                                })],
+                                })]
         })
 
         po.write({
             'approval_ids': [(4, self.id)],
-            'new_po_id': renewed_po.id,
+            'new_po_id': renewed_po.id
         })
         renewed_po.po_collection_id.write({
             'po_ids': [(4, po.id)]
@@ -175,7 +179,7 @@ class Approval(models.Model):
                 'line_num': '%s' % (int(self.po_id.po_line_ids.mapped('line_num')[-1]) + 1),
                 'line_status': 'active',
                 'po_line_detail_ids': detail_list
-            })],
+            })]
         })
 
     # # CONSTRAINS
@@ -218,7 +222,7 @@ class RequiredTeam(models.Model):
     # ----------------------------------------------------------
     total_cost = fields.Integer(compute='_compute_total_cost')
 
-
+    @api.one
     @api.depends('approval_id', 'position', 'level_1', 'level_2', 'level_3', 'level_4', 'total_cost')
     def _compute_total_cost(self):
         for i in ['1', '2', '3', '4']:

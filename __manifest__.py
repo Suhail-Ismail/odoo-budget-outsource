@@ -29,10 +29,10 @@ Outsource Management
         'security/approval_security.xml',
         'security/purchase_order_security.xml',
 
+        'views/contractor_inherit.xml',
         'views/purchase_order.xml',
         'views/purchase_order_collection.xml',
         'views/approval.xml',
-        'views/contractor.xml',
         'views/unit_rate.xml',
         'views/resource.xml',
         'views/invoice.xml',
@@ -40,7 +40,6 @@ Outsource Management
         'views/menu.xml',
     ],
     'demo': [
-        'data/contractor.xml',
         'data/outsource.unit.rate.csv',
         'data/outsource.approval.csv',
         'data/outsource.required.team.csv',

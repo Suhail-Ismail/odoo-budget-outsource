@@ -43,12 +43,12 @@
         <field name="arch" type="xml">
             <form create="false" edit="false">
                 <header>
-                    <button
-                        string="Close Purchase Order"
-                        name="set2close"
-                        type="object"
-                        states="active,done" />
-                        <!--groups="academy.group_manager,base.group_no_one"/>                    -->
+                    <!--<button-->
+                        <!--string="Close Purchase Order"-->
+                        <!--name="set2close"-->
+                        <!--type="object"-->
+                        <!--states="active,done" />-->
+                        <!--&lt;!&ndash;groups="academy.group_manager,base.group_no_one"/>                    &ndash;&gt;-->
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -91,7 +91,7 @@
                             <field name="task_num"/>
                             <!--<field name="is_renewed"/>-->
                             <!--<field name="new_po_id"/>-->
-                            <field name="status"/>
+                            <!--<field name="status"/>-->
                         </group>
                         <group>
                             <field name="po_date"/>

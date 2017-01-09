@@ -10,7 +10,7 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="po_num"/>
-                    <field name="contractor_id" domain="[('is_contractor', '=', True)]"/>
+                    <field name="contractor_id" domain="[('is_budget_contractor', '=', True)]"/>
                     <field name="type"/>
                     <field name="task_num"/>
                     <field name="po_date"/>
@@ -75,7 +75,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="contractor_id" domain="[('is_contractor', '=', True)]"/>
+                                <field name="contractor_id" domain="[('is_budget_contractor', '=', True)]"/>
                                 <field name="type"/>
                                 <field name="task_num"/>
                                 <!--<field name="is_renewed"/>-->
@@ -105,7 +105,7 @@
                                         <field name="level"/>
                                         <field name="rate"/>
                                         <field name="division"/>
-                                        <field name="section"/>
+                                        <field name="section_id"/>
                                         <field name="director_name"/>
                                         <field name="capex_percent"/>
                                         <field name="opex_percent"/>
@@ -218,7 +218,7 @@
                     <field name="rate"/>
                     <!--<field name="revise_rate"/>-->
                     <field name="division"/>
-                    <field name="section"/>
+                    <field name="section_id"/>
                     <field name="director_name"/>
                     <field name="capex_percent"/>
                     <field name="opex_percent"/>
@@ -251,7 +251,7 @@
                             <group>
                                 <field name="director_name"/>
                                 <field name="division"/>
-                                <field name="section"/>
+                                <field name="section_id"/>
                                 <field name="sub_section"/>
                             </group>
                             <group>
