@@ -3,7 +3,7 @@
     'name': "Outsource",
     'version': '0.1',
     'summary': 'Outsource Management',
-    'sequence': 4,
+    'sequence': 9,
     'description': """
 Odoo Module
 ===========
@@ -22,7 +22,7 @@ Outsource Management
     'author': "Marc Philippe de Villeres",
     'website': "https://github.com/mpdevilleres",
     'category': 'TBPC Budget',
-    'depends': ['budget_contractor'],
+    'depends': ['base'],
     'data': [
         'security/budget_outsource.xml',
         'security/ir.model.access.csv',
