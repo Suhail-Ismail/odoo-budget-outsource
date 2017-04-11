@@ -5,6 +5,7 @@ class PurchaseOrderLine(models.Model):
     _name = 'outsource.purchase.order.line'
     _description = 'Purchase Order Line'
     _rec_name = 'line_num'
+    _inherit = ['outsource.accessdb.mixin']
 
     line_num = fields.Char(string='Line Number')
     line_duration = fields.Integer(string='Duration', default=0)
@@ -23,3 +24,8 @@ class PurchaseOrderLine(models.Model):
     po_line_detail_ids = fields.One2many('outsource.purchase.order.line.detail',
                                   'po_line_id',
                                   string="Line Details")
+
+    # TODO BELOW IS DJANGO CODE, CHECK IF IT ALSO NEEDED FOR ODOO
+    # @property
+    # def rate(self):
+    #     return self.line_revise_rate if self.line_revise_rate != Decimal('0.00') else self.line_rate

@@ -1,3 +1,4 @@
 *.pyc
-data/*
-
+dump/*.csv
+dump/*.txt
+*.xlsx

@@ -7,7 +7,6 @@ Outsource Management
 --------------------
 
 - Approval
-- Claim
 - Contractor
 - Contractor Contact
 - Purchase Order

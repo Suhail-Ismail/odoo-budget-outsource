@@ -3,8 +3,10 @@ from odoo import models, fields, api
 
 class Resource(models.Model):
     _name = 'outsource.resource'
-    _rec_name = 'name'
+    _rec_name = 'res_full_name'
     _description = 'Resource'
+    _inherit = ['outsource.accessdb.mixin']
+
     res_type = fields.Char()
     res_type_class = fields.Char()
     agency_ref_num = fields.Char()

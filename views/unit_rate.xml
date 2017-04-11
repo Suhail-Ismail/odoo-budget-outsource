@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <data>
+        <!--START VIEWS-->
+        <record model="ir.ui.view" id="view_tree_unit_rate">
+            <field name="name">Unit Rate</field>
+            <field name="model">outsource.unit.rate</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="contractor"/>
+                    <field name="po_position"/>
+                    <field name="po_level"/>
+                    <field name="amount"/>
+                    <field name="percent"/>
+                </tree>
+            </field>
+        </record>
+        <!--END VIEWS-->
+
+        <!--START ACTIONS-->
+        <!--Unit Rate Action-->
+        <record model="ir.actions.act_window" id="action_unit_rate">
+            <field name="name">Unit Rate</field>
+            <field name="res_model">outsource.unit.rate</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tree_unit_rate"/>
+        </record>
+        <!--END ACTIONS-->
+    </data>
+</openerp>

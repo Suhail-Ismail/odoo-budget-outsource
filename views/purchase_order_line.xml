@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <data>
+        <!--START VIEWS-->
+        <record model="ir.ui.view" id="view_tree_purchase_order_line">
+            <field name="name">Purchase Order Line</field>
+            <field name="model">outsource.purchase.order.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="line_num"/>
+                    <field name="line_duration"/>
+                    <field name="line_value"/>
+                    <field name="line_revise_rate"/>
+                    <field name="line_rate"/>
+                    <field name="line_status"/>
+                    <field name="po_id"/>
+                </tree>
+            </field>
+        </record>
+        <!--END VIEWS-->
+
+        <!--START ACTIONS-->
+        <!--Purchase Order Line Action-->
+        <record model="ir.actions.act_window" id="action_purchase_order_line">
+            <field name="name">Purchase Order Line</field>
+            <field name="res_model">outsource.purchase.order.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tree_purchase_order_line"/>
+        </record>
+        <!--END ACTIONS-->
+    </data>
+</openerp>

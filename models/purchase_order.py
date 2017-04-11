@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 
+
 class PurchaseOrder(models.Model):
     _name = 'outsource.purchase.order'
     _rec_name = 'po_num'
     _description = 'Purchase Order'
+    _inherit = ['outsource.accessdb.mixin']
 
     # BASIC FIELDS
     # ----------------------------------------------------------
@@ -24,3 +26,20 @@ class PurchaseOrder(models.Model):
     po_status = fields.Char(string='PO Status')
     po_remarks = fields.Text(string='PO Remarks')
     po_type = fields.Char(string='PO Type')
+
+    # RELATIONSHIPS
+    # ----------------------------------------------------------
+    po_line_ids = fields.One2many('outsource.purchase.order.line',
+                                  'po_id',
+                                  string="Lines")
+
+    # COMPUTE FIELDS
+    # ----------------------------------------------------------
+    line = fields.Char(string='Line',
+                       compute='_compute_line',
+                       store=True)
+
+    @api.one
+    @api.depends('po_line_ids')
+    def _compute_line(self):
+        self.line = len(self.po_line_ids)

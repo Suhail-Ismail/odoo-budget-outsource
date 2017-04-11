@@ -3,8 +3,9 @@ from odoo import models, fields, api
 
 class PurchaseOrderLineDetail(models.Model):
     _name = 'outsource.purchase.order.line.detail'
-    _rec_name = 'job_id'
+    _rec_name = 'po_os_ref'
     _description = 'Purchase Order Line Detail'
+    _inherit = ['outsource.accessdb.mixin']
 
     # BASIC FIELDS
     # ----------------------------------------------------------
@@ -30,3 +31,9 @@ class PurchaseOrderLineDetail(models.Model):
     # RELATIONSHIPS
     # ----------------------------------------------------------
     po_line_id = fields.Many2one('outsource.purchase.order.line', string='Purchase Order Line')
+
+    # TODO BELOW IS DJANGO CODE, CHECK IF IT ALSO NEEDED FOR ODOO
+    # @property
+    # def rate(self):
+    #     return self.po_revise_rate if self.po_revise_rate != Decimal('0.00') else self.po_rate
+    #

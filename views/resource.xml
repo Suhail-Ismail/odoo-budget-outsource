@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <data>
+        <!--START VIEWS-->
+        <record model="ir.ui.view" id="view_tree_resource">
+            <field name="name">Resource</field>
+            <field name="model">outsource.resource</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="res_full_name"/>
+                    <field name="date_of_join"/>
+                    <field name="manager"/>
+                    <field name="rate"/>
+                    <field name="po_id"/>
+                    <field name="po_line_detail_id"/>
+                </tree>
+            </field>
+        </record>
+        <!--END VIEWS-->
+
+        <!--START ACTIONS-->
+        <!--Resource Action-->
+        <record model="ir.actions.act_window" id="action_resource">
+            <field name="name">Resource</field>
+            <field name="res_model">outsource.resource</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tree_resource"/>
+        </record>
+        <!--END ACTIONS-->
+    </data>
+</openerp>
