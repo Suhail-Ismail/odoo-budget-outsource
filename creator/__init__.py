@@ -46,7 +46,7 @@ def get_required_hour(period_start=None, period_end=None, ramadan_start=None, ra
     normal_days = total_days - ramadan_days
 
     # +1 is a corrections factor to count all days within a period
-    return round(normal_days * 48 / 7) + round(ramadan_days * 36 / 7)
+    return round(normal_days * 48.0 / 7.0) + round(ramadan_days * 36.0 / 7.0)
 
 
 def get_individual_required_hour(date_of_join=None, period_start=None, period_end=None,
