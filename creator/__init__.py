@@ -4,6 +4,9 @@
 # IMPORT OPENPYXL WITH INSERT ROW
 # excel password tbpc19
 # ----------------------------------------------------------------------------------------------------
+import logging
+_logger = logging.getLogger(__name__)
+
 from openpyxl.styles import Protection
 
 from .utils import *
@@ -492,6 +495,8 @@ class DATASHEET(Creator):
             context['contractor'],
             context['period_string']
         )
+        # TODO MAKE A LOGGER WHEN CREATING DATASHEET
+#        _logger.info("DATA %s: %s, not found", self.name, e.name)
         self.single_set_datasheet(context)
         # except Exception as e:
         #     print('Failed: ', contractor, ' due to missing {}'.format(str(e)))
@@ -499,10 +504,11 @@ class DATASHEET(Creator):
     def make_datasheet_per_contractor(self, contractor=None, period_start=None, period_end=None,
                                       ramadan_start=None, ramadan_end=None):
         if contractor.lower() == 'all':
-            contractors = get_distinct_selection(self, model='outsource.resource', field_name='contractor')
+            contractors_tuple = get_distinct_selection(self, model='outsource.resource', field_name='contractor')
+            contractors = [i[0] for i in contractors_tuple]
             for contractor in contractors:
                 self.make_datasheet(contractor, period_start, period_end,
-                                    ramadan_start, ramadan_end)
+                                        ramadan_start, ramadan_end)
         else:
             self.make_datasheet(contractor, period_start, period_end,
                                 ramadan_start, ramadan_end)

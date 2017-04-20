@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<openerp>
+<odoo>
     <data>
     <!--HEADER-->
     <menuitem
@@ -44,4 +44,4 @@
         parent="menu_outsourcing_top"
         action="action_unit_rate"/>
     </data>
-</openerp>
+</odoo>

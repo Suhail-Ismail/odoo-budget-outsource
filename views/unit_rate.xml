@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<openerp>
+<odoo>
     <data>
         <!--START VIEWS-->
         <record model="ir.ui.view" id="view_tree_unit_rate">
@@ -29,4 +29,4 @@
         </record>
         <!--END ACTIONS-->
     </data>
-</openerp>
+</odoo>
