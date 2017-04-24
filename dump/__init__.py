@@ -233,7 +233,6 @@ def dump_resource(env=None, file='RPT01_ Monthly Accruals - Mobillized.csv'):
                 print('Resource ID# %s Exist' % row["ResID"])
                 continue
             else:
-                import ipdb; ipdb.set_trace()
                 data = {
                     'po_id': po_id.id,
                     'po_line_detail_id': po_line_detail_id.id,
