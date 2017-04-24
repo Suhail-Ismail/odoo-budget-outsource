@@ -20,7 +20,7 @@ def to_date_format(string):
     # remove time element
     string = string.split(' ')[0]
     try:
-        return dt.datetime.strptime(string, '%d-%m-%Y')
+        return dt.datetime.strptime(string, '%d/%m/%Y')
     except ValueError:
         return None
 
@@ -104,7 +104,7 @@ def dump_purchase_order_line(env=None, file='TechPOLine.csv'):
     csvpath = os.path.join(dumpdir, file)
 
     with open(csvpath) as csvfile:
-        reader = csv.DictReader(csvfile)
+        reader = csv.DictReader(csvfile, delimiter='^')
         for row in reader:
             po_line = env['outsource.purchase.order.line'].search([('access_db_id', '=', row["POLineID"])])
             if len(po_line) != 0:
@@ -144,7 +144,7 @@ def dump_purchase_order_line_details(env=None, file='TechPOLineDetail.csv'):
 
     csvpath = os.path.join(dumpdir, file)
     with open(csvpath) as csvfile:
-        reader = csv.DictReader(csvfile)
+        reader = csv.DictReader(csvfile, delimiter='^')
         for row in reader:
             po_line_detail = env['outsource.purchase.order.line.detail'].search([('access_db_id', '=', row["PODetID"])])
             if len(po_line_detail) != 0:
@@ -222,7 +222,7 @@ def dump_resource(env=None, file='RPT01_ Monthly Accruals - Mobillized.csv'):
 
     csvpath = os.path.join(dumpdir, file)
     with open(csvpath) as csvfile:
-        reader = csv.DictReader(csvfile)
+        reader = csv.DictReader(csvfile, delimiter='^')
         for row in reader:
             resource = env['outsource.resource'].search([('access_db_id', '=', row["ResID"])], limit=1)
             po_id = env['outsource.purchase.order'].search([('access_db_id', '=', row["POID"])], limit=1)
@@ -233,6 +233,7 @@ def dump_resource(env=None, file='RPT01_ Monthly Accruals - Mobillized.csv'):
                 print('Resource ID# %s Exist' % row["ResID"])
                 continue
             else:
+                import ipdb; ipdb.set_trace()
                 data = {
                     'po_id': po_id.id,
                     'po_line_detail_id': po_line_detail_id.id,
