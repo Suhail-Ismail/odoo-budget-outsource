@@ -14,7 +14,7 @@ from .utils import load_workbook, get_distinct_selection
 import pandas as pd
 import shutil
 
-
+from odoo import fields
 # MAIN COMPONENTS STARTS HERE
 # ----------------------------------------------------------------------------------------------------
 def odoo_to_pandas_list(orm_query=None, columns=list()):
@@ -266,7 +266,7 @@ class SBH(Creator):
             ws.cell(row=row, column=column + 4).value = record['po_position']
             ws.cell(row=row, column=column + 5).value = record['po_level']
             ws.cell(row=row, column=column + 6).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
-                record['date_of_join'])
+                fields.Date.from_string(record['date_of_join']))
             ws.cell(row=row, column=column + 7).value = record['po_line_detail_id.rate_diff_percent']
             ws.cell(row=row, column=column + 8).value = record['required_hour']
             ws.cell(row=row, column=column + 9).value = record['invoice_claim']
@@ -450,7 +450,7 @@ class DATASHEET(Creator):
             ws.cell(row=row, column=column + 10).value = record.get('res_job_title', '')
             ws.cell(row=row, column=column + 11).value = record.get('grade_level', '')
             ws.cell(row=row, column=column + 12).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
-                record['date_of_join'])
+                fields.Date.from_string(record['date_of_join']))
             ws.cell(row=row, column=column + 13).value = 'Yes' if record.get('has_tool_or_uniform', '') else ""
             ws.cell(row=row, column=column + 14).value = self.required_hour
             ws.cell(row=row, column=column + 15).value = self.required_days
@@ -488,18 +488,18 @@ class DATASHEET(Creator):
         self.ramadan_end = ramadan_end
         self.setup()
         self.set_initial_queryset()
-        # try:
-        context = self.get_context()
-        self.output_filename = get_output_file(
-            'DATASHEET',
-            context['contractor'],
-            context['period_string']
-        )
-        # TODO MAKE A LOGGER WHEN CREATING DATASHEET
-#        _logger.info("DATA %s: %s, not found", self.name, e.name)
-        self.single_set_datasheet(context)
-        # except Exception as e:
-        #     print('Failed: ', contractor, ' due to missing {}'.format(str(e)))
+        try:
+            context = self.get_context()
+            self.output_filename = get_output_file(
+                'DATASHEET',
+                context['contractor'],
+                context['period_string']
+            )
+            # TODO MAKE A LOGGER WHEN CREATING DATASHEET
+    #       _logger.info("DATA %s: %s, not found", self.name, e.name)
+            self.single_set_datasheet(context)
+        except Exception as e:
+            print('Failed: ', contractor, ' due to missing {}'.format(str(e)))
 
     def make_datasheet_per_contractor(self, contractor=None, period_start=None, period_end=None,
                                       ramadan_start=None, ramadan_end=None):
