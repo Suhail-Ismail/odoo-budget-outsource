@@ -6,7 +6,7 @@ from ..creator import SBH, DATASHEET
 from ..creator.utils import get_distinct_selection
 
 
-class SummarySheet(models.TransientModel):
+class SummarySheet(models.Model):
     _name = 'outsource.summary.sheet'
     _description = 'Summary Sheet'
     _inherit = ['outsource.accessdb.mixin']
@@ -76,12 +76,3 @@ class SummarySheet(models.TransientModel):
 
         obj.attach(self.env, self.id, self._name, zip_path)
         obj.cleanup()
-
-    # VACUUM
-    # @api.model
-    # def _transient_vacuum(self, force=False):
-    #     attachments = self.env['ir.attachment'].search([('res_model', '=', self._name)])
-    #     for attachment in attachments:
-    #         attachment.unlink()
-    #
-    #     return super(TimesheetWizard, self)._transient_vacuum(force)
