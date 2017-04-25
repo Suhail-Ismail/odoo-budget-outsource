@@ -175,7 +175,8 @@ class SBH(Creator):
             odoo_to_pandas_list(self.qs_resource, ['id', 'po_os_ref', 'agency_ref_num', 'res_full_name',
                                                    'po_position', 'po_level', 'date_of_join',
                                                    'po_line_detail_id.director_name',
-                                                   'po_line_detail_id.rate_diff_percent']
+                                                   'po_line_detail_id.rate_diff_percent',
+                                                   'has_tool_or_uniform']
                                 )
         )
 
@@ -270,7 +271,7 @@ class SBH(Creator):
             ws.cell(row=row, column=column + 7).value = record['po_line_detail_id.rate_diff_percent']
             ws.cell(row=row, column=column + 8).value = record['required_hour']
             ws.cell(row=row, column=column + 9).value = record['invoice_claim']
-            ws.cell(row=row, column=column + 10).value = ''
+            ws.cell(row=row, column=column + 10).value = '' if record['has_tool_or_uniform'] in ['false', 'FALSE', False, 'False'] else 'Yes'
             ws.cell(row=row, column=column + 11).value = '' if len(record['remarks'])==0 else record['remarks']
             ws.cell(row=row, column=column + 12).value = record['po_line_detail_id.director_name']
             ws.cell(row=row, column=column + 13).value = ''
