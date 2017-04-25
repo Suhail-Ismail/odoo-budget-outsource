@@ -184,17 +184,17 @@ class SBH(Creator):
         df_resource['required_hour'] = self.required_hour
         df_resource['po_position'] = df_resource['po_position'].apply(lambda x: x.upper())
         df_invoice = pd.DataFrame(
-            odoo_to_pandas_list(self.qs_invoice, ['id', 'resource_id', 'invoice_hour', 'invoice_claim',
+            odoo_to_pandas_list(self.qs_invoice, ['id', 'resource_id.id', 'invoice_hour', 'invoice_claim',
                                                   'remarks']
                                 )
         )
 
         if df_invoice.empty:
-            df_invoice = pd.DataFrame(columns=['resource_id', 'id', 'invoice_claim', 'invoice_hour', 'remarks'])
+            df_invoice = pd.DataFrame(columns=['resource_id.id', 'id', 'invoice_claim', 'invoice_hour', 'remarks'])
         else:
-            df_invoice = df_invoice.groupby('resource_id').first().reset_index()
+            df_invoice = df_invoice.groupby('resource_id.id').first().reset_index()
 
-        rs_resource = pd.merge(left=df_resource, right=df_invoice, how='left', left_on='id', right_on='resource_id')
+        rs_resource = pd.merge(left=df_resource, right=df_invoice, how='left', left_on='id', right_on='resource_id.id')
         rs_resource.sort_values(
             by=['po_line_detail_id.director_name', 'po_position', 'po_line_detail_id.rate_diff_percent'],
             ascending=[True, True, True],
@@ -271,7 +271,7 @@ class SBH(Creator):
             ws.cell(row=row, column=column + 8).value = record['required_hour']
             ws.cell(row=row, column=column + 9).value = record['invoice_claim']
             ws.cell(row=row, column=column + 10).value = ''
-            ws.cell(row=row, column=column + 11).value = record['remarks']
+            ws.cell(row=row, column=column + 11).value = '' if len(record['remarks'])==0 else record['remarks']
             ws.cell(row=row, column=column + 12).value = record['po_line_detail_id.director_name']
             ws.cell(row=row, column=column + 13).value = ''
 
