@@ -193,8 +193,9 @@ def dump_invoice(env=None, file='TechInvoiceMgmt.csv'):
         for row in reader:
             invoice = env['outsource.invoice'].search([('access_db_id', '=', row['InvID'])], limit=1)
             resource_id = env['outsource.resource'].search([('access_db_id', '=', row['ResID'])], limit=1)
-            po_line_detail_id = env['outsource.purchase.order.line.detail'].search([('access_db_id', '=', row['PODetID'])],
-                                                                                limit=1)
+            po_line_detail_id = env['outsource.purchase.order.line.detail'].search(
+                [('access_db_id', '=', row['PODetID'])],
+                limit=1)
             if not resource_id or not po_line_detail_id:
                 continue
             if invoice:
@@ -274,18 +275,18 @@ def dump_resource(env=None, file='RPT01_ Monthly Accruals - Mobillized.csv'):
 
 
 def clear_all(env):
-    env['outsource.purchase.order'].search([]).unlink()
-    print('CLEARED PURCHASE ORDER')
-    env['outsource.purchase.order.line'].search([]).unlink()
-    print('CLEARED PURCHASE ORDER LINE')
-    env['outsource.purchase.order.line.detail'].search([]).unlink()
-    print('CLEARED PURCHASE ORDER LINE DETAIL')
-    env['outsource.resource'].search([]).unlink()
-    print('CLEARED RESOURCE')
-    env['outsource.invoice'].search([]).unlink()
-    print('CLEARED INVOICE')
-    env['outsource.unit.rate'].search([]).unlink()
-    print('CLEARED UNIT PRICE')
+    tables = [
+        'outsource_purchase_order',
+        'outsource_purchase_order_line',
+        'outsource_purchase_order_line_detail',
+        'outsource_resource',
+        'outsource_invoice',
+        'outsource_unit_rate'
+    ]
+    for table in tables:
+        env.cr.execute("TRUNCATE %s CASCADE" % table)
+
+    env.cr.commit()
 
 
 def start(env):
