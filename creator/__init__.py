@@ -69,6 +69,7 @@ class Creator(object):
         self.period_end = None
         self.ramadan_start = None
         self.ramadan_end = None
+        self.total_required_hours = None
         self.period_string = None
         self.required_hour = None
         self.po_num = None
@@ -333,12 +334,13 @@ class SBH(Creator):
         wb.save(os.path.join(self.output_dir, self.output_filename))
 
     def make_sbh_per_po(self, po_num=None, period_start=None, period_end=None,
-                        ramadan_start=None, ramadan_end=None):
+                        ramadan_start=None, ramadan_end=None, total_required_hours=None):
         self.po_num = po_num
         self.period_start = period_start
         self.period_end = period_end
         self.ramadan_start = ramadan_start
         self.ramadan_end = ramadan_end
+        self.total_required_hours = total_required_hours
         self.setup()
         self.set_initial_queryset()
 
@@ -355,23 +357,24 @@ class SBH(Creator):
             print('Failed: ', po_num, ' due to missing {}'.format(str(e)))
 
     def make_sbh_per_contractor(self, contractor=None, period_start=None, period_end=None,
-                                ramadan_start=None, ramadan_end=None):
+                                ramadan_start=None, ramadan_end=None, total_required_hours=None):
         if contractor.lower() == 'all':
             qs = self.env['outsource.purchase.order'].search([])
         else:
             qs = self.env['outsource.purchase.order'].search([('contractor', '=', contractor)])
 
         for i in qs:
-            self.make_sbh_per_po(i.po_num, period_start, period_end, ramadan_start, ramadan_end)
+            self.make_sbh_per_po(i.po_num, period_start, period_end, ramadan_start, ramadan_end, total_required_hours)
 
     def make_sbh_per_division(self, po_num=None, division=None, period_start=None, period_end=None,
-                              ramadan_start=None, ramadan_end=None):
+                              ramadan_start=None, ramadan_end=None, total_required_hours=None):
         self.division = division
         self.po_num = po_num
         self.period_start = period_start
         self.period_end = period_end
         self.ramadan_start = ramadan_start
         self.ramadan_end = ramadan_end
+        self.total_required_hours = total_required_hours
         self.setup()
         self.set_initial_queryset()
         try:
@@ -453,7 +456,7 @@ class DATASHEET(Creator):
             ws.cell(row=row, column=column + 12).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
                 fields.Date.from_string(record['date_of_join']))
             ws.cell(row=row, column=column + 13).value = 'Yes' if record.get('has_tool_or_uniform', '') else ""
-            ws.cell(row=row, column=column + 14).value = self.required_hour
+            ws.cell(row=row, column=column + 14).value = self.total_required_hours if self.total_required_hours else self.required_hour
             ws.cell(row=row, column=column + 15).value = self.required_days
 
             # # Unlock Cells
@@ -481,12 +484,13 @@ class DATASHEET(Creator):
         wb.save(os.path.join(self.output_dir, self.output_filename))
 
     def make_datasheet(self, contractor=None, period_start=None, period_end=None,
-                       ramadan_start=None, ramadan_end=None):
+                       ramadan_start=None, ramadan_end=None, total_required_hours=None):
         self.contractor = contractor
         self.period_start = period_start
         self.period_end = period_end
         self.ramadan_start = ramadan_start
         self.ramadan_end = ramadan_end
+        self.total_required_hours = total_required_hours
         self.setup()
         self.set_initial_queryset()
         try:
@@ -503,13 +507,13 @@ class DATASHEET(Creator):
             print('Failed: ', contractor, ' due to missing {}'.format(str(e)))
 
     def make_datasheet_per_contractor(self, contractor=None, period_start=None, period_end=None,
-                                      ramadan_start=None, ramadan_end=None):
+                                      ramadan_start=None, ramadan_end=None, total_required_hours=None):
         if contractor.lower() == 'all':
             contractors_tuple = get_distinct_selection(self, model='outsource.resource', field_name='contractor')
             contractors = [i[0] for i in contractors_tuple]
             for contractor in contractors:
                 self.make_datasheet(contractor, period_start, period_end,
-                                        ramadan_start, ramadan_end)
+                                        ramadan_start, ramadan_end, total_required_hours)
         else:
             self.make_datasheet(contractor, period_start, period_end,
-                                ramadan_start, ramadan_end)
+                                ramadan_start, ramadan_end, total_required_hours)

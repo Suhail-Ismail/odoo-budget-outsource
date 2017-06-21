@@ -30,6 +30,7 @@ class SummarySheet(models.Model):
     contractor = fields.Selection(
         selection=lambda self: get_distinct_selection(self, 'outsource.resource', 'contractor'))
     division = fields.Selection(selection=lambda self: get_distinct_selection(self, 'outsource.resource', 'division'))
+    total_required_hours = fields.Integer()
     period_start = fields.Date()
     period_end = fields.Date()
     ramadan_start = fields.Date()
@@ -43,6 +44,7 @@ class SummarySheet(models.Model):
         period_end = fields.Date.from_string(self.period_end)
         ramadan_start = fields.Date.from_string(self.ramadan_start)
         ramadan_end = fields.Date.from_string(self.ramadan_end)
+        total_required_hours = fields.Date.from_string(self.total_required_hours)
 
         if self.generator_choice in [1, 2, 3, 4]:
             obj = SBH(env=self.env, form_name="SBH-FORM.xlsx", xlsx_pass='tbpc19')
@@ -53,24 +55,29 @@ class SummarySheet(models.Model):
         else:
             raise ValidationError('Invalid Choice')
 
-
         if self.generator_choice == 1:
-            obj.make_sbh_per_contractor('all', period_start, period_end, ramadan_start, ramadan_end)
+            obj.make_sbh_per_contractor('all', period_start, period_end, ramadan_start, ramadan_end,
+                                        total_required_hours)
 
         elif self.generator_choice == 2:
-            obj.make_sbh_per_po(self.po_id.po_num, period_start, period_end, ramadan_start, ramadan_end)
+            obj.make_sbh_per_po(self.po_id.po_num, period_start, period_end, ramadan_start, ramadan_end,
+                                total_required_hours)
 
         elif self.generator_choice == 3:
-            obj.make_sbh_per_contractor(self.contractor, period_start, period_end, ramadan_start, ramadan_end)
+            obj.make_sbh_per_contractor(self.contractor, period_start, period_end, ramadan_start, ramadan_end,
+                                        total_required_hours)
 
         elif self.generator_choice == 4:
-            obj.make_sbh_per_division(self.po_id.po_num, self.division, period_start, period_end, ramadan_start, ramadan_end)
+            obj.make_sbh_per_division(self.po_id.po_num, self.division, period_start, period_end, ramadan_start,
+                                      ramadan_end, total_required_hours)
 
         elif self.generator_choice == 5:
-            obj.make_datasheet_per_contractor('all', period_start, period_end, ramadan_start, ramadan_end)
+            obj.make_datasheet_per_contractor('all', period_start, period_end, ramadan_start, ramadan_end,
+                                              total_required_hours)
 
         elif self.generator_choice == 6:
-            obj.make_datasheet_per_contractor(self.contractor, period_start, period_end, ramadan_start, ramadan_end)
+            obj.make_datasheet_per_contractor(self.contractor, period_start, period_end, ramadan_start, ramadan_end,
+                                              total_required_hours)
 
         zip_path = obj.make_zip()
 

@@ -32,6 +32,7 @@
                                     <field name="ramadan_end"/>
                                 </group>
                                 <group>
+                                    <field name="total_required_hours"/>
                                     <field name="contractor"/>
                                     <field name="division"/>
                                     <field name="po_id" domain="[('contractor','=',contractor)]" options="{'no_quick_create': True, 'no_create': True}"/>
