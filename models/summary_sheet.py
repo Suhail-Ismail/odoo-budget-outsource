@@ -44,7 +44,7 @@ class SummarySheet(models.Model):
         period_end = fields.Date.from_string(self.period_end)
         ramadan_start = fields.Date.from_string(self.ramadan_start)
         ramadan_end = fields.Date.from_string(self.ramadan_end)
-        total_required_hours = fields.Date.from_string(self.total_required_hours)
+        total_required_hours = self.total_required_hours
 
         if self.generator_choice in [1, 2, 3, 4]:
             obj = SBH(env=self.env, form_name="SBH-FORM.xlsx", xlsx_pass='tbpc19')
