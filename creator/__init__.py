@@ -279,7 +279,7 @@ class SBH(Creator):
             ws.cell(row=row, column=column + 10).value = '' if record['has_tool_or_uniform'] in ['false', 'FALSE',
                                                                                                  False,
                                                                                                  'False'] else 'Yes'
-            ws.cell(row=row, column=column + 11).value = '' if len(record['remarks']) == 0 else record['remarks']
+            ws.cell(row=row, column=column + 11).value = '' if len(str(record['remarks'])) == 0 else record['remarks']
             ws.cell(row=row, column=column + 12).value = record['po_line_detail_id.director_name']
             ws.cell(row=row, column=column + 13).value = ''
 
