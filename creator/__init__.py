@@ -5,6 +5,7 @@
 # excel password tbpc19
 # ----------------------------------------------------------------------------------------------------
 import logging
+
 _logger = logging.getLogger(__name__)
 
 from openpyxl.styles import Protection
@@ -15,6 +16,8 @@ import pandas as pd
 import shutil
 
 from odoo import fields
+
+
 # MAIN COMPONENTS STARTS HERE
 # ----------------------------------------------------------------------------------------------------
 def odoo_to_pandas_list(orm_query=None, columns=list()):
@@ -96,8 +99,9 @@ class Creator(object):
         self.period_string = '{0:%d-%b-%Y} to {1:%d-%b-%Y}'.format(self.period_start,
                                                                    self.period_end)
         # PERIOD MUST BE IN dd/mm/yyyy format()
-        self.required_hour = get_required_hour(self.period_start, self.period_end,
-                                               self.ramadan_start, self.ramadan_end)
+        self.required_hour = self.total_required_hours if self.total_required_hours > 0 else \
+            get_required_hour(self.period_start, self.period_end,
+                              self.ramadan_start, self.ramadan_end)
 
         # Days
         self.required_days = (self.period_end - self.period_start).days + 1
@@ -272,8 +276,10 @@ class SBH(Creator):
             ws.cell(row=row, column=column + 7).value = record['po_line_detail_id.rate_diff_percent']
             ws.cell(row=row, column=column + 8).value = record['required_hour']
             ws.cell(row=row, column=column + 9).value = record['invoice_claim']
-            ws.cell(row=row, column=column + 10).value = '' if record['has_tool_or_uniform'] in ['false', 'FALSE', False, 'False'] else 'Yes'
-            ws.cell(row=row, column=column + 11).value = '' if len(record['remarks'])==0 else record['remarks']
+            ws.cell(row=row, column=column + 10).value = '' if record['has_tool_or_uniform'] in ['false', 'FALSE',
+                                                                                                 False,
+                                                                                                 'False'] else 'Yes'
+            ws.cell(row=row, column=column + 11).value = '' if len(record['remarks']) == 0 else record['remarks']
             ws.cell(row=row, column=column + 12).value = record['po_line_detail_id.director_name']
             ws.cell(row=row, column=column + 13).value = ''
 
@@ -456,7 +462,8 @@ class DATASHEET(Creator):
             ws.cell(row=row, column=column + 12).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
                 fields.Date.from_string(record['date_of_join']))
             ws.cell(row=row, column=column + 13).value = 'Yes' if record.get('has_tool_or_uniform', '') else ""
-            ws.cell(row=row, column=column + 14).value = self.total_required_hours if self.total_required_hours else self.required_hour
+            ws.cell(row=row,
+                    column=column + 14).value = self.total_required_hours if self.total_required_hours else self.required_hour
             ws.cell(row=row, column=column + 15).value = self.required_days
 
             # # Unlock Cells
@@ -501,7 +508,7 @@ class DATASHEET(Creator):
                 context['period_string']
             )
             # TODO MAKE A LOGGER WHEN CREATING DATASHEET
-    #       _logger.info("DATA %s: %s, not found", self.name, e.name)
+            #       _logger.info("DATA %s: %s, not found", self.name, e.name)
             self.single_set_datasheet(context)
         except Exception as e:
             print('Failed: ', contractor, ' due to missing {}'.format(str(e)))
@@ -513,7 +520,7 @@ class DATASHEET(Creator):
             contractors = [i[0] for i in contractors_tuple]
             for contractor in contractors:
                 self.make_datasheet(contractor, period_start, period_end,
-                                        ramadan_start, ramadan_end, total_required_hours)
+                                    ramadan_start, ramadan_end, total_required_hours)
         else:
             self.make_datasheet(contractor, period_start, period_end,
                                 ramadan_start, ramadan_end, total_required_hours)
