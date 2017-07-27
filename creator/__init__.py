@@ -260,6 +260,22 @@ class SBH(Creator):
         ws.cell('G7').value = 1
         ws.cell('D7').value = context['period_string']
 
+        # CELLS TO BE UNLOCK
+        unlock_cells = [
+            'J39', 'L39',
+            'J41', 'L41',
+            'J43',
+
+            'G46', 'J46', 'L46', 'M46',
+
+            'C49', 'D49',
+
+            'C53', 'C53',
+            'C54', 'C54',
+            'C55', 'C55',
+            'C56', 'C56',
+        ]
+
         rs_resource = context['rs_resource']
 
         ws.insert_rows(row, len(rs_resource) - 1)
@@ -334,6 +350,16 @@ class SBH(Creator):
             row += 1
         # ---------------------------------------------------------------------------------------
         # END UNIT PRICE
+
+        # UNLOCK CELLS
+        # ---------------------------------------------------------------------------------------
+        for unlock_cell in unlock_cells:
+            u_cell = ws.cell(unlock_cell)
+            ws.cell(row=u_cell.row + sr, column=u_cell.col_idx).protection = Protection(locked=False)
+
+        # ---------------------------------------------------------------------------------------
+        # END UNLOCK CELLS
+
         for sheet in wb.worksheets:
             sheet.protection.enable()
             sheet.protection.set_password(self.xlsx_pass)
