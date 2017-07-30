@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-import os, csv
-import datetime as dt
+from __future__ import print_function
 
-dumpdir = os.path.dirname(os.path.realpath(__file__))
+import os
+import csv
+import datetime as dt
 
 
 def to_bool(data):
@@ -32,20 +33,81 @@ def to_dec(data):
         return 0
 
 
-def dump_unit_price(env=None, file='UnitPrice.csv'):
-    if env is None:
-        raise ValueError
+class Dumper(object):
+    def __init__(self, dumpdir=os.path.dirname(os.path.realpath(__file__)),
+                 env=None, model_obj=None, filename=''):
+        if env is None:
+            raise ValueError
 
-    csvpath = os.path.join(dumpdir, file)
+        self.filename = filename
+        self.dumpdir = dumpdir
+        self.env = env
+        self.model_obj = model_obj
+        self.sr = 0
+        self.sr_new = 0
+        self.sr_exist = 0
+        self.total = 0
 
-    with open(csvpath) as csvfile:
+    @property
+    def csvpath(self):
+        return os.path.join(self.dumpdir, self.filename)
+
+    @property
+    def model(self):
+        return self.env[self.model_obj]
+
+    @property
+    def model(self):
+        return self.env[self.model_obj]
+
+    def get_total_csv_row(self):
+        with open(self.csvpath) as csvfile:
+            reader = csv.reader(csvfile)
+            total = sum(1 for row in reader)
+
+        return total - 1
+
+    def progress(self):
+        print_string = '\rN: {new:06d} E: {exist:06d} {percent:.2%} - {current}/{total}'.format(
+            new=self.sr_new, exist=self.sr_exist,
+            percent=float(self.sr) / float(self.total),
+            current=self.sr, total=self.total)
+        print(print_string, end="")
+
+    def start(self):
+        self.total = self.get_total_csv_row()
+        print('\n{}'.format(self.model_obj))
+        print('=============================================================')
+
+    def end(self):
+        print('\n=============================================================')
+        print('end {}'.format(self.model_obj))
+
+    def exist(self):
+        self.sr += 1
+        self.sr_exist += 1
+        self.progress()
+
+    def create(self, data):
+        self.model.create(data)
+        self.env.cr.commit()
+        self.sr += 1
+        self.sr_new += 1
+        self.progress()
+
+
+def dump_unit_price(env=None, filename='UnitPrice.csv'):
+    dumper = Dumper(env=env, model_obj='outsource.unit.rate', filename=filename)
+    dumper.start()
+    unit_price_model = dumper.model
+
+    with open(dumper.csvpath) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-
-            unit_price = env['outsource.unit.rate'].search([('access_db_id', '=', row["id"])], limit=1)
+            unit_price = unit_price_model.search([('access_db_id', '=', row["id"])], limit=1)
 
             if unit_price:
-                print('Resource ID# %s Exist' % row["id"])
+                dumper.exist()
                 continue
             else:
                 data = {
@@ -55,24 +117,23 @@ def dump_unit_price(env=None, file='UnitPrice.csv'):
                     'contractor': row['contractor'],
                     'amount': to_dec(row['amount']),
                     'percent': row['percent'],
-
                 }
-                env['outsource.unit.rate'].create(data)
-                env.cr.commit()
+                dumper.create(data)
+    dumper.end()
 
 
-def dump_purchase_order(env=None, file='TechPO.csv'):
-    if env is None:
-        raise ValueError
+def dump_purchase_order(env=None, filename='TechPO.csv'):
+    dumper = Dumper(env=env, model_obj='outsource.purchase.order', filename=filename)
+    dumper.start()
+    po_model = dumper.model
 
-    csvpath = os.path.join(dumpdir, file)
-    with open(csvpath) as csvfile:
+    with open(dumper.csvpath) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            po = env['outsource.purchase.order'].search([('access_db_id', '=', row["POID"])])
+            po = po_model.search([('access_db_id', '=', row["POID"])])
 
             if len(po) != 0:
-                print('Purchase Order ID# %s Exist' % row["POID"])
+                dumper.exist()
                 continue
             else:
                 data = {
@@ -93,22 +154,22 @@ def dump_purchase_order(env=None, file='TechPO.csv'):
                     'po_remarks': row["PORemarks"],
                     'po_type': row["POType"],
                 }
+                dumper.create(data)
 
-                env['outsource.purchase.order'].create(data)
-                env.cr.commit()
+    dumper.end()
 
 
-def dump_purchase_order_line(env=None, file='TechPOLine.csv'):
-    if env is None:
-        raise ValueError
-    csvpath = os.path.join(dumpdir, file)
+def dump_purchase_order_line(env=None, filename='TechPOLine.csv'):
+    dumper = Dumper(env=env, model_obj='outsource.purchase.order.line', filename=filename)
+    dumper.start()
+    po_line_model = dumper.model
 
-    with open(csvpath) as csvfile:
+    with open(dumper.csvpath) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            po_line = env['outsource.purchase.order.line'].search([('access_db_id', '=', row["POLineID"])])
+            po_line = po_line_model.search([('access_db_id', '=', row["POLineID"])])
             if len(po_line) != 0:
-                print('Purchase Order Line ID# %s Exist' % row["POID"])
+                dumper.exist()
                 continue
             else:
                 po = env['outsource.purchase.order'].search([('access_db_id', '=', row["POID"])])
@@ -134,24 +195,23 @@ def dump_purchase_order_line(env=None, file='TechPOLine.csv'):
                         'opex_percent': row["OPXPercent"],
                         'revenue_percent': row["REVPercent"],
                     }
-                    env['outsource.purchase.order.line'].create(data)
-                    env.cr.commit()
+                    dumper.create(data)
+    dumper.end()
 
 
-def dump_purchase_order_line_details(env=None, file='TechPOLineDetail.csv'):
-    if env is None:
-        raise ValueError
+def dump_purchase_order_line_details(env=None, filename='TechPOLineDetail.csv'):
+    dumper = Dumper(env=env, model_obj='outsource.purchase.order.line.detail', filename=filename)
+    dumper.start()
+    po_line_detail_model = dumper.model
 
-    csvpath = os.path.join(dumpdir, file)
-    with open(csvpath) as csvfile:
+    with open(dumper.csvpath) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            po_line_detail = env['outsource.purchase.order.line.detail'].search([('access_db_id', '=', row["PODetID"])])
+            po_line_detail = po_line_detail_model.search([('access_db_id', '=', row["PODetID"])])
             if len(po_line_detail) != 0:
-                print('Purchase Order Line Detail ID# %s Exist' % row["PODetID"])
+                dumper.exist()
                 continue
             else:
-
                 po_line = env['outsource.purchase.order.line'].search([('access_db_id', '=', row["POLineID"])])
                 if len(po_line) == 0:
                     print("Purchase Order Line ID# %s Does't Exist" % row["POLineID"])
@@ -179,19 +239,19 @@ def dump_purchase_order_line_details(env=None, file='TechPOLineDetail.csv'):
                         'rate_diff_percent': to_dec(row['PORate%Incr'])
 
                     }
-                    env['outsource.purchase.order.line.detail'].create(data)
-                    env.cr.commit()
+                    dumper.create(data)
+    dumper.end()
 
 
-def dump_invoice(env=None, file='TechInvoiceMgmt.csv'):
-    if env is None:
-        raise ValueError
+def dump_invoice(env=None, filename='TechInvoiceMgmt.csv'):
+    dumper = Dumper(env=env, model_obj='outsource.invoice', filename=filename)
+    dumper.start()
+    invoice_model = dumper.model
 
-    csvpath = os.path.join(dumpdir, file)
-    with open(csvpath) as csvfile:
+    with open(dumper.csvpath) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            invoice = env['outsource.invoice'].search([('access_db_id', '=', row['InvID'])], limit=1)
+            invoice = invoice_model.search([('access_db_id', '=', row['InvID'])], limit=1)
             resource_id = env['outsource.resource'].search([('access_db_id', '=', row['ResID'])], limit=1)
             po_line_detail_id = env['outsource.purchase.order.line.detail'].search(
                 [('access_db_id', '=', row['PODetID'])],
@@ -199,7 +259,7 @@ def dump_invoice(env=None, file='TechInvoiceMgmt.csv'):
             if not resource_id or not po_line_detail_id:
                 continue
             if invoice:
-                print('Invoice ID# %s Exist' % row["InvID"])
+                dumper.exist()
                 continue
             else:
                 data = {
@@ -213,25 +273,25 @@ def dump_invoice(env=None, file='TechInvoiceMgmt.csv'):
                     'remarks': row['Remarks']
                 }
 
-                env['outsource.invoice'].create(data)
-                env.cr.commit()
+                dumper.create(data)
+    dumper.end()
 
 
-def dump_resource(env=None, file='RPT01_ Monthly Accruals - Mobillized.csv'):
-    if env is None:
-        raise ValueError
+def dump_resource(env=None, filename='RPT01_ Monthly Accruals - Mobillized.csv'):
+    dumper = Dumper(env=env, model_obj='outsource.resource', filename=filename)
+    dumper.start()
+    resource_model = dumper.model
 
-    csvpath = os.path.join(dumpdir, file)
-    with open(csvpath) as csvfile:
+    with open(dumper.csvpath) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            resource = env['outsource.resource'].search([('access_db_id', '=', row["ResID"])], limit=1)
+            resource = resource_model.search([('access_db_id', '=', row["ResID"])], limit=1)
             po_id = env['outsource.purchase.order'].search([('access_db_id', '=', row["POID"])], limit=1)
             po_line_detail_id = env['outsource.purchase.order.line.detail'].search(
                 [('access_db_id', '=', row["PODetID"])], limit=1)
 
             if resource:
-                print('Resource ID# %s Exist' % row["ResID"])
+                dumper.exist()
                 continue
             else:
                 data = {
@@ -270,8 +330,8 @@ def dump_resource(env=None, file='RPT01_ Monthly Accruals - Mobillized.csv'):
                     'po_os_ref': row['POOSRef'],
                     'has_tool_or_uniform': to_bool(row['ToolsProvided']),
                 }
-                env['outsource.resource'].create(data)
-                env.cr.commit()
+                dumper.create(data)
+    dumper.end()
 
 
 def clear_all(env):
@@ -290,18 +350,12 @@ def clear_all(env):
 
 
 def start(env):
-    dump_purchase_order(env)
-    print('DONE PURCHASE ORDER')
-    dump_purchase_order_line(env)
-    print('DONE PURCHASE ORDER LINE')
-    dump_purchase_order_line_details(env)
-    print('DONE PURCHASE ORDER LINE DETAILS')
-    dump_resource(env)
-    print('DONE RESOURCE')
     dump_unit_price(env)
-    print('DONE UNIT PRICE')
+    dump_purchase_order(env)
+    dump_purchase_order_line(env)
+    dump_purchase_order_line_details(env)
+    dump_resource(env)
     dump_invoice(env)
-    print('DONE INVOICE')
 
 
 if __name__ == '__main__':
