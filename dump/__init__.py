@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-import os
 import csv
+import os
+import time
+
 import datetime as dt
 
 
@@ -47,6 +49,7 @@ class Dumper(object):
         self.sr_new = 0
         self.sr_exist = 0
         self.total = 0
+        self.start_time = None
 
     @property
     def csvpath(self):
@@ -68,20 +71,23 @@ class Dumper(object):
         return total - 1
 
     def progress(self):
-        print_string = '\rN: {new:06d} E: {exist:06d} {percent:.2%} - {current}/{total}'.format(
+        print_string = '\rN: {new:06d} E: {exist:06d} {percent:.2%} - {current}/{total} '.format(
             new=self.sr_new, exist=self.sr_exist,
             percent=float(self.sr) / float(self.total),
             current=self.sr, total=self.total)
         print(print_string, end="")
 
     def start(self):
+        self.start_time = time.time()
         self.total = self.get_total_csv_row()
         print('\n{}'.format(self.model_obj))
         print('=============================================================')
 
     def end(self):
-        print('\n=============================================================')
-        print('end {}'.format(self.model_obj))
+        lapse_time = time.time() - self.start_time
+        print('\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%', end='')
+        print('\nLapse Time: {:.5f}sec'.format(lapse_time))
+        return lapse_time
 
     def exist(self):
         self.sr += 1
@@ -175,10 +181,10 @@ def dump_purchase_order_line(env=None, filename='TechPOLine.csv'):
                 po = env['outsource.purchase.order'].search([('access_db_id', '=', row["POID"])])
 
                 if len(po) == 0:
-                    print("Purchase Order ID# %s Does't Exist" % row["POID"])
+                    print("\nPurchase Order ID# %s Does't Exist" % row["POID"], end='')
                     continue
                 elif len(po) > 1:
-                    print("Purchase Order ID# %s Multiple Record" % row["POID"])
+                    print("\nPurchase Order ID# %s Multiple Record" % row["POID"], end='')
                     continue
                 else:
                     data = {
@@ -214,7 +220,7 @@ def dump_purchase_order_line_details(env=None, filename='TechPOLineDetail.csv'):
             else:
                 po_line = env['outsource.purchase.order.line'].search([('access_db_id', '=', row["POLineID"])])
                 if len(po_line) == 0:
-                    print("Purchase Order Line ID# %s Does't Exist" % row["POLineID"])
+                    print("\nPurchase Order Line ID# %s Does't Exist" % row["POLineID"], end='')
                     continue
                 else:
                     data = {
