@@ -55,29 +55,31 @@ class SummarySheet(models.Model):
         else:
             raise ValidationError('Invalid Choice')
 
+        kargs = {
+            'period_start': period_start,
+            'period_end': period_end,
+            'ramadan_start': ramadan_start,
+            'ramadan_end': ramadan_end,
+            'total_required_hours': total_required_hours
+        }
+
         if self.generator_choice == 1:
-            obj.make_sbh_per_contractor('all', period_start, period_end, ramadan_start, ramadan_end,
-                                        total_required_hours)
+            obj.make_sbh_per_contractor('all', **kargs)
 
         elif self.generator_choice == 2:
-            obj.make_sbh_per_po(self.po_id.po_num, period_start, period_end, ramadan_start, ramadan_end,
-                                total_required_hours)
+            obj.make_sbh_per_po(self.po_id.po_num, **kargs)
 
         elif self.generator_choice == 3:
-            obj.make_sbh_per_contractor(self.contractor, period_start, period_end, ramadan_start, ramadan_end,
-                                        total_required_hours)
+            obj.make_sbh_per_contractor(self.contractor, **kargs)
 
         elif self.generator_choice == 4:
-            obj.make_sbh_per_division(self.po_id.po_num, self.division, period_start, period_end, ramadan_start,
-                                      ramadan_end, total_required_hours)
+            obj.make_sbh_per_division(self.po_id.po_num, **kargs)
 
         elif self.generator_choice == 5:
-            obj.make_datasheet_per_contractor('all', period_start, period_end, ramadan_start, ramadan_end,
-                                              total_required_hours)
+            obj.make_datasheet_per_contractor('all', **kargs)
 
         elif self.generator_choice == 6:
-            obj.make_datasheet_per_contractor(self.contractor, period_start, period_end, ramadan_start, ramadan_end,
-                                              total_required_hours)
+            obj.make_datasheet_per_contractor(self.contractor, **kargs)
 
         zip_path = obj.make_zip()
 

@@ -36,20 +36,15 @@ def get_required_hour(period_start=None, period_end=None, ramadan_start=None, ra
     ramadan_days = 0
 
     if ramadan_start and ramadan_end:
-        start = period_start
-        if period_start < ramadan_start:
-            start = ramadan_start
-        end = period_end
-        if ramadan_end < period_end:
-            end = ramadan_end
-
-        ramadan = end - start
-        ramadan_days = ramadan.days
+        if period_start <= ramadan_start <= period_end or period_start <= ramadan_end <= period_end:
+            start = ramadan_start if period_start <= ramadan_start <= period_end else period_start
+            end = ramadan_end if period_start <= ramadan_end <= period_end else period_end
+            ramadan_days = (end - start).days + 1
 
     normal_days = total_days - ramadan_days
 
     # +1 is a corrections factor to count all days within a period
-    return round(normal_days * 48.0 / 7.0) + round(ramadan_days * 36.0 / 7.0)
+    return normal_days * 48.0 / 7.0 + ramadan_days * 36.0 / 7.0
 
 
 def get_individual_required_hour(date_of_join=None, period_start=None, period_end=None,
@@ -488,8 +483,7 @@ class DATASHEET(Creator):
             ws.cell(row=row, column=column + 12).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
                 fields.Date.from_string(record['date_of_join']))
             ws.cell(row=row, column=column + 13).value = 'Yes' if record.get('has_tool_or_uniform', '') else ""
-            ws.cell(row=row,
-                    column=column + 14).value = self.total_required_hours if self.total_required_hours else self.required_hour
+            ws.cell(row=row, column=column + 14).value = self.required_hour
             ws.cell(row=row, column=column + 15).value = self.required_days
 
             # # Unlock Cells
@@ -533,8 +527,6 @@ class DATASHEET(Creator):
                 context['contractor'],
                 context['period_string']
             )
-            # TODO MAKE A LOGGER WHEN CREATING DATASHEET
-            #       _logger.info("DATA %s: %s, not found", self.name, e.name)
             self.single_set_datasheet(context)
         except Exception as e:
             print('Failed: ', contractor, ' due to missing {}'.format(str(e)))
