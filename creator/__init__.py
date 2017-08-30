@@ -314,7 +314,7 @@ class SBH(Creator):
         ws = wb.get_sheet_by_name('SBH-FORM 2')
 
         ws.insert_rows(row, len(context['rs_summary']) - 1)
-        ws.cell('R13').value = context['total_required_hour']
+        ws.cell('R13').value = round(context['total_required_hour'])
 
         for record in context['rs_summary']:
             ws.cell(row=row, column=column).value = record['po_os_ref']
