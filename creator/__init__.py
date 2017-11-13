@@ -4,6 +4,8 @@
 # IMPORT OPENPYXL WITH INSERT ROW
 # excel password tbpc19
 # ----------------------------------------------------------------------------------------------------
+import os
+import base64
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -115,7 +117,7 @@ class Creator(object):
         full_path = os.path.join(file_path)
 
         with open(full_path, 'r') as fp:
-            data = fp.read().encode('base64')
+            data = base64.b64encode(fp.read())
         filename = os.path.split(full_path)[1]
         values = dict(
             name=filename,
