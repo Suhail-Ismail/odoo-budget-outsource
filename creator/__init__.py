@@ -116,7 +116,7 @@ class Creator(object):
         ir_attach = env['ir.attachment']
         full_path = os.path.join(file_path)
 
-        with open(full_path, 'r') as fp:
+        with open(full_path, 'rb') as fp:
             data = base64.b64encode(fp.read())
         filename = os.path.split(full_path)[1]
         values = dict(
