@@ -176,7 +176,7 @@ class SBH(Creator):
         df_resource = pd.DataFrame(
             odoo_to_pandas_list(self.qs_resource, ['id', 'po_os_ref', 'agency_ref_num', 'res_full_name',
                                                    'po_position', 'po_level', 'date_of_join',
-                                                   'manager', 'director'
+                                                   'manager', 'director',
                                                    'po_line_detail_id.rate_diff_percent',
                                                    'has_tool_or_uniform']
                                 )
@@ -200,7 +200,7 @@ class SBH(Creator):
         rs_resource = pd.merge(left=df_resource, right=df_invoice, how='left', left_on='id', right_on='resource_id.id')
         rs_resource.sort_values(
             by=['director', 'manager', 'po_position', 'po_line_detail_id.rate_diff_percent'],
-            ascending=[True, True, True],
+            ascending=[True, True, True, True],
             inplace=True)
         rs_resource = rs_resource.fillna(0.0).to_dict('records')
 
