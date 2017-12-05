@@ -20,6 +20,7 @@ class Resource(models.Model):
     division = fields.Char()
     section = fields.Char()
     manager = fields.Char()
+    director = fields.Char()
     rate = fields.Float(default=0.00)
     po_rate_percent_increase = fields.Float(default=0.00)
     capex_percent = fields.Integer(default=0)

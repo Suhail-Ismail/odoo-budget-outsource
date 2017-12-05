@@ -176,7 +176,7 @@ class SBH(Creator):
         df_resource = pd.DataFrame(
             odoo_to_pandas_list(self.qs_resource, ['id', 'po_os_ref', 'agency_ref_num', 'res_full_name',
                                                    'po_position', 'po_level', 'date_of_join',
-                                                   'po_line_detail_id.director_name',
+                                                   'manager', 'director'
                                                    'po_line_detail_id.rate_diff_percent',
                                                    'has_tool_or_uniform']
                                 )
@@ -199,7 +199,7 @@ class SBH(Creator):
 
         rs_resource = pd.merge(left=df_resource, right=df_invoice, how='left', left_on='id', right_on='resource_id.id')
         rs_resource.sort_values(
-            by=['po_line_detail_id.director_name', 'po_position', 'po_line_detail_id.rate_diff_percent'],
+            by=['director', 'manager', 'po_position', 'po_line_detail_id.rate_diff_percent'],
             ascending=[True, True, True],
             inplace=True)
         rs_resource = rs_resource.fillna(0.0).to_dict('records')
@@ -293,14 +293,16 @@ class SBH(Creator):
                                                                                                  False,
                                                                                                  'False'] else 'Yes'
             ws.cell(row=row, column=column + 11).value = '' if len(str(record['remarks'])) == 0 else record['remarks']
-            ws.cell(row=row, column=column + 12).value = record['po_line_detail_id.director_name']
-            ws.cell(row=row, column=column + 13).value = ''
+            ws.cell(row=row, column=column + 12).value = record['manager']
+            ws.cell(row=row, column=column + 13).value = record['director']
+            ws.cell(row=row, column=column + 14).value = ''
 
             # # Unlock Cells
             ws.cell(row=row, column=column + 9).protection = Protection(locked=False)
             ws.cell(row=row, column=column + 11).protection = Protection(locked=False)
             ws.cell(row=row, column=column + 12).protection = Protection(locked=False)
             ws.cell(row=row, column=column + 13).protection = Protection(locked=False)
+            ws.cell(row=row, column=column + 14).protection = Protection(locked=False)
 
             sr += 1
             row += 1
@@ -431,14 +433,14 @@ class DATASHEET(Creator):
 
     def get_context(self):
         df_resource = pd.DataFrame(odoo_to_pandas_list(self.qs_resource,
-                                                       ['division', 'section', 'manager', 'access_db_id',
+                                                       ['division', 'section', 'manager', 'director', 'access_db_id',
                                                         'po_line_detail_id.access_db_id',
                                                         'po_num', 'rate', 'agency_ref_num', 'res_full_name',
                                                         'res_job_title', 'grade_level',
                                                         'date_of_join', 'has_tool_or_uniform']))
 
         df_resource.sort_values(
-            by=['division', 'manager', 'res_job_title'],
+            by=['division', 'manager', 'director', 'res_job_title'],
             ascending=[True, True, True],
             inplace=True)
         rs_resource = df_resource.to_dict('records')
@@ -474,24 +476,24 @@ class DATASHEET(Creator):
             ws.cell(row=row, column=column + 1).value = record.get('division', '')
             ws.cell(row=row, column=column + 2).value = record.get('section', '')
             ws.cell(row=row, column=column + 3).value = record.get('manager', '')
-            ws.cell(row=row, column=column + 4).value = record.get('access_db_id', '')
-            ws.cell(row=row, column=column + 5).value = record.get('po_line_detail_id.access_db_id', '')
-            ws.cell(row=row, column=column + 6).value = record.get('po_num', '')
-            ws.cell(row=row, column=column + 7).value = record.get('rate', '')
-            ws.cell(row=row, column=column + 8).value = record.get('agency_ref_num', '')
-            ws.cell(row=row, column=column + 9).value = record.get('res_full_name', '').title()
-            ws.cell(row=row, column=column + 10).value = record.get('res_job_title', '')
-            ws.cell(row=row, column=column + 11).value = record.get('grade_level', '')
-            ws.cell(row=row, column=column + 12).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
+            ws.cell(row=row, column=column + 4).value = record.get('director', '')
+            ws.cell(row=row, column=column + 5).value = record.get('access_db_id', '')
+            ws.cell(row=row, column=column + 6).value = record.get('po_line_detail_id.access_db_id', '')
+            ws.cell(row=row, column=column + 7).value = record.get('po_num', '')
+            ws.cell(row=row, column=column + 8).value = record.get('rate', '')
+            ws.cell(row=row, column=column + 9).value = record.get('agency_ref_num', '')
+            ws.cell(row=row, column=column + 10).value = record.get('res_full_name', '').title()
+            ws.cell(row=row, column=column + 11).value = record.get('res_job_title', '')
+            ws.cell(row=row, column=column + 12).value = record.get('grade_level', '')
+            ws.cell(row=row, column=column + 13).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
                 fields.Date.from_string(record['date_of_join']))
-            ws.cell(row=row, column=column + 13).value = 'Yes' if record.get('has_tool_or_uniform', '') else ""
-            ws.cell(row=row, column=column + 14).value = self.required_hour
-            ws.cell(row=row, column=column + 15).value = self.required_days
+            ws.cell(row=row, column=column + 14).value = 'Yes' if record.get('has_tool_or_uniform', '') else ""
+            ws.cell(row=row, column=column + 15).value = self.required_hour
+            ws.cell(row=row, column=column + 16).value = self.required_days
 
             # # Unlock Cells
-            # ws.cell(row=row, column=column + 16).protection = Protection(locked=False)
-            ws.cell(row=row, column=column + 17).protection = Protection(locked=False)
             ws.cell(row=row, column=column + 18).protection = Protection(locked=False)
+            ws.cell(row=row, column=column + 19).protection = Protection(locked=False)
 
             sr += 1
             row += 1

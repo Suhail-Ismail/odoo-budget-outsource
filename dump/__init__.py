@@ -318,6 +318,7 @@ def dump_resource(env=None, filename='RPT01_ Monthly Accruals - Mobillized.csv')
                     'division': row['Division'],
                     'section': row['Section'],
                     'manager': row['Manager'],
+                    'director': row['Director'],
                     'rate': row['Rate'],
                     'po_rate_percent_increase': to_dec(row['PORate%Incr']),
                     'capex_percent': row['CPX%Age'],
