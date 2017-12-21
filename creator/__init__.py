@@ -441,7 +441,7 @@ class DATASHEET(Creator):
 
         df_resource.sort_values(
             by=['division', 'manager', 'director', 'res_job_title'],
-            ascending=[True, True, True],
+            ascending=[True, True, True, True],
             inplace=True)
         rs_resource = df_resource.to_dict('records')
 
