@@ -155,7 +155,6 @@ def dump_purchase_order(env=None, filename='TechPO.csv'):
                     'revenue_value': to_dec(row["REVValue"]),
                     'task_num': row["TaskNum"],
                     'renew_status': row["RenewStatus"],
-                    'renew_po_no': row["RenewPONum"],
                     'po_status': row["POStatus"],
                     'po_remarks': row["PORemarks"],
                     'po_type': row["POType"],
