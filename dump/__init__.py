@@ -365,5 +365,13 @@ def start(env):
     dump_invoice(env)
 
 
+def start_without_invoice(env):
+    dump_unit_price(env)
+    dump_purchase_order(env)
+    dump_purchase_order_line(env)
+    dump_purchase_order_line_details(env)
+    dump_resource(env)
+
+
 if __name__ == '__main__':
     pass
