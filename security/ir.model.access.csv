@@ -6,3 +6,4 @@ access_purchase_order_line_detail,outsource.purchase.order.line.detail,model_out
 access_resource,outsource.resource,model_outsource_resource,group_outsource,1,1,1,1
 access_unit_rate,outsource.unit.rate,model_outsource_unit_rate,group_outsource,1,1,1,1
 access_summary_sheet,outsource.summary.sheet,model_outsource_summary_sheet,group_outsource,1,1,1,1
+access_dumper,outsource.dumper,model_outsource_dumper,group_outsource,1,1,1,1

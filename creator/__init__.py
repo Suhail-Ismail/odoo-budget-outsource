@@ -482,18 +482,19 @@ class DATASHEET(Creator):
             ws.cell(row=row, column=column + 7).value = record.get('po_num', '')
             ws.cell(row=row, column=column + 8).value = record.get('rate', '')
             ws.cell(row=row, column=column + 9).value = record.get('agency_ref_num', '')
-            ws.cell(row=row, column=column + 10).value = record.get('res_full_name', '').title()
-            ws.cell(row=row, column=column + 11).value = record.get('res_job_title', '')
-            ws.cell(row=row, column=column + 12).value = record.get('grade_level', '')
-            ws.cell(row=row, column=column + 13).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
+            ws.cell(row=row, column=column + 10).value = record.get('po_rate_percent_increase', '')
+            ws.cell(row=row, column=column + 11).value = record.get('res_full_name', '').title()
+            ws.cell(row=row, column=column + 12).value = record.get('res_job_title', '')
+            ws.cell(row=row, column=column + 13).value = record.get('grade_level', '')
+            ws.cell(row=row, column=column + 14).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
                 fields.Date.from_string(record['date_of_join']))
-            ws.cell(row=row, column=column + 14).value = 'Yes' if record.get('has_tool_or_uniform', '') else ""
-            ws.cell(row=row, column=column + 15).value = self.required_hour
-            ws.cell(row=row, column=column + 16).value = self.required_days
+            ws.cell(row=row, column=column + 15).value = 'Yes' if record.get('has_tool_or_uniform', '') else ""
+            ws.cell(row=row, column=column + 16).value = self.required_hour
+            ws.cell(row=row, column=column + 17).value = self.required_days
 
             # # Unlock Cells
-            ws.cell(row=row, column=column + 18).protection = Protection(locked=False)
             ws.cell(row=row, column=column + 19).protection = Protection(locked=False)
+            ws.cell(row=row, column=column + 20).protection = Protection(locked=False)
 
             sr += 1
             row += 1

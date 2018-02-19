@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 
+
 class PurchaseOrderLineDetail(models.Model):
     _name = 'outsource.purchase.order.line.detail'
     _rec_name = 'po_os_ref'
@@ -9,7 +10,7 @@ class PurchaseOrderLineDetail(models.Model):
 
     # BASIC FIELDS
     # ----------------------------------------------------------
-    
+
     po_os_ref = fields.Char()
     po_position = fields.Char()
     po_level = fields.Char()
@@ -26,7 +27,7 @@ class PurchaseOrderLineDetail(models.Model):
     capex_percent = fields.Integer(default=0)
     opex_percent = fields.Integer(default=0)
     revenue_percent = fields.Integer(default=0)
-    rate_diff_percent = fields.Float(default=0.00)
+    rate_diff_percent = fields.Float(default=0.0000, digits=(12, 6))
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
