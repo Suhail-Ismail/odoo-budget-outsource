@@ -27,6 +27,11 @@ class PurchaseOrderLineDetail(models.Model):
     capex_percent = fields.Integer(default=0)
     opex_percent = fields.Integer(default=0)
     revenue_percent = fields.Integer(default=0)
+
+    rate_diff_percent_manual = fields.Float(default=0.0000, digits=(12, 6))
+    rate_diff_percent_calculated = fields.Float(default=0.0000, digits=(12, 6))
+
+    # TODO DEPRECATED
     rate_diff_percent = fields.Float(default=0.0000, digits=(12, 6))
 
     # RELATIONSHIPS

@@ -241,7 +241,8 @@ def dump_purchase_order_line_details(env=None, filename='TechPOLineDetail.csv'):
                         'capex_percent': row["CPX%Age"],
                         'opex_percent': row["OPX%Age"],
                         'revenue_percent': row["REV%Age"],
-                        'rate_diff_percent': to_dec(row['PORate%Incr'])
+                        'rate_diff_percent_manual': to_dec(row['PORate%IncrManual']),
+                        'rate_diff_percent_calculated': to_dec(row['OdooAdditional%'])
 
                     }
                     dumper.create(data)
