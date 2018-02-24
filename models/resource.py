@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 
+
 class Resource(models.Model):
     _name = 'outsource.resource'
     _rec_name = 'res_full_name'
@@ -22,7 +23,6 @@ class Resource(models.Model):
     manager = fields.Char()
     director = fields.Char()
     rate = fields.Float(default=0.00)
-    po_rate_percent_increase = fields.Float(default=0.00)
     capex_percent = fields.Integer(default=0)
     capex_rate = fields.Float(default=0.00)
     opex_percent = fields.Integer(default=0)
@@ -38,6 +38,9 @@ class Resource(models.Model):
     contractor = fields.Char()
     po_os_ref = fields.Char()
     has_tool_or_uniform = fields.Boolean()
+
+    # TODO DISCUSS WITH RANA WHY IT IS MISSING
+    po_rate_percent_increase = fields.Float(default=0.00)
 
     # RELATIONSHIPS
     # ----------------------------------------------------------
