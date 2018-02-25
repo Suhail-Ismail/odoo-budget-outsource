@@ -177,7 +177,7 @@ class SBH(Creator):
             odoo_to_pandas_list(self.qs_resource, ['id', 'po_os_ref', 'agency_ref_num', 'res_full_name',
                                                    'po_position', 'po_level', 'date_of_join',
                                                    'manager', 'director',
-                                                   'po_line_detail_id.rate_diff_percent',
+                                                   'po_line_detail_id.rate_diff_percent.calculated',
                                                    'has_tool_or_uniform']
                                 )
         )
@@ -199,7 +199,7 @@ class SBH(Creator):
 
         rs_resource = pd.merge(left=df_resource, right=df_invoice, how='left', left_on='id', right_on='resource_id.id')
         rs_resource.sort_values(
-            by=['director', 'manager', 'po_position', 'po_line_detail_id.rate_diff_percent'],
+            by=['director', 'manager', 'po_position', 'po_line_detail_id.rate_diff_percent.calculated'],
             ascending=[True, True, True, True],
             inplace=True)
         rs_resource = rs_resource.fillna(0.0).to_dict('records')
@@ -208,16 +208,16 @@ class SBH(Creator):
 
         df_line_details = pd.DataFrame(
             odoo_to_pandas_list(self.qs_line_details, ['po_position', 'po_os_ref', 'po_level',
-                                                       'rate_diff_percent']))
+                                                       'rate_diff_percent.calculated']))
         df_line_details['po_position'] = df_line_details['po_position'].apply(lambda x: x.upper())
-        df_line_details = df_line_details.groupby(['po_os_ref', 'po_position', 'po_level', 'rate_diff_percent']). \
+        df_line_details = df_line_details.groupby(['po_os_ref', 'po_position', 'po_level', 'rate_diff_percent.calculated']). \
             size().reset_index()
-        df_line_details.columns = ['po_os_ref', 'po_position', 'po_level', 'rate_diff_percent', 'count']
-        df_line_details = df_line_details.pivot_table(index=['po_position', 'po_os_ref', 'rate_diff_percent'],
+        df_line_details.columns = ['po_os_ref', 'po_position', 'po_level', 'rate_diff_percent.calculated', 'count']
+        df_line_details = df_line_details.pivot_table(index=['po_position', 'po_os_ref', 'rate_diff_percent.calculated'],
                                                       columns='po_level',
                                                       values='count')
         rs_summary = df_line_details.reset_index()
-        rs_summary.sort_values(by=['po_os_ref', 'po_position', 'rate_diff_percent'],
+        rs_summary.sort_values(by=['po_os_ref', 'po_position', 'rate_diff_percent.calculated'],
                                ascending=[True, True, True],
                                inplace=True)
 
@@ -286,7 +286,7 @@ class SBH(Creator):
             ws.cell(row=row, column=column + 5).value = record['po_level']
             ws.cell(row=row, column=column + 6).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
                 fields.Date.from_string(record['date_of_join']))
-            ws.cell(row=row, column=column + 7).value = record['po_line_detail_id.rate_diff_percent']
+            ws.cell(row=row, column=column + 7).value = record['po_line_detail_id.rate_diff_percent.calculated']
             ws.cell(row=row, column=column + 8).value = record['required_hour']
             ws.cell(row=row, column=column + 9).value = record['invoice_claim']
             ws.cell(row=row, column=column + 10).value = '' if record['has_tool_or_uniform'] in ['false', 'FALSE',
@@ -326,7 +326,7 @@ class SBH(Creator):
             ws.cell(row=row, column=column + 2).value = record.get('level 1', 0)
             ws.cell(row=row, column=column + 3).value = record.get('level 2', 0)
             ws.cell(row=row, column=column + 4).value = record.get('level 3', 0)
-            ws.cell(row=row, column=column + 12).value = record.get('rate_diff_percent', 0)
+            ws.cell(row=row, column=column + 12).value = record.get('rate_diff_percent.calculated', 0)
 
             row += 1
         # ---------------------------------------------------------------------------------------
