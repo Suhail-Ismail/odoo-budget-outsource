@@ -288,7 +288,7 @@ class SBH(Creator):
             ws.cell(row=row, column=column + 5).value = record['po_level']
             ws.cell(row=row, column=column + 6).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
                 fields.Date.from_string(record['date_of_join']))
-            ws.cell(row=row, column=column + 7).value = record['po_line_detail_id.rate_diff_percent_calculated']
+            ws.cell(row=row, column=column + 7).value = record['po_line_detail_id.rate_diff_percent_calculated'] / 100
             ws.cell(row=row, column=column + 8).value = record['required_hour']
             ws.cell(row=row, column=column + 9).value = record['invoice_claim']
             ws.cell(row=row, column=column + 10).value = '' if record['has_tool_or_uniform'] in ['false', 'FALSE',
