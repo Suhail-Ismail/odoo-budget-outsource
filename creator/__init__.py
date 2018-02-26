@@ -327,7 +327,7 @@ class SBH(Creator):
             ws.cell(row=row, column=column + 2).value = record.get('level 1', 0)
             ws.cell(row=row, column=column + 3).value = record.get('level 2', 0)
             ws.cell(row=row, column=column + 4).value = record.get('level 3', 0)
-            ws.cell(row=row, column=column + 12).value = record.get('rate_diff_percent_calculated', 0)
+            ws.cell(row=row, column=column + 12).value = record.get('rate_diff_percent_calculated', 0) / 100
 
             row += 1
         # ---------------------------------------------------------------------------------------
