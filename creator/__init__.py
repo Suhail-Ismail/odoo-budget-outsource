@@ -207,20 +207,21 @@ class SBH(Creator):
         # to get rs_summary
 
         df_line_details = pd.DataFrame(
-            odoo_to_pandas_list(self.qs_line_details, ['po_position', 'po_os_ref', 'po_level',
+            odoo_to_pandas_list(self.qs_line_details, ['po_position', 'po_os_ref', 'po_level', 'po_rate',
                                                        'rate_diff_percent_calculated']))
         df_line_details['po_position'] = df_line_details['po_position'].apply(lambda x: x.upper())
         df_line_details = df_line_details.groupby(
-            ['po_os_ref', 'po_position', 'po_level', 'rate_diff_percent_calculated']). \
+            ['po_os_ref', 'po_position', 'po_level', 'po_rate', 'rate_diff_percent_calculated']). \
             size().reset_index()
-        df_line_details.columns = ['po_os_ref', 'po_position', 'po_level', 'rate_diff_percent_calculated', 'count']
+        df_line_details.columns = ['po_os_ref', 'po_position', 'po_level', 'po_rate',
+                                   'rate_diff_percent_calculated', 'count']
         df_line_details = df_line_details.pivot_table(
-            index=['po_position', 'po_os_ref', 'rate_diff_percent_calculated'],
+            index=['po_position', 'po_os_ref', 'po_rate', 'rate_diff_percent_calculated'],
             columns='po_level',
             values='count')
         rs_summary = df_line_details.reset_index()
-        rs_summary.sort_values(by=['po_os_ref', 'po_position', 'rate_diff_percent_calculated'],
-                               ascending=[True, True, True],
+        rs_summary.sort_values(by=['po_os_ref', 'po_position', 'po_rate', 'rate_diff_percent_calculated'],
+                               ascending=[True, True, True, True],
                                inplace=True)
 
         # make all columns lower
@@ -481,21 +482,21 @@ class DATASHEET(Creator):
             ws.cell(row=row, column=column + 5).value = record.get('access_db_id', '')
             ws.cell(row=row, column=column + 6).value = record.get('po_line_detail_id.access_db_id', '')
             ws.cell(row=row, column=column + 7).value = record.get('po_num', '')
-            ws.cell(row=row, column=column + 8).value = record.get('rate', '')
-            ws.cell(row=row, column=column + 9).value = record.get('po_rate_percent_increase', 0.0)
-            ws.cell(row=row, column=column + 10).value = record.get('agency_ref_num', '')
-            ws.cell(row=row, column=column + 11).value = record.get('res_full_name', '').title()
-            ws.cell(row=row, column=column + 12).value = record.get('res_job_title', '')
-            ws.cell(row=row, column=column + 13).value = record.get('grade_level', '')
-            ws.cell(row=row, column=column + 14).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
+            ws.cell(row=row, column=column + 8).value = record.get('po_rate', '')
+            ws.cell(row=row, column=column + 9).value = record.get('rate_diff_percent_calculated', '')
+            ws.cell(row=row, column=column + 11).value = record.get('agency_ref_num', '')
+            ws.cell(row=row, column=column + 12).value = record.get('res_full_name', '').title()
+            ws.cell(row=row, column=column + 13).value = record.get('res_job_title', '')
+            ws.cell(row=row, column=column + 14).value = record.get('grade_level', '')
+            ws.cell(row=row, column=column + 15).value = '' if not record['date_of_join'] else '{0:%d-%b-%Y}'.format(
                 fields.Date.from_string(record['date_of_join']))
-            ws.cell(row=row, column=column + 15).value = 'Yes' if record.get('has_tool_or_uniform', '') else ""
-            ws.cell(row=row, column=column + 16).value = self.required_hour
-            ws.cell(row=row, column=column + 17).value = self.required_days
+            ws.cell(row=row, column=column + 16).value = 'Yes' if record.get('has_tool_or_uniform', '') else ""
+            ws.cell(row=row, column=column + 17).value = self.required_hour
+            ws.cell(row=row, column=column + 18).value = self.required_days
 
             # # Unlock Cells
-            ws.cell(row=row, column=column + 19).protection = Protection(locked=False)
             ws.cell(row=row, column=column + 20).protection = Protection(locked=False)
+            ws.cell(row=row, column=column + 21).protection = Protection(locked=False)
 
             sr += 1
             row += 1
