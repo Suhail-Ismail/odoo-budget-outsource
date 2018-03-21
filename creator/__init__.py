@@ -437,7 +437,10 @@ class DATASHEET(Creator):
         df_resource = pd.DataFrame(odoo_to_pandas_list(self.qs_resource,
                                                        ['division', 'section', 'manager', 'director', 'access_db_id',
                                                         'po_line_detail_id.access_db_id',
-                                                        'po_num', 'rate', 'agency_ref_num', 'res_full_name',
+                                                        'po_line_detail_id.po_rate',
+                                                        'po_line_detail_id.rate',
+                                                        'po_line_detail_id.rate_diff_percent_calculated',
+                                                        'po_num', 'agency_ref_num', 'res_full_name',
                                                         'res_job_title', 'grade_level',
                                                         'date_of_join', 'has_tool_or_uniform']))
 
@@ -482,8 +485,9 @@ class DATASHEET(Creator):
             ws.cell(row=row, column=column + 5).value = record.get('access_db_id', '')
             ws.cell(row=row, column=column + 6).value = record.get('po_line_detail_id.access_db_id', '')
             ws.cell(row=row, column=column + 7).value = record.get('po_num', '')
-            ws.cell(row=row, column=column + 8).value = record.get('po_rate', '')
-            ws.cell(row=row, column=column + 9).value = record.get('rate_diff_percent_calculated', '')
+            ws.cell(row=row, column=column + 8).value = record.get('po_line_detail_id.po_rate', '')
+            ws.cell(row=row, column=column + 9).value = record.get('po_line_detail_id.rate_diff_percent_calculated', '')
+            ws.cell(row=row, column=column + 10).value = record.get('po_line_detail_id.rate', '')
             ws.cell(row=row, column=column + 11).value = record.get('agency_ref_num', '')
             ws.cell(row=row, column=column + 12).value = record.get('res_full_name', '').title()
             ws.cell(row=row, column=column + 13).value = record.get('res_job_title', '')

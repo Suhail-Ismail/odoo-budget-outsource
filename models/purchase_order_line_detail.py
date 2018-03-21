@@ -16,6 +16,7 @@ class PurchaseOrderLineDetail(models.Model):
     po_level = fields.Char()
     po_rate = fields.Float(default=0.00)
     po_revise_rate = fields.Float(default=0.00)
+    rate = fields.Float(default=0.00)
     division = fields.Char()
     section = fields.Char()
     sub_section = fields.Char()

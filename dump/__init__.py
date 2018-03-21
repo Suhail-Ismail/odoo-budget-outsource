@@ -230,6 +230,7 @@ def dump_purchase_order_line_details(env=None, filename='TechPOLineDetail.csv'):
                         'po_level': row["POLevel"],
                         'po_rate': to_dec(row["PORate"]),
                         'po_revise_rate': to_dec(row["PORRate"]),
+                        'rate': to_dec(row["Rate"]),
                         'division': row["Division"],
                         'section': row["Section"],
                         'sub_section': row["SubSection"],
