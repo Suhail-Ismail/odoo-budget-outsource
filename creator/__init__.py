@@ -149,13 +149,15 @@ class SBH(Creator):
         # queryset for all resources filtered by po_num
         # RPT01_ Monthly Accruals - Mobillized
 
-        self.qs_resource = self.env['outsource.resource'].search(q)
+        self.qs_invoice = self.env['outsource.invoice'].search(
+            [('invoice_date', '=', '{}-{}-{}'.format(self.period_end.year, self.period_end.month, 1)),
+             ('po_line_detail_id.po_line_id.po_id.po_num', '=', self.po_num)],
+            order='invoice_date desc')
+
+        resource_ids = self.qs_invoice.resource_id.ids
+        self.qs_resource = self.env['outsource.resource'].search([('id', 'in', resource_ids)])
         if self.division:
             self.qs_resource = self.qs_resource.filtered(lambda r: r.division == self.division)
-
-        self.qs_invoice = self.env['outsource.invoice'].search(
-            [('invoice_date', '=', '{}-{}-{}'.format(self.period_end.year, self.period_end.month, 1))],
-            order='invoice_date desc')
 
         # queryset for all PO Line filtered by po_num
         q = []
