@@ -207,21 +207,20 @@ class SBH(Creator):
         # to get rs_summary
 
         df_line_details = pd.DataFrame(
-            odoo_to_pandas_list(self.qs_line_details, ['po_position', 'po_os_ref', 'po_level', 'po_rate',
-                                                       'rate_diff_percent_calculated']))
+            odoo_to_pandas_list(self.qs_line_details,
+                                ['po_position', 'po_os_ref', 'po_level', 'rate_diff_percent_calculated']))
         df_line_details['po_position'] = df_line_details['po_position'].apply(lambda x: x.upper())
         df_line_details = df_line_details.groupby(
-            ['po_os_ref', 'po_position', 'po_level', 'po_rate', 'rate_diff_percent_calculated']). \
+            ['po_os_ref', 'po_position', 'po_level', 'rate_diff_percent_calculated']). \
             size().reset_index()
-        df_line_details.columns = ['po_os_ref', 'po_position', 'po_level', 'po_rate',
-                                   'rate_diff_percent_calculated', 'count']
+        df_line_details.columns = ['po_os_ref', 'po_position', 'po_level', 'rate_diff_percent_calculated', 'count']
         df_line_details = df_line_details.pivot_table(
-            index=['po_position', 'po_os_ref', 'po_rate', 'rate_diff_percent_calculated'],
+            index=['po_position', 'po_os_ref', 'rate_diff_percent_calculated'],
             columns='po_level',
             values='count')
         rs_summary = df_line_details.reset_index()
-        rs_summary.sort_values(by=['po_os_ref', 'po_position', 'po_rate', 'rate_diff_percent_calculated'],
-                               ascending=[True, True, True, True],
+        rs_summary.sort_values(by=['po_os_ref', 'po_position', 'rate_diff_percent_calculated'],
+                               ascending=[True, True, True],
                                inplace=True)
 
         # make all columns lower
