@@ -154,7 +154,7 @@ class SBH(Creator):
              ('po_line_detail_id.po_line_id.po_id.po_num', '=', self.po_num)],
             order='invoice_date desc')
 
-        resource_ids = self.qs_invoice.resource_id.ids
+        resource_ids = self.qs_invoice.mapped('resource_id.id')
         self.qs_resource = self.env['outsource.resource'].search([('id', 'in', resource_ids)])
         if self.division:
             self.qs_resource = self.qs_resource.filtered(lambda r: r.division == self.division)
