@@ -230,7 +230,8 @@ class SBH(Creator):
 
         rs_summary = rs_summary.fillna(0.0).to_dict('records')
         df_unit_price = pd.DataFrame(odoo_to_pandas_list(self.qs_unit_price))
-        df_unit_price = df_unit_price.pivot(index='po_position', columns='po_level', values='amount').reset_index()
+        df_unit_price = pd.pivot_table(df_unit_price, index=['po_position'], columns='po_level', values="amount"). \
+            reset_index()
         rs_unit_price = df_unit_price.to_dict('records')
 
         context = {
