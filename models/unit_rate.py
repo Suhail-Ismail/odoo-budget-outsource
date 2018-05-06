@@ -5,11 +5,16 @@ from odoo import models, fields
 
 class UnitRate(models.Model):
     _name = 'budget.outsource.unit.rate'
-    _rec_name = 'po_position'
+    _rec_name = 'position_name'
     _description = 'Unit Rate'
 
-    contractor = fields.Char()
-    po_position = fields.Char()
-    po_level = fields.Char()
-    amount = fields.Float(default=0.00)
-    percent = fields.Integer(default=0)
+    position_name = fields.Char()
+    position_level = fields.Char()
+    amount = fields.Monetary(string='Amount', currency_field='currency_id')
+
+    # RELATIONSHIPS
+    # ----------------------------------------------------------
+    currency_id = fields.Many2one('res.currency', readonly=True,
+                                  default=lambda self: self.env.user.company_id.currency_id)
+
+    contractor_id = fields.Many2one('budget.contractor.contractor', string='Contractor')

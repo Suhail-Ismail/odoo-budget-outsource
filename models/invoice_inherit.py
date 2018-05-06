@@ -1,10 +1,19 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.addons.budget_utilities.models.utilities import num_to_shorthand
 
 
 class Invoice(models.Model):
     _inherit = 'budget.invoice.invoice'
 
     is_outsource = fields.Boolean('Is Outsource', default=False)
+
+    # BASIC FIELDS
+    # ----------------------------------------------------------
+    outsource_actual_hour = fields.Float(default=0.00)
+    outsource_claim_hour = fields.Float(default=0.00)
+
+    # RELATIONSHIPS
+    # ----------------------------------------------------------
+    mobilize_id = fields.Many2one('budget.outsource.mobilize')
+    position_id = fields.Many2one('budget.outsource.position')

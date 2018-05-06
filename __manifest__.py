@@ -23,8 +23,8 @@ Outsource Management
                 'budget_enduser', 'budget_contractor', 'budget_capex', 'budget_opex', 'budget_purchase_order',
                 'budget_invoice'],
     'data': [
-        # 'security/budget_outsource.xml',
-        # 'security/ir.model.access.csv',
+        'security/budget_outsource.xml',
+        'security/ir.model.access.csv',
 
         # 'views/invoice.xml',
         # 'views/resource.xml',
