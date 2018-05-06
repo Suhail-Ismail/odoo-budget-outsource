@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from . import mixin
+# INHERITANCE MODELS
+# ----------------------------------------------------------
+from . import cear_inherit, contract_inherit, invoice_inherit, purchase_order_inherit
 
-from . import invoice, purchase_order, purchase_order_line, \
-    purchase_order_line_detail, resource, unit_rate, summary_sheet
+# BASIC MODELS
+# ----------------------------------------------------------
+from . import resource, unit_rate
 
-from . import dumper
