@@ -3,6 +3,66 @@
 <odoo>
     <data>
         <!--START VIEWS-->
+        <record model="ir.ui.view" id="view_form_resource">
+            <field name="name">Resources</field>
+            <field name="model">budget.outsource.resource</field>
+            <field name="arch" type="xml">
+                <form string="Resources">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="emp_num" required="1" default_focus="1" placeholder="Employee No."/>
+                            </h1>
+                        </div>
+                        <notebook>
+                            <page string="General">
+                                <group>
+                                    <group>
+                                        <field name="name" required="1"/>
+                                        <field name="date_of_join" required="1"/>
+                                        <field name="has_tool_or_uniform"/>
+                                        <field name="agency_ref_num"/>
+                                    </group>
+                                    <group>
+                                        <field name="contractor_id" required="1"/>
+                                        <field name="type"/>
+                                        <field name="type_class"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Financial">
+                                <group>
+                                    <group>
+                                        <field name="capex_percent"/>
+                                        <field name="opex_percent"/>
+                                        <field name="revenue_percent"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_tree_resource">
+            <field name="name">Resources</field>
+            <field name="model">budget.outsource.resource</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="contractor_id"/>
+                    <field name="name"/>
+                    <field name="emp_num"/>
+                    <field name="agency_ref_num"/>
+                    <field name="date_of_join"/>
+                    <field name="type"/>
+                    <field name="type_class"/>
+                </tree>
+            </field>
+        </record>
         <!--END VIEWS-->
 
         <!--START ACTIONS-->

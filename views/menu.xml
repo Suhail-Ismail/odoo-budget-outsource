@@ -4,44 +4,62 @@
     <data>
         <!--HEADER-->
         <menuitem
-                id="menu_outsourcing_top"
-                name="Outsourcing"
+                id="menu_outsource_top"
+                name="Outsource"
                 sequence="99"/>
+
+        <menuitem
+                id="menu_sheet"
+                name="Sheet"
+                parent="menu_outsource_top"
+                action="action_sheet"/>
 
         <menuitem
                 id="menu_contractor"
                 name="Contractor"
-                parent="menu_outsourcing_top"
+                parent="menu_outsource_top"
                 action="action_contractor"/>
 
         <menuitem
                 id="menu_contract"
                 name="Contract"
-                parent="menu_outsourcing_top"
+                parent="menu_outsource_top"
                 action="action_contract"/>
 
         <menuitem
                 id="menu_purchase_order"
                 name="Purchase Order"
-                parent="menu_outsourcing_top"
+                parent="menu_outsource_top"
                 action="action_purchase_order"/>
+
+        <menuitem
+                id="menu_position"
+                name="Position"
+                parent="menu_outsource_top"
+                action="action_position"/>
 
         <menuitem
                 id="menu_invoice"
                 name="Invoice"
-                parent="menu_outsourcing_top"
+                parent="menu_outsource_top"
                 action="action_invoice"/>
 
         <menuitem
                 id="menu_cear"
                 name="CEAR"
-                parent="menu_outsourcing_top"
+                parent="menu_outsource_top"
                 action="action_cear"/>
 
         <menuitem
                 id="menu_oear"
                 name="OEAR"
-                parent="menu_outsourcing_top"
+                parent="menu_outsource_top"
                 action="action_oear"/>
+
+        <menuitem
+                id="menu_resource"
+                name="Resource"
+                parent="menu_outsource_top"
+                action="action_resource"/>
     </data>
 </odoo>

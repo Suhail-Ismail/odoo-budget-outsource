@@ -8,11 +8,11 @@ class Resource(models.Model):
     _description = 'Resource'
     _inherit = ['mail.thread', 'budget.enduser.mixin']
 
+    name = fields.Char()
     type = fields.Char()
     type_class = fields.Char()
     agency_ref_num = fields.Char()
     emp_num = fields.Char()
-    name = fields.Char()
     date_of_join = fields.Date()
     has_tool_or_uniform = fields.Boolean()
 

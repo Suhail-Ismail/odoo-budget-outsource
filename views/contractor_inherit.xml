@@ -5,6 +5,21 @@
         <!--START VIEWS-->
         <!--END VIEWS-->
 
+        <!--START SEARCH-->
+        <record model="ir.ui.view" id="view_search_contractor">
+            <field name="name">Budget Search</field>
+            <field name="model">budget.contractor.contractor</field>
+            <field name="inherit_id" ref="budget_contractor.view_search_contractor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <filter name="is_resource"
+                            string="Outsource"
+                            domain="[('contract_ids.is_resource', '=', True)]"/>
+                </xpath>
+            </field>
+        </record>
+        <!--END SEARCH-->
+
         <!--START ACTIONS-->
         <!--Contract Action-->
         <record model="ir.actions.act_window" id="action_contractor">
@@ -12,6 +27,9 @@
             <field name="res_model">budget.contractor.contractor</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_search_contractor"/>
+            <field name="context">{'search_default_is_resource': 1}</field>
+
         </record>
         <!--END ACTIONS-->
     </data>

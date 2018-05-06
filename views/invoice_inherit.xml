@@ -3,16 +3,35 @@
 <odoo>
     <data>
         <!--START VIEWS-->
+        <record model="ir.ui.view" id="view_form_invoice">
+            <field name="name">Invoice</field>
+            <field name="model">budget.invoice.invoice</field>
+            <field name="inherit_id" ref="budget_invoice.view_form_invoice"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='is_head_office']" position="after">
+                    <field name="is_resource"/>
+                </xpath>
+            </field>
+        </record>
         <!--END VIEWS-->
 
         <!--START ACTIONS-->
-        <!--Contract Action-->
-        <record model="ir.actions.act_window" id="action_invoice">
+        <!-- ACTION FOR RESOURCE -->
+        <record model="ir.actions.act_window" id="action_invoice_resource">
             <field name="name">Invoice</field>
             <field name="res_model">budget.invoice.invoice</field>
-            <field name="domain">[('is_resource','=', True)]</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="view_id" ref="budget_invoice.view_tree_invoice"/>
+            <field name="search_view_id" ref="budget_invoice.search_invoice"/>
+            <field name="context">{
+                'form_view_ref': 'budget_invoice.view_form_invoice',
+                'default_is_resource': True,
+                'search_default_resource': 1,
+                'search_default_need_action': 1,
+                'search_default_my_activity': 1,
+                }
+            </field>
         </record>
         <!--END ACTIONS-->
     </data>
