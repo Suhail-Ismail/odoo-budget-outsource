@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <!--START VIEWS-->
+        <!--END VIEWS-->
+
+        <!--START ACTIONS-->
+        <!--Contract Action-->
+        <record model="ir.actions.act_window" id="action_cear">
+            <field name="name">CEAR</field>
+            <field name="res_model">budget.capex.cear</field>
+            <field name="domain">[('is_resource','=', True)]</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!--END ACTIONS-->
+    </data>
+</odoo>

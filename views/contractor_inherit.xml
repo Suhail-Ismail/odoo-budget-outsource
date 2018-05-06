@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <!--START VIEWS-->
+        <!--END VIEWS-->
+
+        <!--START ACTIONS-->
+        <!--Contract Action-->
+        <record model="ir.actions.act_window" id="action_contractor">
+            <field name="name">Contractor</field>
+            <field name="res_model">budget.contractor.contractor</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!--END ACTIONS-->
+    </data>
+</odoo>

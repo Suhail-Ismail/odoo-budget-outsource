@@ -6,7 +6,7 @@ from odoo import models, fields, api
 class PurchaseOrder(models.Model):
     _inherit = 'budget.purchase.order'
 
-    is_outsource = fields.Boolean('Is Outsource', default=False)
+    is_resource = fields.Boolean('Is Resource', default=False)
 
     # Already Exist in base Purchase Order
     # num, date, amount

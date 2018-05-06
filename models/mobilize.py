@@ -30,10 +30,11 @@ class Mobilize(models.Model):
     related_resource_section = fields.Char(related='resource_id.section_id.name')
     related_resource_sub_section = fields.Char(related='resource_id.sub_section_id.name')
 
-    director_name = fields.Char()
-
-    approval_ref_num = fields.Char()
-    approval_reason = fields.Text(blank=True)
+    # TODO DETERMINE IF IT SHOULD BE HERE
+    # director_name = fields.Char()
+    #
+    # approval_ref_num = fields.Char()
+    # approval_reason = fields.Text(blank=True)
 
     # RELATIONSHIPS
     # ----------------------------------------------------------

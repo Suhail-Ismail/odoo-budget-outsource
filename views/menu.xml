@@ -2,46 +2,46 @@
 
 <odoo>
     <data>
-    <!--HEADER-->
-    <menuitem
-        id="menu_outsourcing_top"
-        name="Outsourcing"
-        sequence="99"/>
+        <!--HEADER-->
+        <menuitem
+                id="menu_outsourcing_top"
+                name="Outsourcing"
+                sequence="99"/>
 
-    <menuitem
-        id="menu_invoice"
-        name="Invoice"
-        parent="menu_outsourcing_top"
-        action="action_invoice"/>
-    <menuitem
-        id="menu_summary_sheet"
-        name="Summary Sheet"
-        parent="menu_outsourcing_top"
-        action="action_summary_sheet"/>
-    <menuitem
-        id="menu_purchase_order"
-        name="Purchase Order"
-        parent="menu_outsourcing_top"
-        action="action_purchase_order"/>
-    <menuitem
-        id="menu_purchase_order_line"
-        name="Purchase Order Line"
-        parent="menu_outsourcing_top"
-        action="action_purchase_order_line"/>
-    <menuitem
-        id="menu_purchase_order_line_detail"
-        name="Purchase Order Line Detail"
-        parent="menu_outsourcing_top"
-        action="action_purchase_order_line_detail"/>
-    <menuitem
-        id="menu_resource"
-        name="Resource"
-        parent="menu_outsourcing_top"
-        action="action_resource"/>
-    <menuitem
-        id="menu_unit_rate"
-        name="Unit Rate"
-        parent="menu_outsourcing_top"
-        action="action_unit_rate"/>
+        <menuitem
+                id="menu_contractor"
+                name="Contractor"
+                parent="menu_outsourcing_top"
+                action="action_contractor"/>
+
+        <menuitem
+                id="menu_contract"
+                name="Contract"
+                parent="menu_outsourcing_top"
+                action="action_contract"/>
+
+        <menuitem
+                id="menu_purchase_order"
+                name="Purchase Order"
+                parent="menu_outsourcing_top"
+                action="action_purchase_order"/>
+
+        <menuitem
+                id="menu_invoice"
+                name="Invoice"
+                parent="menu_outsourcing_top"
+                action="action_invoice"/>
+
+        <menuitem
+                id="menu_cear"
+                name="CEAR"
+                parent="menu_outsourcing_top"
+                action="action_cear"/>
+
+        <menuitem
+                id="menu_oear"
+                name="OEAR"
+                parent="menu_outsourcing_top"
+                action="action_oear"/>
     </data>
 </odoo>

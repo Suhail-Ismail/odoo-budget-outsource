@@ -6,7 +6,7 @@ from odoo import models, fields, api
 class Invoice(models.Model):
     _inherit = 'budget.invoice.invoice'
 
-    is_outsource = fields.Boolean('Is Outsource', default=False)
+    is_resource = fields.Boolean('Is Resource', default=False)
 
     # BASIC FIELDS
     # ----------------------------------------------------------

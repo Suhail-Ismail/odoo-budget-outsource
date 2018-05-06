@@ -26,16 +26,21 @@ Outsource Management
         'security/budget_outsource.xml',
         'security/ir.model.access.csv',
 
-        # 'views/invoice.xml',
-        # 'views/resource.xml',
-        # 'views/unit_rate.xml',
-        # 'views/purchase_order.xml',
-        # 'views/purchase_order_line.xml',
-        # 'views/purchase_order_line_detail.xml',
-        #
+        'views/cear_inherit.xml',
+        'views/contract_inherit.xml',
+        'views/contractor_inherit.xml',
+        'views/invoice_inherit.xml',
+        'views/oear_inherit.xml',
+        'views/purchase_order_inherit.xml',
+
+        'views/mobilize.xml',
+        'views/position.xml',
+        'views/resource.xml',
+        'views/unit_rate.xml',
+
         # 'views/summary_sheet.xml',
-        #
-        # 'views/menu.xml',
+
+        'views/menu.xml',
     ],
     'demo': [
     ],
