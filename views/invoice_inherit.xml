@@ -15,6 +15,20 @@
         </record>
         <!--END VIEWS-->
 
+        <!--START SEARCH-->
+        <record model="ir.ui.view" id="search_invoice">
+            <field name="name">Invoice</field>
+            <field name="model">budget.invoice.invoice</field>
+            <field name="inherit_id" ref="budget_invoice.search_invoice"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <filter name="is_resource"
+                            string="Outsource"
+                            domain="[('is_resource', '=', True)]"/>
+                </xpath>
+            </field>
+        </record>
+        <!--END SEARCH-->
         <!--START ACTIONS-->
         <!-- ACTION FOR RESOURCE -->
         <record model="ir.actions.act_window" id="action_invoice_resource">
