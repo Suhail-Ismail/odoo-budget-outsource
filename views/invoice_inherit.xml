@@ -21,8 +21,8 @@
             <field name="model">budget.invoice.invoice</field>
             <field name="inherit_id" ref="budget_invoice.search_invoice"/>
             <field name="arch" type="xml">
-                <xpath expr="//search" position="after">
-                    <filter name="is_head_office"
+                <xpath expr="//filter[@name='head_office']" position="after">
+                    <filter name="outsource"
                             string="Outsource"
                             domain="[('is_resource', '=', True)]"/>
                 </xpath>
