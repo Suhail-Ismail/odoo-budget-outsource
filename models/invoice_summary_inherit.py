@@ -13,7 +13,7 @@ class InvoiceSummary(models.Model):
 
     is_outsource = fields.Boolean('Is Resource', default=False)
 
-    @api.onchange('objective')
+    @api.onchange('objective', 'is_outsource', 'is_head_office', 'is_regional')
     def _onchange_invoice_ids_filter(self):
         res = super(InvoiceSummary, self)._onchange_invoice_ids_filter()
         res['domain']['invoice_ids'].append(

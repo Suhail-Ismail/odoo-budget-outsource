@@ -25,5 +25,5 @@ class Invoice(models.Model):
     # ----------------------------------------------------------
     def summary_wizard(self):
         res = super(Invoice, self).summary_wizard()
-        res['context']['is_outsource'] = self.is_outsource
+        res['context']['default_is_outsource'] = self.is_outsource
         return res
