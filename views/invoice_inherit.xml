@@ -21,8 +21,8 @@
             <field name="model">budget.invoice.invoice</field>
             <field name="inherit_id" ref="budget_invoice.search_invoice"/>
             <field name="arch" type="xml">
-                <xpath expr="//search" position="inside">
-                    <filter name="is_resource"
+                <xpath expr="//search" position="after">
+                    <filter name="is_head_office"
                             string="Outsource"
                             domain="[('is_resource', '=', True)]"/>
                 </xpath>
@@ -37,7 +37,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,pivot</field>
             <field name="view_id" ref="budget_invoice.view_tree_invoice"/>
-            <field name="search_view_id" ref="budget_invoice.search_invoice"/>
+            <field name="search_view_id" ref="search_invoice"/>
             <field name="context">{
                 'form_view_ref': 'budget_invoice.view_form_invoice',
                 'default_is_resource': True,
