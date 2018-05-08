@@ -16,18 +16,18 @@
         <!--END VIEWS-->
 
         <!--START SEARCH-->
-        <!--<record model="ir.ui.view" id="search_invoice">-->
-            <!--<field name="name">Invoice</field>-->
-            <!--<field name="model">budget.invoice.invoice</field>-->
-            <!--<field name="inherit_id" ref="budget_invoice.search_invoice"/>-->
-            <!--<field name="arch" type="xml">-->
-                <!--<xpath expr="//search/filter[@name='is_head_office']" position="after">-->
-                    <!--<filter name="is_outsource"-->
-                            <!--string="Outsource"-->
-                            <!--domain="[('is_outsource', '=', True)]"/>-->
-                <!--</xpath>-->
-            <!--</field>-->
-        <!--</record>-->
+        <record model="ir.ui.view" id="search_invoice">
+            <field name="name">Invoice</field>
+            <field name="model">budget.invoice.invoice</field>
+            <field name="inherit_id" ref="budget_invoice.search_invoice"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search/filter[@name='is_head_office']" position="after">
+                    <filter name="is_outsource"
+                            string="Outsource"
+                            domain="[('is_outsource', '=', True)]"/>
+                </xpath>
+            </field>
+        </record>
         <!--END SEARCH-->
         <!--START ACTIONS-->
         <!-- ACTION FOR RESOURCE -->
