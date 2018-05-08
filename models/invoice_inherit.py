@@ -9,7 +9,10 @@ class Invoice(models.Model):
 
     # BASIC FIELDS
     # ----------------------------------------------------------
+    # TODO DEPRECATED
     is_resource = fields.Boolean('Is Resource', default=False)
+
+    is_outsource = fields.Boolean('Is Resource', default=False)
     # outsource_actual_hour = fields.Float(default=0.00)
     # outsource_claim_hour = fields.Float(default=0.00)
 

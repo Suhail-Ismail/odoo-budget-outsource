@@ -9,7 +9,7 @@
             <field name="inherit_id" ref="budget_invoice.view_form_invoice_summary"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='is_head_office']" position="after">
-                    <field name="is_resource"/>
+                    <field name="is_outsource"/>
                 </xpath>
             </field>
         </record>
@@ -26,8 +26,8 @@
             <field name="search_view_id" ref="budget_invoice.search_invoice_summary"/>
             <field name="context">{
                 'form_view_ref': 'budget_invoice.view_form_invoice_summary_resource',
-                'default_is_resource': True,
-                'search_default_resource': 1,
+                'default_is_outsource': True,
+                'search_default_is_outsource': 1,
                 'search_default_need_action': 1,
                 'search_default_my_activity': 1}
             </field>
