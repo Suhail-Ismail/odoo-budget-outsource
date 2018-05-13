@@ -24,24 +24,24 @@ Outsource Management
                 'budget_invoice'],
     'data': [
         'security/budget_outsource.xml',
-        # 'security/ir.model.access.csv',
-        #
-        # 'views/cear_inherit.xml',
-        # 'views/contract_inherit.xml',
-        # 'views/contractor_inherit.xml',
+        'security/ir.model.access.csv',
+
+        'views/cear_inherit.xml',
+        'views/contract_inherit.xml',
+        'views/contractor_inherit.xml',
         'views/invoice_inherit.xml',
         'views/invoice_summary_inherit.xml',
-        # 'views/oear_inherit.xml',
-        # 'views/purchase_order_inherit.xml',
+        'views/oear_inherit.xml',
+        'views/purchase_order_inherit.xml',
 
-        # 'views/mobilize.xml',
-        # 'views/position.xml',
-        # 'views/resource.xml',
-        # 'views/unit_rate.xml',
-        # 'views/sheet.xml',
-        #
+        'views/mobilize.xml',
+        'views/position.xml',
+        'views/resource.xml',
+        'views/unit_rate.xml',
+        'views/sheet.xml',
+
         'views/invoice_menu_inherit.xml',
-        # 'views/menu.xml',
+        'views/menu.xml',
     ],
     'demo': [
     ],

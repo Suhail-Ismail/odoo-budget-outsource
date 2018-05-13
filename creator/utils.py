@@ -8,12 +8,10 @@ import itertools
 
 from decimal import Decimal, InvalidOperation
 
-
 from openpyxl import *
 from openpyxl.cell import Cell
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet import Worksheet
-
 
 
 # OPENPYXL WITH INSERT ROW
@@ -30,6 +28,7 @@ def get_distinct_selection(self, model=None, field_name=None):
     values = self.env.cr.fetchall()
 
     return [(i.upper(), i.upper()) for i in list(itertools.chain(*values))]
+
 
 def insert_rows(self, row_idx, cnt, above=False, copy_style=True, fill_formulae=True):
     """Inserts new (empty) rows into worksheet at specified row index.
@@ -143,7 +142,10 @@ def insert_rows(self, row_idx, cnt, above=False, copy_style=True, fill_formulae=
             cr
         )
 
+
 Worksheet.insert_rows = insert_rows
+
+
 # ----------------------------------------------------------------------------------------------------
 # END OPENPYXL
 
@@ -175,6 +177,7 @@ def to_dec(data):
     except InvalidOperation:
         return Decimal('0')
 
+
 class TemporaryDirectory(object):
     """
     Context manager for tempfile.mkdtemp().
@@ -187,6 +190,7 @@ class TemporaryDirectory(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         shutil.rmtree(self.dir_name)
+
 
 TemporaryDirectory = getattr(tempfile, 'TemporaryDirectory',
                              TemporaryDirectory)

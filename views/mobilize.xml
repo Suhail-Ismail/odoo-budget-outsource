@@ -3,7 +3,122 @@
 <odoo>
     <data>
         <!--START VIEWS-->
+        <record model="ir.ui.view" id="view_form_mobilize">
+            <field name="name">Mobilize</field>
+            <field name="model">budget.outsource.mobilize</field>
+            <field name="arch" type="xml">
+                <form string="Mobilize">
+                    <header>
+                        <!--<button-->
+                        <!--string="Reset"-->
+                        <!--name="reset"-->
+                        <!--type="object"-->
+                        <!--states="verified,on hold"/>-->
+                        <!--<button-->
+                        <!--string="Verify"-->
+                        <!--name="set2verified"-->
+                        <!--type="object"-->
+                        <!--states="draft"/>-->
+                        <!--<field name="state" widget="statusbar"-->
+                               <!--statusbar_visible="not mobilized,mobilized"/>-->
+                    </header>
+                    <sheet>
+                        <group readonly="1" groups="base.group_no_one">
+                            <group>
+                                <field name="currency_id"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_state" type="object" class="oe_stat_button"
+                                    icon="fa-user-circle-o">
+                                <field name="is_mobilized" widget="boolean_button"
+                                       options='{"terminology": {
+                                        "string_true": "Mobilized",
+                                        "hover_true": "Deactivate",
+                                        "string_false": "Not Mobilized",
+                                        "hover_false": "Activate"
+                                    }}'/>
+                            </button>
+                        </div>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="resource_name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <notebook>
+                            <page string="General">
+                                <group>
+                                    <group>
+                                        <field name="has_tool_or_uniform" readonly="1"/>
+                                        <field name="emp_num" required="1" readonly="1"/>
+                                        <field name="agency_ref_num" readonly="1"/>
+                                        <field name="date_of_join" readonly="1"/>
+                                        <field name="date_of_last_working_day" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="resource_id"/>
+                                        <field name="position_id"/>
+                                        <field name="approval_ref_num"/>
+                                        <field name="approval_reason"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Financial">
+                                <group>
+                                    <group>
+                                        <field name="rate" readonly="1"/>
+                                        <field name="capex_percent" readonly="1"/>
+                                        <field name="opex_percent" readonly="1"/>
+                                        <field name="revenue_percent" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="revise_rate"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
         <!--END VIEWS-->
+
+        <!--TREE VIEW-->
+        <record model="ir.ui.view" id="view_tree_mobilize">
+            <field name="name">Mobilize</field>
+            <field name="model">budget.outsource.mobilize</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="division_id"/>
+                    <field name="section_id"/>
+                    <!--TODO ADD THIS FIELDS-->
+                    <!--<field name="manager"/>-->
+                    <!--<field name="director"/>-->
+                    <field name="resource_id"/>
+                    <field name="position_id"/>
+                    <field name="po_id"/>
+                    <field name="rate"/>
+                    <!--TODO ADD THIS FIELDS-->
+                    <!--<field name="additional_rate_%"/>-->
+                    <field name="agency_ref_num"/>
+                    <field name="resource_name"/>
+                    <field name="position_name"/>
+                    <field name="level"/>
+                    <field name="date_of_join"/>
+                    <field name="date_of_last_working_day"/>
+                    <field name="has_tool_or_uniform"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
 
         <!--START ACTIONS-->
         <!--Contract Action-->
@@ -12,6 +127,7 @@
             <field name="res_model">budget.outsource.mobilize</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tree_mobilize"/>
         </record>
         <!--END ACTIONS-->
     </data>

@@ -5,6 +5,37 @@
         <!--START VIEWS-->
         <!--END VIEWS-->
 
+        <!--TREE VIEWS-->
+        <record model="ir.ui.view" id="view_tree_position">
+            <field name="name">Position</field>
+            <field name="model">budget.outsource.position</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="identifier"/>
+                    <field name="os_ref"/>
+                    <field name="name"/>
+                    <field name="level"/>
+                    <field name="capex_percent"/>
+                    <field name="opex_percent"/>
+                    <field name="revenue_percent"/>
+                    <field name="unit_rate"/>
+                </tree>
+            </field>
+        </record>
+        <!--END TREE VIEWS-->
+
+        <!--START SEARCH-->
+        <record model="ir.ui.view" id="view_search_position">
+            <field name="name">Position</field>
+            <field name="model">budget.outsource.position</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="po_id"/>
+                </search>
+            </field>
+        </record>
+        <!--END SEARCH-->
+
         <!--START ACTIONS-->
         <!--Contract Action-->
         <record model="ir.actions.act_window" id="action_position">
@@ -12,6 +43,7 @@
             <field name="res_model">budget.outsource.position</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tree_position"/>
         </record>
         <!--END ACTIONS-->
     </data>

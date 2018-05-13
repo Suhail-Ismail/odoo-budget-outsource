@@ -11,6 +11,10 @@
                 <xpath expr="//field[@name='is_head_office']" position="after">
                     <field name="is_outsource"/>
                 </xpath>
+                <xpath expr="//field[@name='pec_id']" position="after">
+                    <field name="approval_ref" attrs="{'invisible': [('is_outsource','!=',True)]}"/>
+                </xpath>
+
             </field>
         </record>
         <!--END VIEWS-->
@@ -31,7 +35,7 @@
         <!--END SEARCH-->
         <!--START ACTIONS-->
         <!-- ACTION FOR RESOURCE -->
-        <record model="ir.actions.act_window" id="action_invoice_resource">
+        <record model="ir.actions.act_window" id="action_invoice_outsource">
             <field name="name">Invoice</field>
             <field name="res_model">budget.invoice.invoice</field>
             <field name="view_type">form</field>

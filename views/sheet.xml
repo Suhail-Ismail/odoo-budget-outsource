@@ -24,7 +24,7 @@
                         </div>
                             <group>
                                 <group>
-                                    <field name="generator_choice"/>
+                                    <!--<field name="generator_choice"/>-->
                                     <field name="period_start"/>
                                     <field name="period_end"/>
                                     <field name="ramadan_start"/>
@@ -47,7 +47,7 @@
             <field name="model">budget.outsource.sheet</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="generator_choice"/>
+                    <!--<field name="generator_choice"/>-->
                     <field name="po_id"/>
                     <field name="contractor_id"/>
                     <field name="division_id"/>

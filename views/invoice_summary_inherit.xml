@@ -17,7 +17,7 @@
 
         <!--START ACTIONS-->
         <!-- ACTION FOR RESOURCE -->
-        <record model="ir.actions.act_window" id="action_invoice_summary_resource">
+        <record model="ir.actions.act_window" id="action_invoice_summary_outsource">
             <field name="name">Invoice Summary</field>
             <field name="res_model">budget.invoice.invoice.summary</field>
             <field name="view_type">form</field>
@@ -25,7 +25,7 @@
             <field name="view_id" ref="budget_invoice.view_tree_invoice_summary"/>
             <field name="search_view_id" ref="budget_invoice.search_invoice_summary"/>
             <field name="context">{
-                'form_view_ref': 'budget_invoice.view_form_invoice_summary_resource',
+                'form_view_ref': 'budget_invoice.view_form_invoice_summary_outsource',
                 'default_is_outsource': True,
                 'search_default_is_outsource': 1,
                 'search_default_need_action': 1,

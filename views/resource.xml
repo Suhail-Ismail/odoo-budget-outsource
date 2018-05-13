@@ -30,15 +30,15 @@
                                     </group>
                                 </group>
                             </page>
-                            <page string="Financial">
-                                <group>
-                                    <group>
-                                        <field name="capex_percent"/>
-                                        <field name="opex_percent"/>
-                                        <field name="revenue_percent"/>
-                                    </group>
-                                </group>
-                            </page>
+                            <!--<page string="Financial">-->
+                                <!--<group>-->
+                                    <!--<group>-->
+                                        <!--<field name="capex_percent"/>-->
+                                        <!--<field name="opex_percent"/>-->
+                                        <!--<field name="revenue_percent"/>-->
+                                    <!--</group>-->
+                                <!--</group>-->
+                            <!--</page>-->
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">

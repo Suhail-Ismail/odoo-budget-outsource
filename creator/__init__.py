@@ -1,14 +1,6 @@
 #!/usr/bin/env python
 
-# IMPORT INITIALIZING DJANGO ORM
-# IMPORT OPENPYXL WITH INSERT ROW
-# excel password tbpc19
-# ----------------------------------------------------------------------------------------------------
-import os
 import base64
-import logging
-
-_logger = logging.getLogger(__name__)
 
 from openpyxl.styles import Protection
 

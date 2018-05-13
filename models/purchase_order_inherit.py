@@ -6,7 +6,12 @@ from odoo import models, fields, api
 class PurchaseOrder(models.Model):
     _inherit = 'budget.purchase.order'
 
+    # BASIC FIELDS
+    # ----------------------------------------------------------
+    # TODO DEPRECATED
     is_resource = fields.Boolean('Is Resource', default=False)
+
+    is_outsource = fields.Boolean('Is Resource', default=False)
 
     # Already Exist in base Purchase Order
     # num, date, amount
@@ -32,3 +37,10 @@ class PurchaseOrder(models.Model):
 
     # COMPUTE FIELDS
     # ----------------------------------------------------------
+    total_position = fields.Integer(compute='_compute_total_position',
+                                    store=True)
+
+    @api.one
+    @api.depends('outsource_position_ids')
+    def _compute_total_position(self):
+        self.total_position = len(self.outsource_position_ids)

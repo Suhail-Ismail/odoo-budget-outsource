@@ -4,8 +4,12 @@ from __future__ import print_function
 import csv
 import os
 import time
-
+import pandas as pd
 import datetime as dt
+
+import odoo
+
+DUMP_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 def to_bool(data):
@@ -31,12 +35,30 @@ def to_date_format(string):
 def to_dec(data):
     try:
         return float(data)
-    except:
+    except Exception:
         return 0
 
 
+def shell(dbname):
+    local_vars = {
+        'openerp': odoo,
+        'odoo': odoo,
+    }
+    with odoo.api.Environment.manage():
+        if dbname:
+            registry = odoo.registry(dbname)
+            with registry.cursor() as cr:
+                uid = odoo.SUPERUSER_ID
+                ctx = odoo.api.Environment(cr, uid, {})['res.users'].context_get()
+                env = odoo.api.Environment(cr, uid, ctx)
+                local_vars['env'] = env
+                local_vars['self'] = env.user
+                cr.rollback()
+    return local_vars
+
+
 class Dumper(object):
-    def __init__(self, dumpdir=os.path.dirname(os.path.realpath(__file__)),
+    def __init__(self, dumpdir=DUMP_DIR,
                  env=None, model_obj=None, filename=''):
         if env is None:
             raise ValueError
@@ -59,14 +81,10 @@ class Dumper(object):
     def model(self):
         return self.env[self.model_obj]
 
-    @property
-    def model(self):
-        return self.env[self.model_obj]
-
     def get_total_csv_row(self):
         with open(self.csvpath) as csvfile:
             reader = csv.reader(csvfile)
-            total = sum(1 for row in reader)
+            total = sum(1 for _ in reader)
 
         return total - 1
 
@@ -321,7 +339,7 @@ def dump_resource(env=None, filename='RPT01_ Monthly Accruals - Mobillized.csv')
                     'manager': row['Manager'],
                     'director': row['Director'],
                     'rate': row['Rate'],
-#                    'po_rate_percent_increase': to_dec(row['PORate%Incr']),
+                    #                    'po_rate_percent_increase': to_dec(row['PORate%Incr']),
                     'capex_percent': row['CPX%Age'],
                     'capex_rate': row['CAPEXRate'],
                     'opex_percent': row['OPX%Age'],
@@ -374,5 +392,201 @@ def start_without_invoice(env):
     dump_resource(env)
 
 
+def migrate_unit_price(env=None, filename='UnitPrice.csv'):
+    dumper = Dumper(env=env, model_obj='budget.outsource.unit.rate', filename=filename)
+    dumper.start()
+    unit_price_model = dumper.model
+
+    with open(dumper.csvpath) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+
+            if row['contractor'] == 'REACH':
+                contractor_name = 'REACH EMPLOYMENT'
+            elif row['contractor'] == 'SHAHID':
+                contractor_name = 'SHAHID TECH'
+            elif row['contractor'] == 'STAR':
+                contractor_name = 'STAR SERVICES'
+            else:
+                contractor_name = row['contractor']
+
+            contractor_id = env['budget.contractor.contractor'].search([('name', 'like', contractor_name)])
+
+            if len(contractor_id) > 1:
+                print(contractor_id.mapped('name'))
+
+            elif not contractor_id:
+                continue
+
+            unit_price = unit_price_model.search([
+                ('position_name', '=', row['po_position']),
+                ('position_level', '=', row['po_level']),
+                ('contractor_id', '=', contractor_id.id),
+
+            ], limit=1)
+
+            if unit_price:
+                dumper.exist()
+                continue
+            else:
+                data = {
+                    'position_name': row['po_position'],
+                    'position_level': row['po_level'],
+                    'contractor_id': contractor_id.id,
+                    'amount': to_dec(row['amount']),
+                }
+                dumper.create(data)
+    dumper.end()
+
+
+def migrate_purchase_order(env=None, filename='TechPO.csv'):
+    dumper = Dumper(env=env, model_obj='budget.purchase.order', filename=filename)
+    dumper.start()
+    po_model = dumper.model
+
+    with open(dumper.csvpath) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            po_id = po_model.search([('no', '=', row["PONum"])])
+            if row['Contractor'] == 'REACH':
+                contractor_name = 'REACH EMPLOYMENT'
+            elif row['Contractor'] == 'SHAHID':
+                contractor_name = 'SHAHID TECH'
+            elif row['Contractor'] == 'STAR':
+                contractor_name = 'STAR SERVICES'
+            else:
+                contractor_name = row['Contractor']
+
+            contractor_id = env['budget.contractor.contractor'].search([('name', 'like', contractor_name)])
+
+            if len(po_id) != 0:
+                dumper.exist()
+                continue
+            else:
+                data = {
+                    'no': row["PONum"],
+                    'amount': to_dec(row["POValue"]),
+
+                    'contractor_id': contractor_id.id,
+
+                    'remark': row["PORemarks"],
+                }
+                dumper.create(data)
+
+    dumper.end()
+
+
+def migrate_position(env=None, filename='TechPOLineDetail.csv'):
+    dumper = Dumper(env=env, model_obj='budget.outsource.position', filename=filename)
+    dumper.start()
+    position_model = dumper.model
+    with open(dumper.csvpath) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            position = position_model.search([('identifier', '=', row['PODetID'])])
+
+            if position:
+                dumper.exist()
+                continue
+
+            po_id = env['budget.purchase.order'].search([('no', 'like', row['PONum'])])
+            data = {
+                'identifier': row['PODetID'],
+                'os_ref': row["POOSRef"],
+                'name': row["POPosition"],
+                'level': row["POLevel"],
+                'po_id': po_id.id,
+                'capex_percent': row["CPX%Age"],
+                'opex_percent': row["OPX%Age"],
+                'revenue_percent': row["REV%Age"],
+            }
+            dumper.create(data)
+    dumper.end()
+
+
+def migrate_resource(env=None, filename='RPT01_ Monthly Accruals - Mobillized.csv'):
+    dumper = Dumper(env=env, model_obj='budget.outsource.resource', filename=filename)
+    dumper.start()
+    resource_model = dumper.model
+
+    with open(dumper.csvpath) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            resource = resource_model.search([('identifier', '=', row['ResID'])])
+
+            if resource:
+                dumper.exist()
+                continue
+
+            if row['Contractor'] == 'REACH':
+                contractor_name = 'REACH EMPLOYMENT'
+            elif row['Contractor'] == 'SHAHID':
+                contractor_name = 'SHAHID TECH'
+            elif row['Contractor'] == 'STAR':
+                contractor_name = 'STAR SERVICES'
+            else:
+                contractor_name = row['Contractor']
+
+            contractor_id = env['budget.contractor.contractor'].search([('name', 'like', contractor_name)])
+
+            data = {
+                'identifier': row['ResID'],
+                'name': row['ResFullName'],
+                'type': row['ResType'],
+                'type_class': row['ResTypeClass'],
+                'agency_ref_num': row['AgencyRefNum'],
+                'emp_num': row['ResEmpNum'],
+                'date_of_join': to_date_format(row['DoJ']),
+                'has_tool_or_uniform': to_bool(row['ToolsProvided']),
+                'contractor_id': contractor_id.id,
+            }
+            dumper.create(data)
+    dumper.end()
+
+
+def migrate_mobilize(env=None, filename='RPT01_ Monthly Accruals - Mobillized.csv'):
+    dumper = Dumper(env=env, model_obj='budget.outsource.mobilize', filename=filename)
+    dumper.start()
+    with open(dumper.csvpath) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+
+            position_id = env['budget.outsource.position'].search([('identifier', '=', row['PODetID'])])
+            resource_id = env['budget.outsource.resource'].search([('identifier', '=', row['ResID'])])
+            if not position_id and not resource_id:
+                continue
+
+            mobilize_id = env['budget.outsource.mobilize'].search([
+                ('position_id', '=', position_id.id),
+                ('resource_id', '=', resource_id.id)
+            ])
+
+            if mobilize_id:
+                dumper.exist()
+                continue
+
+            df_position = pd.read_csv(os.path.join(DUMP_DIR, 'TechPOLineDetail.csv'))
+            df_position = df_position.fillna(0)
+            searched = df_position.loc[df_position['PODetID'] == int(position_id.identifier)]['PORRate']
+
+            data = {
+                'position_id': position_id.id,
+                'resource_id': resource_id.id,
+                'revise_rate': float(searched),
+            }
+            dumper.create(data)
+    dumper.end()
+
+
+def start_migrate(env):
+    # migrate_unit_price(env)
+    # migrate_purchase_order(env)
+    # migrate_position(env)
+    # migrate_resource(env)
+    migrate_mobilize(env)
+
+
 if __name__ == '__main__':
-    pass
+    env_vars = shell('dev_db11')
+    env = env_vars.get('env')
+    start_migrate(env)
