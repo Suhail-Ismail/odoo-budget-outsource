@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <!--START VIEWS-->
+
+        <!--START FORM VIEW-->
+        <record model="ir.ui.view" id="view_form_spocs">
+            <field name="name">SPOCS</field>
+            <field name="model">budget.outsource.spocs</field>
+            <field name="arch" type="xml">
+                <form string="Division">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="user_id" required="1" default_focus="1" 
+                                placeholder="Username" 
+                                options="{ 'no_open': True}"
+                                />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="login" required="1"/>
+                                <field name="password" required="1" password="1"/>
+                            </group>
+                            <group>
+                                <field name="division_id" required="1" widget="selection"/>
+                                <field name="section_id" required="1" widget="selection"/>
+                                <field name="sub_section_id" widget="selection"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="remark"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!--END FORM VIEW-->
+
+        <!--START TREE VIEW-->
+        <record model="ir.ui.view" id="view_tree_spocs">
+            <field name="name">SPOCS</field>
+            <field name="model">budget.outsource.spocs</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="user_id"/>
+                    <field name="division_id"/>
+                </tree>
+            </field>
+        </record>
+        <!--END TREE VIEW-->
+        <!--END VIEWS-->
+
+        <!--START ACTIONS-->
+        <!--Contract Action-->
+        <record model="ir.actions.act_window" id="action_spocs">
+            <field name="name">SPOCS</field>
+            <field name="res_model">budget.outsource.spocs</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tree_spocs"/>
+            <field name="domain"></field>
+            <field name="context">{'form_view_ref': 'budget_outsource.view_form_spocs'}</field>
+        </record>
+        <!--END ACTIONS-->
+    </data>
+</odoo>
